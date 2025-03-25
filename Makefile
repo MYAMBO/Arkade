@@ -6,6 +6,7 @@
 ##
 
 CORE_SRC 			= 		Core/src/main.cpp 						\
+							Core/src/Core.cpp 						\
 
 NIBBLER_SRC 		=		Game/Nibbler/src/Nibbler.cpp			\
 
@@ -37,7 +38,9 @@ SFML_NAME 			=		lib/arcade_sfml.so
 
 NCURSES_NAME 		=		lib/arcade_ncurses.so
 
-CORE_FLAGS 			= 		-I Core/include/interface -I ./
+CORE_FLAGS 			= 		-I ./							\
+							-I Core/include 				\
+							-I Core/include/interface 		\
 
 NIBBLER_FLAGS 		= 		-I Game/Nibbler/include
 

@@ -13,6 +13,8 @@ class NCurses : public IDisplayModule
         NCurses();
         ~NCurses();
 
+        std::string getName() const;
+        
         void initObject(std::map<std::string, std::unique_ptr<IObject>>&);
 
         int getInput();
@@ -27,12 +29,10 @@ class NCurses : public IDisplayModule
         int _input;
 };
 
-extern "C" {
-    IDisplayModule* createInstance() {
+extern "C"
+{
+    IDisplayModule *createInstance()
+    {
         return new NCurses();
-    }
-    
-    void destroyInstance(IDisplayModule* instance) {
-        delete instance;
     }
 }

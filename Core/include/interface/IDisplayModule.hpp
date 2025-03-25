@@ -22,6 +22,8 @@ class IDisplayModule
         };
         virtual ~IDisplayModule() = default;
 
+        virtual std::string getName() const = 0;
+
         virtual void initObject(std::map<std::string, std::unique_ptr<IObject>>&) = 0;
 
         virtual int getInput() = 0;
@@ -34,5 +36,4 @@ class IDisplayModule
         virtual void display(std::map<std::string, std::unique_ptr<IObject>>&) = 0;
 };
 
-typedef IDisplayModule* (*CreateInstanceFunc)();
-typedef void (*DestroyInstanceFunc)(IDisplayModule*);
+typedef IDisplayModule *(*CreateInstanceIDisplay)();

@@ -17,7 +17,12 @@ SFML::SFML()
 
 SFML::~SFML()
 {
+    std::cout << "SFML is destroy" << std::endl;
+}
 
+std::string SFML::getName() const
+{
+    return "SFML";
 }
 
 void SFML::initObject(std::map<std::string, std::unique_ptr<IObject>>& objects)

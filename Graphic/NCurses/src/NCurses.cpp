@@ -18,7 +18,12 @@ NCurses::NCurses()
 
 NCurses::~NCurses()
 {
+    std::cout << "ncurses is destroy" << std::endl;
+}
 
+std::string NCurses::getName() const
+{
+    return "NCurses";
 }
 
 void NCurses::initObject(std::map<std::string, std::unique_ptr<IObject>>& objects)
@@ -75,7 +80,7 @@ void NCurses::display(std::map<std::string, std::unique_ptr<IObject>>& objects)
     std::pair<int, int> pos;
     short i;
 
-    clear();
+    erase();
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
         if (elt->second.get()->getType() == "sprite") {
             sprite = std::any_cast<std::list<std::string>>(elt->second.get()->getSprite());

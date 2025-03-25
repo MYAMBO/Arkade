@@ -15,6 +15,8 @@ class SFML : public IDisplayModule
         SFML();
         ~SFML();
 
+        std::string getName() const;
+
         void initObject(std::map<std::string, std::unique_ptr<IObject>>&);
 
         int getInput();
@@ -31,12 +33,10 @@ class SFML : public IDisplayModule
         click _state;
 };
 
-extern "C" {
-    IDisplayModule* createInstance() {
+extern "C"
+{
+    IDisplayModule *createInstance()
+    {
         return new SFML();
-    }
-    
-    void destroyInstance(IDisplayModule* instance) {
-        delete instance;
     }
 }
