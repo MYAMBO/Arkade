@@ -68,14 +68,13 @@ void NCurses::closeWindow()
 {
     endwin();
 }
-
 void NCurses::display(std::map<std::string, std::unique_ptr<IObject>>& objects)
 {
     std::list<std::string> sprite;
     std::pair<int, int> pos;
     short i;
 
-    clear();
+    erase();
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
         if (elt->second.get()->getType() == "sprite") {
             sprite = std::any_cast<std::list<std::string>>(elt->second.get()->getSprite());

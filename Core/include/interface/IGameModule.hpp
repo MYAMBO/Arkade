@@ -24,7 +24,7 @@ class IGameModule
 
         virtual bool update(std::pair<int, int>, click state, int input) = 0;
 
-        virtual void addObject(std::string name) = 0;
         virtual void deleteObject(std::string name) = 0;
-        virtual std::map<std::string, std::unique_ptr<IObject>> getObjects() const = 0;
+        virtual void addObject(std::string type, std::string name) = 0;
+        virtual const std::map<std::string, std::unique_ptr<IObject>>& getObjects() const = 0;
 };

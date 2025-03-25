@@ -8,6 +8,7 @@
 CORE_SRC 			= 		Core/src/main.cpp 						\
 
 NIBBLER_SRC 		=		Game/Nibbler/src/Nibbler.cpp			\
+							Game/Nibbler/src/NibblerObject.cpp		\
 
 MINESWEEPER_SRC 	=		Game/Minesweeper/src/Minesweeper.cpp 	\
 
@@ -17,7 +18,7 @@ NCURSES_SRC 		=		Graphic/NCurses/src/NCurses.cpp 		\
 
 TEST_SRC 			=		\
 
-CORE_OBJ 			= 		$(CORE_SRC:%.cpp=obj/%.o)
+CORE_OBJ 			= 		$(CORE_SRC:%.cpp=obj/%.o) $(NIBBLER_OBJ)
 
 NIBBLER_OBJ 		=		$(NIBBLER_SRC:%.cpp=obj/%.o)
 

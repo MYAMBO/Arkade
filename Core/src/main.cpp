@@ -7,7 +7,7 @@
 
 #include <dlfcn.h>
 
-#include "test.hpp"
+#include "Nibbler.hpp"
 #include "IDisplayModule.hpp"
 
 IDisplayModule *changeInstance1(void *before)
@@ -61,14 +61,14 @@ int main()
     
     IDisplayModule* instance = createInstance();
 
-    std::map<std::string, std::unique_ptr<IObject>> objects;
 
-    test pacman ("sprite");
-    objects.insert({"pacman", std::make_unique<test>(pacman)});
+    Nibbler nibbler;
+    auto &objects = nibbler.getObjects();
     instance->initObject(objects);
     instance->openWindow();
     while (input != 'p') {
         input = instance->getInput();
+        nibbler.update(instance->getMousePos(), IGameModule::click::NOTHING, input);
         instance->display(objects);
         if (input == 'c') {
             instance->closeWindow();
@@ -83,22 +83,6 @@ int main()
             instance = changeInstance2(handle);
             instance->initObject(objects);
             instance->openWindow();
-        }
-        if (input == 'z') {
-            auto obj = objects.begin()->second.get();
-            obj->setPosition({obj->getPosition().first, obj->getPosition().second - 10});
-        }
-        if (input == 's') {
-            auto obj = objects.begin()->second.get();
-            obj->setPosition({obj->getPosition().first, obj->getPosition().second + 10});
-        }
-        if (input == 'q') {
-            auto obj = objects.begin()->second.get();
-            obj->setPosition({obj->getPosition().first - 10, obj->getPosition().second});
-        }
-        if (input == 'd') {
-            auto obj = objects.begin()->second.get();
-            obj->setPosition({obj->getPosition().first + 10, obj->getPosition().second});
         }
     }
     instance->closeWindow();
