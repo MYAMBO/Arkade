@@ -9,6 +9,38 @@
 
 #include "test.hpp"
 #include "Core.hpp"
+#include "Nibbler.hpp"
+#include "IDisplayModule.hpp"
+
+IDisplayModule *changeInstance1(void *before)
+{
+    dlclose(before);
+    void* handle = dlopen("lib/arcade_ncurses.so", RTLD_LAZY);
+
+    if (!handle) {
+        std::cerr << "Erreur de chargement: " << dlerror() << std::endl;
+        return NULL;
+    }
+
+    CreateInstanceFunc createInstance = (CreateInstanceFunc)dlsym(handle, "createInstance");
+
+    return createInstance();
+}
+
+IDisplayModule *changeInstance2(void *before)
+{
+    dlclose(before);
+    void* handle = dlopen("lib/arcade_sfml.so", RTLD_LAZY);
+
+    if (!handle) {
+        std::cerr << "Erreur de chargement: " << dlerror() << std::endl;
+        return NULL;
+    }
+
+    CreateInstanceFunc createInstance = (CreateInstanceFunc)dlsym(handle, "createInstance");
+
+    return createInstance();
+}
 
 int main()
 {
@@ -17,45 +49,26 @@ int main()
 
     Core core;
 
-    auto gameModuleList = core.getGameModuleList();
-    auto displayModuleList = core.getDisplayModuleList();
-    
-    std::map<std::string, std::unique_ptr<IObject>> objects;
-
-    test pacman ("sprite");
-    objects.insert({"pacman", std::make_unique<test>(pacman)});
-    displayModuleList[i]->initObject(objects);
-    displayModuleList[i]->openWindow();
+    Nibbler nibbler;
+    auto &objects = nibbler.getObjects();
+    instance->initObject(objects);
+    instance->openWindow();
     while (input != 'p') {
-        input = displayModuleList[i]->getInput();
-        displayModuleList[i]->display(objects);
-        if (input == 'c' && i == SFML) {
-            displayModuleList[i]->closeWindow();
-            i = NCURSES;
-            displayModuleList[i]->initObject(objects);
-            displayModuleList[i]->openWindow();
+        input = instance->getInput();
+        nibbler.update(instance->getMousePos(), IGameModule::click::NOTHING, input);
+        instance->display(objects);
+        if (input == 'c') {
+            instance->closeWindow();
+            destroyInstance(instance);
+            instance = changeInstance1(handle);
+            instance->initObject(objects);
+            instance->openWindow();
         }
         if (input == 'v' && i == NCURSES) {
             displayModuleList[i]->closeWindow();
             i = SFML;
             displayModuleList[i]->initObject(objects);
             displayModuleList[i]->openWindow();
-        }
-        if (input == 'z') {
-            auto obj = objects.begin()->second.get();
-            obj->setPosition({obj->getPosition().first, obj->getPosition().second - 10});
-        }
-        if (input == 's') {
-            auto obj = objects.begin()->second.get();
-            obj->setPosition({obj->getPosition().first, obj->getPosition().second + 10});
-        }
-        if (input == 'q') {
-            auto obj = objects.begin()->second.get();
-            obj->setPosition({obj->getPosition().first - 10, obj->getPosition().second});
-        }
-        if (input == 'd') {
-            auto obj = objects.begin()->second.get();
-            obj->setPosition({obj->getPosition().first + 10, obj->getPosition().second});
         }
     }
     displayModuleList[i]->closeWindow();

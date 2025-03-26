@@ -69,7 +69,6 @@ void NCurses::closeWindow()
 {
     endwin();
 }
-
 void NCurses::display(std::map<std::string, std::unique_ptr<IObject>>& objects)
 {
     std::list<std::string> sprite;
