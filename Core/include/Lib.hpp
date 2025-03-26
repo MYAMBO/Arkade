@@ -5,6 +5,8 @@
 ** Lib.hpp
 */
 
+#pragma once
+
 #include <filesystem>
 
 #include "IGameModule.hpp"

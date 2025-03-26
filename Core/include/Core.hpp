@@ -5,16 +5,15 @@
 ** Core.hpp
 */
 
+#pragma once
+
 #include <list>
 
 #include "Lib.hpp"
-#include "IGameModule.hpp"
-#include "IDisplayModule.hpp"
 
 #define LIB_PATH ("lib")
 
-class Core
-{
+class Core {
     public:
         Core();
         ~Core();
