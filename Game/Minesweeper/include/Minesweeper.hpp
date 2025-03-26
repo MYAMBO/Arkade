@@ -5,6 +5,8 @@
 ** Minesweeper.hpp
 */
 
+#pragma once
+
 #include "IGameModule.hpp"
 
 class Minesweeper : public IGameModule

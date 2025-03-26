@@ -31,11 +31,6 @@ void NibblerObject::setSprite(std::any sprite)
     _sprite = sprite;
 }
 
-std::any NibblerObject::getSprite() const
-{
-    return _sprite;
-}
-
 void NibblerObject::setTexturePath(std::string path)
 {
     _path = path;
@@ -46,12 +41,52 @@ std::string NibblerObject::getTexturePath()
     return _path;
 }
 
+std::pair<int, int> NibblerObject::getSize() const
+{
+    return _size;
+}
+
+void NibblerObject::setSize(std::pair<int, int> size)
+{
+    _size = size;
+}
+
+std::pair<int, int> NibblerObject::getOffset() const
+{
+    return _offset;
+}
+
+void NibblerObject::setOffset(std::pair<int, int> offset)
+{
+    _offset = offset;
+}
+
+std::any& NibblerObject::getTexture()
+{
+    return _texture;
+}
+
+void NibblerObject::setTexture(std::any texture)
+{
+    _texture = texture;
+}
+
+std::string NibblerObject::getText()
+{
+    return _text;
+}
+
+void NibblerObject::setText(std::string text)
+{
+    _text = text;
+}
+
+std::any& NibblerObject::getSprite()
+{
+    return _sprite;
+}
+
 std::string NibblerObject::getType() const
 {
     return _type;
-}
-
-std::string NibblerObject::getName() const
-{
-    return _name;
 }

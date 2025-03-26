@@ -19,9 +19,8 @@ Nibbler::Nibbler()
     _objects["food"]->setTexturePath("Nibbler/apple");
 }
 
-bool Nibbler::update(std::pair<int, int> pos, click state, int input)
+bool Nibbler::update(std::pair<int, int> pos, int input)
 {
-    (void)state;
     pos = _objects["snakehead"]->getPosition();
     if (input == 'z') {
         _objects["snakehead"]->setTexturePath("Nibbler/nibblerHeadUp");
@@ -49,13 +48,22 @@ void Nibbler::addObject(std::string type, std::string name)
     }
 }
 
-
 void Nibbler::deleteObject(std::string name)
 {
     _objects.erase(name);
 }
 
-std::map<std::string, std::unique_ptr<IObject>>& Nibbler::getObjects() const
+std::map<std::string, std::unique_ptr<IObject>>& Nibbler::getObjects()
 {
     return _objects;
+}
+
+std::string Nibbler::getName() const
+{
+    return NIBBLER;
+}
+
+std::size_t Nibbler::getScore() const
+{
+    return 0;
 }
