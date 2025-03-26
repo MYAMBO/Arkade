@@ -9,17 +9,18 @@
 
 #include "IDisplayModule.hpp"
 
-class SFML : public IDisplayModule
+class SFMLModule : public IDisplayModule
 {
     public:
-        SFML();
-        ~SFML();
+        SFMLModule();
+        ~SFMLModule();
+
+        std::string getName() const;
 
         void initObject(std::map<std::string, std::unique_ptr<IObject>>&);
 
         int getInput();
         std::pair<int, int> getMousePos() const;
-        click getMouseSTate() const;
 
         void openWindow();
         void closeWindow();
@@ -27,16 +28,13 @@ class SFML : public IDisplayModule
         void display(std::map<std::string, std::unique_ptr<IObject>>&);
     private:
         std::unique_ptr<sf::RenderWindow> _window;
-        std::unique_ptr<sf::Event> _event;
-        click _state;
+        sf::Event _event;
 };
 
-extern "C" {
-    IDisplayModule* createInstance() {
-        return new SFML();
-    }
-    
-    void destroyInstance(IDisplayModule* instance) {
-        delete instance;
+extern "C"
+{
+    std::unique_ptr<IDisplayModule> createInstanceIDisplay()
+    {
+        return std::make_unique<SFMLModule>();
     }
 }

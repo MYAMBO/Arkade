@@ -6,8 +6,11 @@
 ##
 
 CORE_SRC 			= 		Core/src/main.cpp 						\
+							Core/src/Core.cpp 						\
+							Core/src/Lib.cpp 						\
 
 NIBBLER_SRC 		=		Game/Nibbler/src/Nibbler.cpp			\
+							Game/Nibbler/src/NibblerObject.cpp		\
 
 MINESWEEPER_SRC 	=		Game/Minesweeper/src/Minesweeper.cpp 	\
 
@@ -15,9 +18,11 @@ SFML_SRC 			=		Graphic/SFML/src/SFML.cpp 				\
 
 NCURSES_SRC 		=		Graphic/NCurses/src/NCurses.cpp 		\
 
-TEST_SRC 			=		\
+TEST_SRC 			=		Core/src/Lib.cpp 						\
+							Core/src/Core.cpp 						\
+							tests/testCore.cpp 						\
 
-CORE_OBJ 			= 		$(CORE_SRC:%.cpp=obj/%.o)
+CORE_OBJ 			= 		$(CORE_SRC:%.cpp=obj/%.o) $(NIBBLER_OBJ)
 
 NIBBLER_OBJ 		=		$(NIBBLER_SRC:%.cpp=obj/%.o)
 
@@ -37,7 +42,9 @@ SFML_NAME 			=		lib/arcade_sfml.so
 
 NCURSES_NAME 		=		lib/arcade_ncurses.so
 
-CORE_FLAGS 			= 		-I Core/include/interface -I ./
+CORE_FLAGS 			= 		-I ./							\
+							-I Core/include 				\
+							-I Core/include/interface 		\
 
 NIBBLER_FLAGS 		= 		-I Game/Nibbler/include
 
@@ -83,17 +90,17 @@ $(NIBBLER_NAME): $(NIBBLER_OBJ)
 
 $(MINESWEEPER_NAME): $(MINESWEEPER_OBJ)
 	@echo -e "$(BLUE)Linking Mineswipper...$(NC)"
-	@g++ $(LIB_FLAGS) -o $(MINESWEEPER_NAME) 		\
+	@g++ $(LIB_FLAGS) -o $(MINESWEEPER_NAME) 								\
 		 $(MINESWEEPER_OBJ) $(MINESWEEPER_FLAGS)
 
 $(SFML_NAME): $(SFML_OBJ)
 	@echo -e "$(BLUE)Linking SFML...$(NC)"
-	@g++ $(LIB_FLAGS) -o $(SFML_NAME) $(SFML_OBJ) $(SFML_FLAGS) 	\
+	@g++ $(LIB_FLAGS) -o $(SFML_NAME) $(SFML_OBJ) $(SFML_FLAGS) 			\
 		 $(LIBSFML_FLAGS) $(CORE_FLAGS)
 
 $(NCURSES_NAME): $(NCURSES_OBJ)
 	@echo -e "$(BLUE)Linking NCurses...$(NC)"
-	@g++ $(LIB_FLAGS) -o $(NCURSES_NAME) $(NCURSES_OBJ) 		\
+	@g++ $(LIB_FLAGS) -o $(NCURSES_NAME) $(NCURSES_OBJ) 					\
 		 $(NCURSES_FLAGS) $(CORE_FLAGS) $(LIBNCURSES_FLAGS)
 
 obj/%.o: ./%.cpp
@@ -105,11 +112,11 @@ obj/%.o: ./%.cpp
 obj/test/%.o: ./%.cpp
 	@echo -e "$(GREEN)Compiling $<...$(NC)"
 	@mkdir -p $(dir $@)
-	@g++ -c -o $@ $< $(TEST_SRC) $(TEST_FLAGS) $(CPPFLAGS) -fPIC
+	@g++ -fPIC -c -o $@ $< $(TEST_SRC) $(TEST_FLAGS) $(CPPFLAGS)
 
-unit_test:
-	@echo -e "$(GREEN)Compiling units tests$<...$(NC)"
-	@g++ -o unit_tests $(TEST_SRC) $(TEST_FLAGS)
+unit_test: games graphicals
+	@echo -e "$(GREEN)Compiling units tests...$(NC)"
+	@g++ -o unit_tests $(TEST_SRC) $(TEST_FLAGS) $(CORE_FLAGS)
 
 tests_run: unit_test
 	@echo -e "$(GREEN)Start units tests...$(NC)"
