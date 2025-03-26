@@ -18,12 +18,12 @@ NCurses::NCurses()
 
 NCurses::~NCurses()
 {
-    std::cout << "ncurses is destroy" << std::endl;
+
 }
 
 std::string NCurses::getName() const
 {
-    return "NCurses";
+    return NCURSES;
 }
 
 void NCurses::initObject(std::map<std::string, std::unique_ptr<IObject>>& objects)
@@ -56,11 +56,6 @@ std::pair<int, int> NCurses::getMousePos() const
     return std::pair(0, 0);
 }
 
-NCurses::click NCurses::getMouseSTate() const
-{
-    return click::NOTHING;
-}
-
 void NCurses::openWindow()
 {
     initscr();
@@ -69,6 +64,7 @@ void NCurses::openWindow()
     curs_set(0);
     nodelay(stdscr, true);
 }
+
 void NCurses::closeWindow()
 {
     endwin();

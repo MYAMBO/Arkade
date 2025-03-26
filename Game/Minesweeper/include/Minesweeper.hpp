@@ -13,19 +13,17 @@ class Minesweeper : public IGameModule
         Minesweeper();
         ~Minesweeper();
 
+        bool update(std::pair<int, int> mousePos, int input);
+
+        std::map<std::string, std::unique_ptr<IObject>>& getObjects();
+
         std::string getName() const;
 
-        bool update(std::pair<int, int>, click state, int input);
-
-        void addObject(std::string name);
-        void deleteObject(std::string name);
-        std::map<std::string, std::unique_ptr<IObject>> getObjects() const;
+        std::size_t getScore() const;
 };
 
-extern "C"
-{
-    IGameModule *createInstanceIGame()
-    {
-        return new Minesweeper();
+extern "C" {
+    std::unique_ptr<IGameModule> createInstanceIGame() {
+        return std::make_unique<Minesweeper>();
     }
 }

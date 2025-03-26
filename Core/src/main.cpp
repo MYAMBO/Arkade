@@ -9,11 +9,10 @@
 
 #include "test.hpp"
 #include "Core.hpp"
-#include "IDisplayModule.hpp"
 
 int main()
 {
-    std::string i = "NCurses";
+    std::string i = NCURSES;
     int input = -1;
 
     Core core;
@@ -25,25 +24,20 @@ int main()
 
     test pacman ("sprite");
     objects.insert({"pacman", std::make_unique<test>(pacman)});
-    for (auto elt : displayModuleList) {
-        if (elt.second == nullptr)
-            printf("saloooooooooope\n");
-        std::cout << elt.first << std::endl;
-    }
     displayModuleList[i]->initObject(objects);
     displayModuleList[i]->openWindow();
     while (input != 'p') {
         input = displayModuleList[i]->getInput();
         displayModuleList[i]->display(objects);
-        if (input == 'c' && i == "SFML") {
+        if (input == 'c' && i == SFML) {
             displayModuleList[i]->closeWindow();
-            i = "NCurses";
+            i = NCURSES;
             displayModuleList[i]->initObject(objects);
             displayModuleList[i]->openWindow();
         }
-        if (input == 'v' && i == "NCurses") {
+        if (input == 'v' && i == NCURSES) {
             displayModuleList[i]->closeWindow();
-            i = "SFML";
+            i = SFML;
             displayModuleList[i]->initObject(objects);
             displayModuleList[i]->openWindow();
         }

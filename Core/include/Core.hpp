@@ -5,8 +5,13 @@
 ** Core.hpp
 */
 
+#include <list>
+
+#include "Lib.hpp"
 #include "IGameModule.hpp"
 #include "IDisplayModule.hpp"
+
+#define LIB_PATH ("lib")
 
 class Core
 {
@@ -14,10 +19,10 @@ class Core
         Core();
         ~Core();
 
-        std::map<std::string, IGameModule *> getGameModuleList();
-        std::map<std::string, IDisplayModule *> getDisplayModuleList();
+        std::map<std::string, std::shared_ptr<IGameModule>> getGameModuleList();
+        std::map<std::string, std::shared_ptr<IDisplayModule>> getDisplayModuleList();
 
     private:
-        std::map<std::string, IGameModule *> _gameList;
-        std::map<std::string, IDisplayModule *> _graphicList;
+        std::map<std::string, std::shared_ptr<IGameModule>> _gameList;
+        std::map<std::string, std::shared_ptr<IDisplayModule>> _graphicList;
 };
