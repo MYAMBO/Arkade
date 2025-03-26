@@ -17,22 +17,21 @@ class NCurses : public IDisplayModule
 
         int getInput();
         std::pair<int, int> getMousePos() const;
-        click getMouseSTate() const;
 
         void openWindow();
         void closeWindow();
 
         void display(std::map<std::string, std::unique_ptr<IObject>>&);
+
+        std::string getName() const;
     private:
         int _input;
 };
 
-extern "C" {
-    IDisplayModule* createInstance() {
-        return new NCurses();
-    }
-    
-    void destroyInstance(IDisplayModule* instance) {
-        delete instance;
+extern "C"
+{
+    std::unique_ptr<IDisplayModule> createInstanceIDisplay()
+    {
+        return std::make_unique<NCurses>();
     }
 }

@@ -7,24 +7,42 @@
 
 #pragma once
 
+// std includes
 #include <map>
 #include <memory>
+#include <string>
+#include <utility>
 
+// project includes
 #include "IObject.hpp"
+#include "IDisplayModule.hpp"
 
+// Game names
+#define PACMAN "PACMAN"
+#define SNAKE "SNAKE"
+#define MINESWEEPER "MINESWEEPER"
+#define NIBBLER "NIBBLER"
+#define QIX "QIX"
+#define CENTIPEDE "CENTIPEDE"
+#define SOLARFOX "SOLARFOX"
+
+// Definition of the IGameModule interface
 class IGameModule
 {
-    public:
-        enum click {
-            NOTHING = 0,
-            RIGHT,
-            LEFT
-        };
-        virtual ~IGameModule() = default;
+public:
+    // Default virtual destructor
+    virtual ~IGameModule() = default;
 
-        virtual bool update(std::pair<int, int>, click state, int input) = 0;
+    // Update the objects according to the inputs
+    virtual bool update(std::pair<int, int> mousePos, int input) = 0;
 
-        virtual void deleteObject(std::string name) = 0;
-        virtual void addObject(std::string type, std::string name) = 0;
-        virtual const std::map<std::string, std::unique_ptr<IObject>>& getObjects() const = 0;
+    // Returns a reference to the objects' list
+    virtual std::map<std::string, std::unique_ptr<IObject>>& getObjects() = 0;
+    // Returns the name of the game
+    virtual std::string getName() const = 0;
+
+    // Returns the score of the player
+    virtual std::size_t getScore() const = 0;
 };
+
+typedef std::unique_ptr<IGameModule> (*CreateInstanceIGame)();

@@ -7,6 +7,8 @@
 
 #include <dlfcn.h>
 
+#include "test.hpp"
+#include "Core.hpp"
 #include "Nibbler.hpp"
 #include "IDisplayModule.hpp"
 
@@ -42,25 +44,10 @@ IDisplayModule *changeInstance2(void *before)
 
 int main()
 {
+    std::string i = NCURSES;
     int input = -1;
-    void* handle = dlopen("lib/arcade_sfml.so", RTLD_LAZY);
 
-    if (!handle) {
-        std::cerr << "Erreur de chargement: " << dlerror() << std::endl;
-        return 84;
-    }
-    
-    CreateInstanceFunc createInstance = (CreateInstanceFunc)dlsym(handle, "createInstance");
-    DestroyInstanceFunc destroyInstance = (DestroyInstanceFunc)dlsym(handle, "destroyInstance");
-    
-    if (!createInstance || !destroyInstance) {
-        std::cerr << "Erreur de récupération de la lib: " << dlerror() << std::endl;
-        dlclose(handle);
-        return 84;
-    }
-    
-    IDisplayModule* instance = createInstance();
-
+    Core core;
 
     Nibbler nibbler;
     auto &objects = nibbler.getObjects();
@@ -77,16 +64,13 @@ int main()
             instance->initObject(objects);
             instance->openWindow();
         }
-        if (input == 'v') {
-            instance->closeWindow();
-            destroyInstance(instance);
-            instance = changeInstance2(handle);
-            instance->initObject(objects);
-            instance->openWindow();
+        if (input == 'v' && i == NCURSES) {
+            displayModuleList[i]->closeWindow();
+            i = SFML;
+            displayModuleList[i]->initObject(objects);
+            displayModuleList[i]->openWindow();
         }
     }
-    instance->closeWindow();
-    destroyInstance(instance);
-    dlclose(handle);
+    displayModuleList[i]->closeWindow();
     return 0;
 }
