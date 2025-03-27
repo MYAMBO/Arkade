@@ -11,17 +11,19 @@
 Nibbler::Nibbler()
     : _objects(*(new std::map<std::string, std::unique_ptr<IObject>>()))
 {
-    addObject("sprite", "snakehead");
-    addObject("sprite", "food");
+    addObject(SPRITE, "snakehead");
+    addObject(SPRITE, "food");
     _objects["snakehead"]->setPosition({0, 0});
     _objects["food"]->setPosition({100, 100});
     _objects["snakehead"]->setTexturePath("Nibbler/nibblerHeadDown");
     _objects["food"]->setTexturePath("Nibbler/apple");
 }
 
-bool Nibbler::update(std::pair<int, int> pos, int input)
+bool Nibbler::update(std::pair<int, int> mousePos, int input)
 {
-    pos = _objects["snakehead"]->getPosition();
+    std::pair<int, int> pos = _objects["snakehead"]->getPosition();
+    
+    _objects["snakehead"]->setPosition(mousePos);
     if (input == 'z') {
         _objects["snakehead"]->setTexturePath("Nibbler/nibblerHeadUp");
         _objects["snakehead"]->setPosition({pos.first, pos.second - 10});
