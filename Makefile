@@ -5,9 +5,12 @@
 ## Makefile
 ##
 
-CORE_SRC 			= 		Core/src/main.cpp 						\
+CORE_SRC 			= 		Core/src/Lib.cpp 						\
 							Core/src/Core.cpp 						\
-							Core/src/Lib.cpp 						\
+							Core/src/main.cpp 						\
+							Core/src/Menu.cpp 						\
+							Core/src/Parsing.cpp 					\
+							Core/src/MenuObject.cpp 				\
 
 NIBBLER_SRC 		=		Game/Nibbler/src/Nibbler.cpp			\
 							Game/Nibbler/src/NibblerObject.cpp		\
