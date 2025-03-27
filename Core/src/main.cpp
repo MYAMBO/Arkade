@@ -6,39 +6,58 @@
 */
 
 #include <dlfcn.h>
+#include <iostream>
 
 #include "Core.hpp"
+#include "Menu.hpp"
+#include "Parsing.hpp"
 
-int main()
+int main(int argc, char **argv)
 {
-    std::string i = SFML;
-    int input = -1;
-
+    if (argc != 2) {
+        std::cerr << "Error : ./arcade <Path to Lib>" << std::endl;
+        return 84;
+    }
     Core core;
+    Parsing parsing;
 
+    std::filesystem::__cxx11::directory_entry file(argv[1]);
+    Lib lib(file);
+
+    auto func = lib.getIdisplayCreatorFunc();
+    auto obj = func();
     auto displayModuleList = core.getDisplayModuleList();
     auto gameModuleList = core.getGameModuleList();
-    auto game = gameModuleList[NIBBLER];
+    parsing.setPathlib(obj->getName());
+    if (parsing.ParseLib(displayModuleList) == 84) {
+        std::cerr << "Error : Lib not found" << std::endl;
+        return 84;
+    }
+
+    auto pathlib = parsing.getLib();    
+    int input = -1;
+    auto game = std::make_shared<Menu>();
     auto &objects = game->getObjects();
-    displayModuleList[SFML]->initObject(objects);
-    displayModuleList[SFML]->openWindow();
+
+    displayModuleList[pathlib]->initObject(objects);
+    displayModuleList[pathlib]->openWindow();
     while (input != 'p') {
-        input = displayModuleList[i]->getInput();
-        game->update(displayModuleList[i]->getMousePos(), input);
-        displayModuleList[i]->display(objects);
-        if (input == 'c' && i == SFML) {
-            displayModuleList[i]->closeWindow();
-            i = NCURSES;
-            displayModuleList[i]->initObject(objects);
-            displayModuleList[i]->openWindow();
+        input = displayModuleList[pathlib]->getInput();
+        game->update(displayModuleList[pathlib]->getMousePos(), input);
+        displayModuleList[pathlib]->display(objects);
+        if (input == 'c' && pathlib == SFML) {
+            displayModuleList[pathlib]->closeWindow();
+            pathlib = NCURSES;
+            displayModuleList[pathlib]->initObject(objects);
+            displayModuleList[pathlib]->openWindow();
         }
-        if (input == 'v' && i == NCURSES) {
-            displayModuleList[i]->closeWindow();
-            i = SFML;
-            displayModuleList[i]->initObject(objects);
-            displayModuleList[i]->openWindow();
+        if (input == 'v' && pathlib == NCURSES) {
+            displayModuleList[pathlib]->closeWindow();
+            pathlib = SFML;
+            displayModuleList[pathlib]->initObject(objects);
+            displayModuleList[pathlib]->openWindow();
         }
     }
-    displayModuleList[i]->closeWindow();
+    displayModuleList[pathlib]->closeWindow();
     return 0;
 }
