@@ -39,7 +39,10 @@ void SFMLModule::initObject(std::map<std::string, std::unique_ptr<IObject>>& obj
 
             texture->loadFromFile("assets/png/" + path + ".png");
             sprite->setTexture(*texture.get());
-            sprite->setTextureRect({0, 0, 50, 50});
+            sprite->setTextureRect({0, 0, elt->second->getOffset().first, elt->second->getOffset().second});
+            auto tmp = texture->getSize();
+            sprite->setScale((float)(elt->second->getSize().first) / (float)(tmp.x),
+                (float)(elt->second->getSize().second) / (float)(tmp.y));
             elt->second->setTexture(std::any(texture));
             elt->second->setSprite(std::any(sprite));
         }
