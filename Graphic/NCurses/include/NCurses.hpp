@@ -5,6 +5,8 @@
 ** NCurses.hpp
 */
 
+#include <ncurses.h>
+
 #include "IDisplayModule.hpp"
 
 class NCurses : public IDisplayModule
@@ -25,7 +27,7 @@ class NCurses : public IDisplayModule
 
         std::string getName() const;
     private:
-        int _input;
+        std::pair<int, int> _mousePos;
 };
 
 extern "C"

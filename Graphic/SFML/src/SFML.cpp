@@ -33,7 +33,7 @@ void SFMLModule::initObject(std::map<std::string, std::unique_ptr<IObject>>& obj
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
         type = elt->second->getType();
         path = elt->second->getTexturePath();
-        if (type == "sprite") {
+        if (type == SPRITE) {
             auto texture = std::make_shared<sf::Texture>();
             auto sprite = std::make_shared<sf::Sprite>();
 
@@ -56,9 +56,10 @@ int SFMLModule::getInput()
 
 std::pair<int, int> SFMLModule::getMousePos() const
 {
-    sf::Vector2i pos = sf::Mouse::getPosition(*this->_window);
+    auto pos = sf::Mouse::getPosition(*this->_window);
+    auto windowSize = this->_window->getSize();
 
-    return (std::pair<int, int>) {pos.x, pos.y};
+    return (std::pair<int, int>) {1000 * pos.x / windowSize.x, 1000 * pos.y / windowSize.y};
 }
 
 void SFMLModule::openWindow()
@@ -81,7 +82,7 @@ void SFMLModule::display(std::map<std::string, std::unique_ptr<IObject>>& object
     this->_window->clear();
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
         type = elt->second->getType();
-        if (type == "sprite") {
+        if (type == SPRITE) {
             auto sprite = std::any_cast<std::shared_ptr<sf::Sprite>>(elt->second->getSprite());
             pos = elt->second.get()->getPosition();
             sprite.get()->setPosition(pos.first * windowSize.x / 1000, pos.second * windowSize.y / 1000);
