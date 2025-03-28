@@ -90,3 +90,13 @@ std::string MenuObject::getType() const
 {
     return _type;
 }
+
+std::pair<float, float>& MenuObject::getScale()
+{
+    return _scale;
+}
+
+void MenuObject::setScale(std::pair<float, float> scale)
+{
+    _scale = scale;
+}

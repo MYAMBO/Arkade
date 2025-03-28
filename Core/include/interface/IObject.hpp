@@ -54,6 +54,11 @@ class IObject {
         virtual std::any& getTexture() = 0;
         virtual void setTexture(std::any) = 0;
 
+        // Scale getter and setter
+        // !! getter returns a reference so the scale properties can be modified by the display module
+        virtual void setScale(std::pair<float, float>) = 0;
+        virtual std::pair<float, float>& getScale() = 0;
+
         virtual std::string getText() = 0;
         virtual void setText(std::string) = 0;
 };

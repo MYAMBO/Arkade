@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 
     auto pathlib = parsing.getLib();    
     int input = -1;
-    auto game = std::make_shared<Menu>();
+    auto game = std::make_shared<Menu>(core);
     auto &objects = game->getObjects();
 
     displayModuleList[pathlib]->initObject(objects);

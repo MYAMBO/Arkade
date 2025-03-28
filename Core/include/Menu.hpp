@@ -15,7 +15,7 @@
 class Menu : IGameModule {
     public:
         // Default constructor
-        Menu();
+        Menu(Core core);
         // Default destructor
         ~Menu();
 
@@ -32,6 +32,9 @@ class Menu : IGameModule {
         void run(std::string pathlib, Core core);
         void addObject(std::string type, std::string name);
         void deleteObject(std::string name);
+        bool myGetGlobalBound(std::string name, std::pair<int, int> mousePos);
     private:
         std::map<std::string, std::unique_ptr<IObject>>& _objects;
+        std::map<std::string, std::unique_ptr<IGameModule>> _games;
+        std::map<std::string, std::unique_ptr<IDisplayModule>> _displays;
 };
