@@ -45,8 +45,7 @@ SFML_NAME 			=		lib/arcade_sfml.so
 
 NCURSES_NAME 		=		lib/arcade_ncurses.so
 
-CORE_FLAGS 			= 		-I ./							\
-							-I Core/include 				\
+CORE_FLAGS 			= 		-I Core/include 				\
 							-I Core/include/interface 		\
 
 NIBBLER_FLAGS 		= 		-I Game/Nibbler/include
