@@ -34,28 +34,35 @@ int main(int argc, char **argv)
         return 84;
     }
 
-    auto pathlib = parsing.getLib();    
+    auto pathlib = parsing.getLib();
     int input = -1;
-    auto game = std::make_shared<Menu>(core);
-    auto &objects = game->getObjects();
-
-    displayModuleList[pathlib]->initObject(objects);
+    std::shared_ptr<IGameModule> game = std::make_shared<Menu>(core, pathlib);
+    displayModuleList[pathlib]->initObject(game->getObjects());
     displayModuleList[pathlib]->openWindow();
     while (input != 'p') {
         input = displayModuleList[pathlib]->getInput();
         game->update(displayModuleList[pathlib]->getMousePos(), input);
-        displayModuleList[pathlib]->display(objects);
-        if (input == 'c' && pathlib == SFML) {
-            displayModuleList[pathlib]->closeWindow();
-            pathlib = NCURSES;
-            displayModuleList[pathlib]->initObject(objects);
-            displayModuleList[pathlib]->openWindow();
-        }
-        if (input == 'v' && pathlib == NCURSES) {
-            displayModuleList[pathlib]->closeWindow();
-            pathlib = SFML;
-            displayModuleList[pathlib]->initObject(objects);
-            displayModuleList[pathlib]->openWindow();
+        displayModuleList[pathlib]->display(game->getObjects());
+        if (dynamic_cast<Menu*>(game.get()) != nullptr) {
+            if (game->getObjects()["4/Displays"]->getText() == SFML && pathlib != SFML) {
+                displayModuleList[pathlib]->closeWindow();
+                pathlib = game->getObjects()["4/Displays"]->getText();
+                displayModuleList[pathlib]->initObject(game->getObjects());
+                displayModuleList[pathlib]->openWindow();
+                displayModuleList[pathlib]->display(game->getObjects());
+            }
+            if (game->getObjects()["4/Displays"]->getText() == NCURSES && pathlib != NCURSES) {
+                displayModuleList[pathlib]->closeWindow();
+                pathlib = game->getObjects()["4/Displays"]->getText();
+                displayModuleList[pathlib]->initObject(game->getObjects());
+                displayModuleList[pathlib]->openWindow();
+                displayModuleList[pathlib]->display(game->getObjects());
+            }
+            if (std::dynamic_pointer_cast<Menu>(game)->getIsGameLaunched() == true) {
+                game = gameModuleList[game->getObjects()["4/Games"]->getText()];
+                displayModuleList[pathlib]->initObject(game->getObjects());
+                displayModuleList[pathlib]->display(game->getObjects());
+            }
         }
     }
     displayModuleList[pathlib]->closeWindow();

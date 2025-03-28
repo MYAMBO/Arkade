@@ -9,19 +9,19 @@
 
 // Defines macros for key codes, using ncurses as a reference
 
-#define KEY_BACKSPACE   8   /* Backspace key */
-#define KEY_BREAK       255 /* Break key */
-#define KEY_DOWN        258 /* Down arrow key */
-#define KEY_UP          259 /* Up arrow key */
-#define KEY_LEFT        260 /* Left arrow key */
-#define KEY_RIGHT       261 /* Right arrow key */
-#define KEY_HOME        262 /* Home key */
-#define KEY_END         263 /* End key */
-#define KEY_PPAGE       264 /* Page Up key */
-#define KEY_NPAGE       265 /* Page Down key */
-#define KEY_IC          266 /* Insert key */
-#define KEY_DC          267 /* Delete key */
-#define KEY_F0          300 /* Function key F0 */
+#define K_BACKSPACE   8   /* Backspace key */
+#define K_BREAK       255 /* Break key */
+#define K_DOWN        258 /* Down arrow key */
+#define K_UP          259 /* Up arrow key */
+#define K_LEFT        260 /* Left arrow key */
+#define K_RIGHT       261 /* Right arrow key */
+#define K_HOME        262 /* Home key */
+#define K_END         263 /* End key */
+#define K_PPAGE       264 /* Page Up key */
+#define K_NPAGE       265 /* Page Down key */
+#define K_IC          266 /* Insert key */
+#define K_DC          267 /* Delete key */
+#define K_F0          300 /* Function key F0 */
 #define KEY_F1          301 /* Function key F1 */
 #define KEY_F2          302 /* Function key F2 */
 #define KEY_F3          303 /* Function key F3 */
@@ -62,6 +62,6 @@
 #define KEY_NL          341 /* Newline key */
 #define KEY_RCLICK      342 /* Right-click mouse button */
 #define KEY_MOTION      343 /* Mouse motion */
-#define KEY_MOUSE       344 /* Mouse click or motion */
+#define K_MOUSE       344 /* Mouse click or motion */
 #define KEY_ESC         27  /* Escape key */
 #define CTRL(key)       (key - 64) /* CTRL + key */

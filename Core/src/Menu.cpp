@@ -6,11 +6,14 @@
 */
 
 #include "Menu.hpp"
+#include "KeyCodes.hpp"
 #include "MenuObject.hpp"
 
-Menu::Menu(Core core)
+Menu::Menu(Core core, std::string pathlib)
     : _objects(*(new std::map<std::string, std::unique_ptr<IObject>>()))
 {
+    _indexGames = 0;
+    _isGameLaunched = false;
     addObject(SPRITE, "2/title");
     _objects["2/title"]->setTexturePath("arcade");   
     _objects["2/title"]->setOffset({0, 0});
@@ -51,14 +54,20 @@ Menu::Menu(Core core)
     _objects["2/play"]->setTexturePath("play");
     _objects["2/play"]->setOffset({0, 0});
     _objects["2/play"]->setPosition({440, 440});
-    _objects["2/play"]->setSize({225, 225});
+    _objects["2/play"]->setSize({173, 173});
     _objects["2/play"]->setScale({1, 1});
     addObject(TEXT, "4/Games");
     _objects["4/Games"]->setTexturePath("arcade");
     _objects["4/Games"]->setText(core.getGameModuleList().begin()->second->getName());
-    _objects["4/Games"]->setPosition({130, 630});
-    _objects["4/Games"]->setSize({50, 50});
-
+    _objects["4/Games"]->setPosition({145, 670});
+    _objects["4/Games"]->setSize({40, 0});
+    addObject(TEXT, "4/Displays");
+    _objects["4/Displays"]->setTexturePath("arcade");
+    _objects["4/Displays"]->setText(pathlib);
+    _objects["4/Displays"]->setPosition({720, 670});
+    _objects["4/Displays"]->setSize({40, 0});
+    _games = core.getGameModuleList();
+    _displays = core.getDisplayModuleList();
 }
 
 Menu::~Menu()
@@ -92,18 +101,73 @@ bool Menu::myGetGlobalBound(std::string name, std::pair<int, int> mousePos)
     auto object = _objects[name].get();
     auto pos = object->getPosition();
     auto size = object->getSize();
-    if (mousePos.first >= pos.first && mousePos.first <= pos.first + size.first &&
-        mousePos.second >= pos.second && mousePos.second <= pos.second + size.second) {
-        return true;
+    auto scale = object->getScale();
+    if (scale.first != 0 && scale.second != 0)
+        if ((mousePos.first >= pos.first && mousePos.first <= pos.first + size.first * scale.first) &&
+            (mousePos.second >= pos.second && mousePos.second <= pos.second + size.second * scale.second)) {
+            return true;
+        }
+    if (scale.first == 0 || scale.second == 0) {
+        if (mousePos.first >= pos.first && mousePos.first <= pos.first + size.first &&
+            mousePos.second >= pos.second && mousePos.second <= pos.second + size.second) {
+            return true;
+        }
     }
     return false;
 }
 
 bool Menu::update(std::pair<int, int> mousePos, int input)
 {
-    (void)input;
-    if (myGetGlobalBound("2/play", mousePos)) {
-        std::cout << "Play" << std::endl;
+    if (myGetGlobalBound("2/play", mousePos) && input == KEY_RCLICK) {
+        _isGameLaunched = true;
+        return true;
+    }
+    if (myGetGlobalBound("2/arrowUp", mousePos) && input == KEY_RCLICK) {
+        _indexGames++;
+        if (_indexGames >= static_cast<int>(_games.size()))
+            _indexGames = 0;
+        auto it = _games.begin();
+        for (int i = 0; i < _indexGames; i++)
+            it++;
+        if (it != _games.end()) {
+            _objects["4/Games"]->setText(it->second->getName());
+        }
+        return true;
+    }
+    if (myGetGlobalBound("2/arrowDown", mousePos) && input == KEY_RCLICK) {
+        _indexGames--;
+        if (_indexGames < 0)
+            _indexGames = static_cast<int>(_games.size()) - 1;
+        auto it = _games.begin();
+        for (int i = 0; i < _indexGames; i++)
+            it++;
+        if (it != _games.end()) {
+            _objects["4/Games"]->setText(it->second->getName());
+        }
+        return true;
+    }
+    if (myGetGlobalBound("2/arrowLeft", mousePos) && input == KEY_RCLICK) {
+        _indexDisplays--;
+        if (_indexDisplays < 0)
+            _indexDisplays = static_cast<int>(_displays.size()) - 1;
+        auto it = _displays.begin();
+        for (int i = 0; i < _indexDisplays; i++)
+            it++;
+        if (it != _displays.end()) {
+            _objects["4/Displays"]->setText(it->second->getName());
+        }
+        return true;
+    }
+    if (myGetGlobalBound("2/arrowRight", mousePos) && input == KEY_RCLICK) {
+        _indexDisplays++;
+        if (_indexDisplays >= static_cast<int>(_displays.size()))
+            _indexDisplays = 0;
+        auto it = _displays.begin();
+        for (int i = 0; i < _indexDisplays; i++)
+            it++;
+        if (it != _displays.end()) {
+            _objects["4/Displays"]->setText(it->second->getName());
+        }
         return true;
     }
     return true;
@@ -119,4 +183,9 @@ void Menu::addObject(std::string type, std::string name)
 void Menu::deleteObject(std::string name)
 {
     _objects.erase(name);
+}
+
+bool Menu::getIsGameLaunched() const
+{
+    return _isGameLaunched;
 }
