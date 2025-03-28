@@ -61,7 +61,6 @@ int main(int argc, char **argv)
             if (std::dynamic_pointer_cast<Menu>(game)->getIsGameLaunched() == true) {
                 game = gameModuleList[game->getObjects()["4/Games"]->getText()];
                 displayModuleList[pathlib]->initObject(game->getObjects());
-                displayModuleList[pathlib]->display(game->getObjects());
             }
         }
     }
