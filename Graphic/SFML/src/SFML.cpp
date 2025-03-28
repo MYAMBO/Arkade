@@ -39,12 +39,25 @@ void SFMLModule::initObject(std::map<std::string, std::unique_ptr<IObject>>& obj
 
             texture->loadFromFile("assets/png/" + path + ".png");
             sprite->setTexture(*texture.get());
-            sprite->setTextureRect({0, 0, elt->second->getOffset().first, elt->second->getOffset().second});
-            auto tmp = texture->getSize();
-            sprite->setScale((float)(elt->second->getSize().first) / (float)(tmp.x),
-                (float)(elt->second->getSize().second) / (float)(tmp.y));
+            sprite->setTextureRect(
+                {elt->second->getOffset().first * elt->second->getSize().first
+                , elt->second->getOffset().second * elt->second->getSize().second
+                , elt->second->getSize().first, elt->second->getSize().second});
+            sprite->setScale(elt->second->getScale().first, elt->second->getScale().second);
             elt->second->setTexture(std::any(texture));
             elt->second->setSprite(std::any(sprite));
+        }
+        if (type == TEXT) {
+            auto text = std::make_shared<sf::Text>();
+            auto font = std::make_shared<sf::Font>();
+
+            font->loadFromFile("assets/" + path + ".ttf");
+            text->setFont(*font.get());
+            text->setString(elt->second->getText());
+            text->setCharacterSize(elt->second->getSize().first);
+            text->setFillColor(sf::Color::White);
+            elt->second->setTexture(std::any(font));
+            elt->second->setSprite(std::any(text));
         }
     }
 }
@@ -90,6 +103,12 @@ void SFMLModule::display(std::map<std::string, std::unique_ptr<IObject>>& object
             pos = elt->second.get()->getPosition();
             sprite.get()->setPosition(pos.first * windowSize.x / 1000, pos.second * windowSize.y / 1000);
             this->_window->draw(*sprite.get());
+        }
+        if (type == TEXT) {
+            auto text = std::any_cast<std::shared_ptr<sf::Text>>(elt->second->getSprite());
+            pos = elt->second.get()->getPosition();
+            text.get()->setPosition(pos.first * windowSize.x / 1000, pos.second * windowSize.y / 1000);
+            this->_window->draw(*text.get());
         }
     }
     this->_window->display();
