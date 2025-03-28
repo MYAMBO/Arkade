@@ -7,6 +7,7 @@
 
 #include <list>
 #include <fstream>
+#include <iostream>
 
 #include "NCurses.hpp"
 
@@ -41,6 +42,12 @@ void NCurses::initObject(std::map<std::string, std::unique_ptr<IObject>>& object
             while (std::getline(file, line))
                 strList.push_back(line);
             elt->second->setSprite(std::any(strList));
+        } else if (type == TEXT) {
+            std::ifstream file ("assets/string/" + path + ".txt");
+            std::string line;
+
+            std::getline(file, line);
+            elt->second->setSprite(std::any(line));
         }
     }
 }
@@ -48,13 +55,12 @@ void NCurses::initObject(std::map<std::string, std::unique_ptr<IObject>>& object
 int NCurses::getInput()
 {
     MEVENT event;
-    int ch = getch();
 
-    if (ch == KEY_MOUSE && getmouse(&event) == OK) {
+    if (getmouse(&event) == OK) {
         this->_mousePos.first = static_cast<int>((event.x * 1000.0) / COLS);
         this->_mousePos.second = static_cast<int>((event.y * 1000.0) / LINES);
     }
-    return ch;
+    return getch();
 }
 
 std::pair<int, int> NCurses::getMousePos() const
@@ -68,13 +74,15 @@ void NCurses::openWindow()
     keypad(stdscr, true);
     noecho();
     curs_set(0);
-    mousemask(ALL_MOUSE_EVENTS, NULL);
+    mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
     mouseinterval(0);
     timeout(10);
+    std::cout << "\033[?1003h\n" << std::endl;
 }
 
 void NCurses::closeWindow()
 {
+    std::cout << "\033[?1003l\n" << std::endl;
     endwin();
 }
 
@@ -93,13 +101,10 @@ void NCurses::display(std::map<std::string, std::unique_ptr<IObject>>& objects)
                 mvprintw(pos.second * LINES / 1000 + i, pos.first * COLS / 1000, "%s", elt2.c_str());
                 i++;
             }
-            continue;
-        }
-        if (elt->second->getType() == TEXT) {
+        } else if (elt->second->getType() == TEXT) {
             auto text = std::any_cast<std::string>(elt->second->getText());
             pos = elt->second.get()->getPosition();
             mvprintw(pos.second * LINES / 1000 + i, pos.first * COLS / 1000, "%s", text.c_str());
-            continue;
         }
     }
     refresh();
