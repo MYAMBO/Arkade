@@ -5,8 +5,11 @@
 ** NCurses.hpp
 */
 
+#pragma once
+
 #include <ncurses.h>
 
+#include "KeyCodes.hpp"
 #include "IDisplayModule.hpp"
 
 class NCurses : public IDisplayModule

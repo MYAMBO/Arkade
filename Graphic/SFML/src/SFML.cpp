@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "SFML.hpp"
+#include "KeyCodes.hpp"
 
 SFMLModule::SFMLModule()
     :_window(nullptr)
@@ -56,6 +57,7 @@ void SFMLModule::initObject(std::map<std::string, std::unique_ptr<IObject>>& obj
             text->setString(elt->second->getText());
             text->setCharacterSize(elt->second->getSize().first);
             text->setFillColor(sf::Color::White);
+            text->setOrigin(elt->second->getSize().first / 2, elt->second->getSize().first / 2);
             elt->second->setTexture(std::any(font));
             elt->second->setSprite(std::any(text));
         }
@@ -64,9 +66,12 @@ void SFMLModule::initObject(std::map<std::string, std::unique_ptr<IObject>>& obj
 
 int SFMLModule::getInput()
 {
-    while (this->_window->pollEvent(this->_event))
+    while (this->_window->pollEvent(this->_event)) {
         if (this->_event.type == sf::Event::KeyPressed)
             return this->_event.key.code + 'a';
+        if (this->_event.type == sf::Event::MouseButtonPressed)
+            return KEY_RCLICK;
+    }
     return -1;
 }
 
@@ -107,6 +112,7 @@ void SFMLModule::display(std::map<std::string, std::unique_ptr<IObject>>& object
         if (type == TEXT) {
             auto text = std::any_cast<std::shared_ptr<sf::Text>>(elt->second->getSprite());
             pos = elt->second.get()->getPosition();
+            text.get()->setString(elt->second->getText());
             text.get()->setPosition(pos.first * windowSize.x / 1000, pos.second * windowSize.y / 1000);
             this->_window->draw(*text.get());
         }

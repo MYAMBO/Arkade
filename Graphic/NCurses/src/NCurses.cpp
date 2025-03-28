@@ -42,12 +42,6 @@ void NCurses::initObject(std::map<std::string, std::unique_ptr<IObject>>& object
             while (std::getline(file, line))
                 strList.push_back(line);
             elt->second->setSprite(std::any(strList));
-        } else if (type == TEXT) {
-            std::ifstream file ("assets/string/" + path + ".txt");
-            std::string line;
-
-            std::getline(file, line);
-            elt->second->setSprite(std::any(line));
         }
     }
 }
@@ -59,6 +53,8 @@ int NCurses::getInput()
     if (getmouse(&event) == OK) {
         this->_mousePos.first = static_cast<int>((event.x * 1000.0) / COLS);
         this->_mousePos.second = static_cast<int>((event.y * 1000.0) / LINES);
+        if (event.bstate == BUTTON1_PRESSED || event.bstate == BUTTON2_PRESSED)
+            return KEY_RCLICK;
     }
     return getch();
 }
@@ -132,9 +128,9 @@ void NCurses::display(std::map<std::string, std::unique_ptr<IObject>>& objects)
                 }
             }
         } else if (elt->second->getType() == TEXT) {
-            auto text = std::any_cast<std::string>(elt->second->getText());
+            std::string text = elt->second->getText();
             pos = elt->second.get()->getPosition();
-            mvprintw(pos.second * LINES / 1000 + i, pos.first * COLS / 1000, "%s", text.c_str());
+            mvprintw(pos.second * LINES / 1000, pos.first * COLS / 1000 + text.size() / 2, "%s", text.c_str());
         }
     }
     refresh();
