@@ -19,6 +19,11 @@ Nibbler::Nibbler()
     _objects["food"]->setTexturePath("Nibbler/apple");
 }
 
+Nibbler::~Nibbler()
+{
+    delete &_objects;
+}
+
 bool Nibbler::update(std::pair<int, int> mousePos, int input)
 {
     std::pair<int, int> pos = _objects["snakehead"]->getPosition();

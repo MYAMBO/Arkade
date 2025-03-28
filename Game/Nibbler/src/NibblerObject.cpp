@@ -90,3 +90,13 @@ std::string NibblerObject::getType() const
 {
     return _type;
 }
+
+std::pair<float, float>& NibblerObject::getScale()
+{
+    return _scale;
+}
+
+void NibblerObject::setScale(std::pair<float, float> scale)
+{
+    _scale = scale;
+}

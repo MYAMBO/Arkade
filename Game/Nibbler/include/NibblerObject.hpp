@@ -37,6 +37,9 @@ class NibblerObject : public IObject
 
         std::string getText();
         void setText(std::string);
+
+        std::pair<float, float>& getScale();
+        void setScale(std::pair<float, float>);
     private:
         std::pair<int, int> _position;
         std::any _sprite;
@@ -47,4 +50,5 @@ class NibblerObject : public IObject
         std::pair<int, int> _offset;
         std::any _texture;
         std::string _text;
+        std::pair<float, float> _scale;
 };
