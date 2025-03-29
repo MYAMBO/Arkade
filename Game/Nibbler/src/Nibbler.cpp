@@ -11,19 +11,14 @@
 Nibbler::Nibbler()
     : _objects(*(new std::map<std::string, std::unique_ptr<IObject>>()))
 {
-
     addObject(SPRITE, "2/snakehead");
     _objects["2/snakehead"]->setTexturePath("Nibbler/nibblerHeadDown");
-    _objects["2/snakehead"]->setOffset({0, 0});
+    _objects["2/snakehead"]->setProperties(IObject::SpriteProperties{{100, 100}, {0, 0}, {1, 1}});
     _objects["2/snakehead"]->setPosition({0, 0});
-    _objects["2/snakehead"]->setSize({100, 100});
-    _objects["2/snakehead"]->setScale({1, 1});
     addObject(SPRITE, "1/food");
     _objects["1/food"]->setTexturePath("Nibbler/apple");
-    _objects["1/food"]->setOffset({0, 0});
+    _objects["1/food"]->setProperties(IObject::SpriteProperties{{100, 100}, {0, 0}, {1, 1}});
     _objects["1/food"]->setPosition({100, 100});
-    _objects["1/food"]->setSize({100, 100});
-    _objects["1/food"]->setScale({1, 1});
 }
 
 Nibbler::~Nibbler()

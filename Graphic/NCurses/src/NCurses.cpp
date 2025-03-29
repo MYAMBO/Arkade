@@ -111,9 +111,9 @@ void NCurses::display(std::map<std::string, std::unique_ptr<IObject>>& objects)
         if (elt->second->getType() == SPRITE) {
             auto sprite = std::any_cast<std::list<std::string>>(elt->second->getSprite());
             bool isSpriteSheet = false;
-            int x = elt->second->getOffset().first + 1;
+            int x = std::get<IObject::SpriteProperties>(elt->second->getProperties()).offset.first + 1;
             (void)x;
-            int y = elt->second->getOffset().second + 1;
+            int y = std::get<IObject::SpriteProperties>(elt->second->getProperties()).offset.second + 1;
             i = 0;
             pos = elt->second.get()->getPosition();
             for (auto elt2 : sprite) {
@@ -128,7 +128,7 @@ void NCurses::display(std::map<std::string, std::unique_ptr<IObject>>& objects)
                 }
             }
         } else if (elt->second->getType() == TEXT) {
-            std::string text = elt->second->getText();
+            std::string text = std::get<IObject::TextProperties>(elt->second->getProperties()).text;
             pos = elt->second.get()->getPosition();
             mvprintw(pos.second * LINES / 1000, pos.first * COLS / 1000 + text.size() / 2, "%s", text.c_str());
         }

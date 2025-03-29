@@ -44,22 +44,22 @@ int main(int argc, char **argv)
         game->update(displayModuleList[pathlib]->getMousePos(), input);
         displayModuleList[pathlib]->display(game->getObjects());
         if (dynamic_cast<Menu*>(game.get()) != nullptr) {
-            if (game->getObjects()["4/Displays"]->getText() == SFML && pathlib != SFML) {
+            if (std::get<IObject::TextProperties>(game->getObjects()["4/Displays"]->getProperties()).text == SFML && pathlib != SFML) {
                 displayModuleList[pathlib]->closeWindow();
-                pathlib = game->getObjects()["4/Displays"]->getText();
+                pathlib = std::get<IObject::TextProperties>(game->getObjects()["4/Displays"]->getProperties()).text;
                 displayModuleList[pathlib]->initObject(game->getObjects());
                 displayModuleList[pathlib]->openWindow();
                 displayModuleList[pathlib]->display(game->getObjects());
             }
-            if (game->getObjects()["4/Displays"]->getText() == NCURSES && pathlib != NCURSES) {
+            if (std::get<IObject::TextProperties>(game->getObjects()["4/Displays"]->getProperties()).text == NCURSES && pathlib != NCURSES) {
                 displayModuleList[pathlib]->closeWindow();
-                pathlib = game->getObjects()["4/Displays"]->getText();
+                pathlib = std::get<IObject::TextProperties>(game->getObjects()["4/Displays"]->getProperties()).text;
                 displayModuleList[pathlib]->initObject(game->getObjects());
                 displayModuleList[pathlib]->openWindow();
                 displayModuleList[pathlib]->display(game->getObjects());
             }
             if (std::dynamic_pointer_cast<Menu>(game)->getIsGameLaunched() == true) {
-                game = gameModuleList[game->getObjects()["4/Games"]->getText()];
+                game = gameModuleList[std::get<IObject::TextProperties>(game->getObjects()["4/Games"]->getProperties()).text];
                 displayModuleList[pathlib]->initObject(game->getObjects());
             }
         }

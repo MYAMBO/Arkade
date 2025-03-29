@@ -41,26 +41,6 @@ std::string MenuObject::getTexturePath()
     return _path;
 }
 
-std::pair<int, int> MenuObject::getSize() const
-{
-    return _size;
-}
-
-void MenuObject::setSize(std::pair<int, int> size)
-{
-    _size = size;
-}
-
-std::pair<int, int> MenuObject::getOffset() const
-{
-    return _offset;
-}
-
-void MenuObject::setOffset(std::pair<int, int> offset)
-{
-    _offset = offset;
-}
-
 std::any& MenuObject::getTexture()
 {
     return _texture;
@@ -69,16 +49,6 @@ std::any& MenuObject::getTexture()
 void MenuObject::setTexture(std::any texture)
 {
     _texture = texture;
-}
-
-std::string MenuObject::getText()
-{
-    return _text;
-}
-
-void MenuObject::setText(std::string text)
-{
-    _text = text;
 }
 
 std::any& MenuObject::getSprite()
@@ -91,12 +61,12 @@ std::string MenuObject::getType() const
     return _type;
 }
 
-std::pair<float, float>& MenuObject::getScale()
+void MenuObject::setProperties(IObject::Properties properties)
 {
-    return _scale;
+    _properties = properties;
 }
 
-void MenuObject::setScale(std::pair<float, float> scale)
+IObject::Properties MenuObject::getProperties()
 {
-    _scale = scale;
+    return _properties;
 }

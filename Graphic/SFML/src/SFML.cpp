@@ -41,10 +41,10 @@ void SFMLModule::initObject(std::map<std::string, std::unique_ptr<IObject>>& obj
             texture->loadFromFile("assets/png/" + path + ".png");
             sprite->setTexture(*texture.get());
             sprite->setTextureRect(
-                {elt->second->getOffset().first * elt->second->getSize().first
-                , elt->second->getOffset().second * elt->second->getSize().second
-                , elt->second->getSize().first, elt->second->getSize().second});
-            sprite->setScale(elt->second->getScale().first, elt->second->getScale().second);
+                {std::get<IObject::SpriteProperties>(elt->second->getProperties()).offset.first * std::get<IObject::SpriteProperties>(elt->second->getProperties()).size.first
+                , std::get<IObject::SpriteProperties>(elt->second->getProperties()).offset.second * std::get<IObject::SpriteProperties>(elt->second->getProperties()).size.second
+                , std::get<IObject::SpriteProperties>(elt->second->getProperties()).size.first, std::get<IObject::SpriteProperties>(elt->second->getProperties()).size.second});
+            sprite->setScale(std::get<IObject::SpriteProperties>(elt->second->getProperties()).scale.first, std::get<IObject::SpriteProperties>(elt->second->getProperties()).scale.second);
             elt->second->setTexture(std::any(texture));
             elt->second->setSprite(std::any(sprite));
         }
@@ -54,10 +54,10 @@ void SFMLModule::initObject(std::map<std::string, std::unique_ptr<IObject>>& obj
 
             font->loadFromFile("assets/" + path + ".ttf");
             text->setFont(*font.get());
-            text->setString(elt->second->getText());
-            text->setCharacterSize(elt->second->getSize().first);
+            text->setString(std::get<IObject::TextProperties>(elt->second->getProperties()).text);
+            text->setCharacterSize(std::get<IObject::TextProperties>(elt->second->getProperties()).characterSize);
             text->setFillColor(sf::Color::White);
-            text->setOrigin(elt->second->getSize().first / 2, elt->second->getSize().first / 2);
+            text->setOrigin(std::get<IObject::TextProperties>(elt->second->getProperties()).characterSize / 2, 0);
             elt->second->setTexture(std::any(font));
             elt->second->setSprite(std::any(text));
         }
@@ -112,7 +112,7 @@ void SFMLModule::display(std::map<std::string, std::unique_ptr<IObject>>& object
         if (type == TEXT) {
             auto text = std::any_cast<std::shared_ptr<sf::Text>>(elt->second->getSprite());
             pos = elt->second.get()->getPosition();
-            text.get()->setString(elt->second->getText());
+            text.get()->setString(std::get<IObject::TextProperties>(elt->second->getProperties()).text);
             text.get()->setPosition(pos.first * windowSize.x / 1000, pos.second * windowSize.y / 1000);
             this->_window->draw(*text.get());
         }

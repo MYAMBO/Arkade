@@ -41,26 +41,6 @@ std::string NibblerObject::getTexturePath()
     return _path;
 }
 
-std::pair<int, int> NibblerObject::getSize() const
-{
-    return _size;
-}
-
-void NibblerObject::setSize(std::pair<int, int> size)
-{
-    _size = size;
-}
-
-std::pair<int, int> NibblerObject::getOffset() const
-{
-    return _offset;
-}
-
-void NibblerObject::setOffset(std::pair<int, int> offset)
-{
-    _offset = offset;
-}
-
 std::any& NibblerObject::getTexture()
 {
     return _texture;
@@ -69,16 +49,6 @@ std::any& NibblerObject::getTexture()
 void NibblerObject::setTexture(std::any texture)
 {
     _texture = texture;
-}
-
-std::string NibblerObject::getText()
-{
-    return _text;
-}
-
-void NibblerObject::setText(std::string text)
-{
-    _text = text;
 }
 
 std::any& NibblerObject::getSprite()
@@ -91,12 +61,12 @@ std::string NibblerObject::getType() const
     return _type;
 }
 
-std::pair<float, float>& NibblerObject::getScale()
+void NibblerObject::setProperties(IObject::Properties properties)
 {
-    return _scale;
+    _properties = properties;
 }
 
-void NibblerObject::setScale(std::pair<float, float> scale)
+IObject::Properties NibblerObject::getProperties()
 {
-    _scale = scale;
+    return _properties;
 }

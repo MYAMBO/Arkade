@@ -15,57 +15,41 @@ Menu::Menu(Core core, std::string pathlib)
     _indexGames = 0;
     _isGameLaunched = false;
     addObject(SPRITE, "2/title");
-    _objects["2/title"]->setTexturePath("arcade");   
-    _objects["2/title"]->setOffset({0, 0});
+    _objects["2/title"]->setTexturePath("arcade");
+    _objects["2/title"]->setProperties(IObject::SpriteProperties{{1237, 316}, {0, 0}, {1, 1}});
     _objects["2/title"]->setPosition({160, 90});
-    _objects["2/title"]->setSize({1237, 316});
-    _objects["2/title"]->setScale({1, 1});
     addObject(SPRITE, "1/background");
     _objects["1/background"]->setTexturePath("background");
-    _objects["1/background"]->setOffset({0, 0});
+    _objects["1/background"]->setProperties(IObject::SpriteProperties{{3000, 2000}, {0, 0}, {0.64, 0.54}});
     _objects["1/background"]->setPosition({0, 0});
-    _objects["1/background"]->setSize({3000, 2000});
-    _objects["1/background"]->setScale({0.64, 0.54});
     addObject(SPRITE, "2/arrowUp");
     _objects["2/arrowUp"]->setTexturePath("arrow");
-    _objects["2/arrowUp"]->setOffset({1, 0});
+    _objects["2/arrowUp"]->setProperties(IObject::SpriteProperties{{170, 170}, {1, 0}, {0.7, 0.7}});
     _objects["2/arrowUp"]->setPosition({170, 450});
-    _objects["2/arrowUp"]->setSize({170, 170});
-    _objects["2/arrowUp"]->setScale({0.7, 0.7});
     addObject(SPRITE, "2/arrowDown");
     _objects["2/arrowDown"]->setTexturePath("arrow");
-    _objects["2/arrowDown"]->setOffset({1, 1});
+    _objects["2/arrowDown"]->setProperties(IObject::SpriteProperties{{170, 170}, {1, 1}, {0.7, 0.7}});
     _objects["2/arrowDown"]->setPosition({170, 800});
-    _objects["2/arrowDown"]->setSize({170, 170});
-    _objects["2/arrowDown"]->setScale({0.7, 0.7});
     addObject(SPRITE, "2/arrowLeft");
     _objects["2/arrowLeft"]->setTexturePath("arrow");
-    _objects["2/arrowLeft"]->setOffset({0, 1});
+    _objects["2/arrowLeft"]->setProperties(IObject::SpriteProperties{{170, 170}, {0, 1}, {0.7, 0.7}});
     _objects["2/arrowLeft"]->setPosition({620, 630});
-    _objects["2/arrowLeft"]->setSize({170, 170});
-    _objects["2/arrowLeft"]->setScale({0.7, 0.7});
     addObject(SPRITE, "2/arrowRight");
     _objects["2/arrowRight"]->setTexturePath("arrow");
-    _objects["2/arrowRight"]->setOffset({2, 1});
+    _objects["2/arrowRight"]->setProperties(IObject::SpriteProperties{{170, 170}, {2, 1}, {0.7, 0.7}});
     _objects["2/arrowRight"]->setPosition({870, 630});
-    _objects["2/arrowRight"]->setSize({170, 170});
-    _objects["2/arrowRight"]->setScale({0.7, 0.7});
     addObject(SPRITE, "2/play");
     _objects["2/play"]->setTexturePath("play");
-    _objects["2/play"]->setOffset({0, 0});
+    _objects["2/play"]->setProperties(IObject::SpriteProperties{{173, 173}, {0, 0}, {1, 1}});
     _objects["2/play"]->setPosition({440, 440});
-    _objects["2/play"]->setSize({173, 173});
-    _objects["2/play"]->setScale({1, 1});
     addObject(TEXT, "4/Games");
     _objects["4/Games"]->setTexturePath("arcade");
-    _objects["4/Games"]->setText(core.getGameModuleList().begin()->second->getName());
+    _objects["4/Games"]->setProperties(IObject::TextProperties{WHITE, 40, core.getGameModuleList().begin()->second->getName()});
     _objects["4/Games"]->setPosition({145, 670});
-    _objects["4/Games"]->setSize({40, 0});
     addObject(TEXT, "4/Displays");
     _objects["4/Displays"]->setTexturePath("arcade");
-    _objects["4/Displays"]->setText(pathlib);
+    _objects["4/Displays"]->setProperties(IObject::TextProperties{WHITE, 40, pathlib});
     _objects["4/Displays"]->setPosition({720, 670});
-    _objects["4/Displays"]->setSize({40, 0});
     _games = core.getGameModuleList();
     _displays = core.getDisplayModuleList();
 }
@@ -100,8 +84,8 @@ bool Menu::myGetGlobalBound(std::string name, std::pair<int, int> mousePos)
 {
     auto object = _objects[name].get();
     auto pos = object->getPosition();
-    auto size = object->getSize();
-    auto scale = object->getScale();
+    auto size = std::get<IObject::SpriteProperties>(object->getProperties()).size;
+    auto scale = std::get<IObject::SpriteProperties>(object->getProperties()).scale;
     if (scale.first != 0 && scale.second != 0)
         if ((mousePos.first >= pos.first && mousePos.first <= pos.first + size.first * scale.first) &&
             (mousePos.second >= pos.second && mousePos.second <= pos.second + size.second * scale.second)) {
@@ -130,7 +114,9 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         for (int i = 0; i < _indexGames; i++)
             it++;
         if (it != _games.end()) {
-            _objects["4/Games"]->setText(it->second->getName());
+            auto prop = std::get<IObject::TextProperties>(_objects["4/Games"]->getProperties());
+            prop.text = it->second->getName();
+            _objects["4/Games"]->setProperties(prop);
         }
         return true;
     }
@@ -142,7 +128,9 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         for (int i = 0; i < _indexGames; i++)
             it++;
         if (it != _games.end()) {
-            _objects["4/Games"]->setText(it->second->getName());
+            auto prop = std::get<IObject::TextProperties>(_objects["4/Games"]->getProperties());
+            prop.text = it->second->getName();
+            _objects["4/Games"]->setProperties(prop);
         }
         return true;
     }
@@ -154,7 +142,9 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         for (int i = 0; i < _indexDisplays; i++)
             it++;
         if (it != _displays.end()) {
-            _objects["4/Displays"]->setText(it->second->getName());
+            auto prop = std::get<IObject::TextProperties>(_objects["4/Displays"]->getProperties());
+            prop.text = it->second->getName();
+            _objects["4/Displays"]->setProperties(prop);
         }
         return true;
     }
@@ -166,7 +156,9 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         for (int i = 0; i < _indexDisplays; i++)
             it++;
         if (it != _displays.end()) {
-            _objects["4/Displays"]->setText(it->second->getName());
+            auto prop = std::get<IObject::TextProperties>(_objects["4/Displays"]->getProperties());
+            prop.text = it->second->getName();
+            _objects["4/Displays"]->setProperties(prop);
         }
         return true;
     }
