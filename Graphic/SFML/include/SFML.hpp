@@ -5,6 +5,8 @@
 ** SFML.hpp
 */
 
+#pragma once
+
 #include <SFML/Graphics.hpp>
 
 #include "IDisplayModule.hpp"

@@ -12,7 +12,7 @@
 class Nibbler : public IGameModule {
     public:
         Nibbler();
-        ~Nibbler() override = default;
+        ~Nibbler();
 
         std::string getName() const;
         std::size_t getScore() const;

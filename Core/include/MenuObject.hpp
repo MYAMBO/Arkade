@@ -9,11 +9,11 @@
 
 #include "IObject.hpp"
 
-class NibblerObject : public IObject
+class MenuObject : public IObject
 {
     public:
-        NibblerObject(std::string type, std::string name);
-        ~NibblerObject();
+        MenuObject(std::string type, std::string name);
+        ~MenuObject();
 
         void setPosition(std::pair<int, int>);
         std::pair<int, int> getPosition() const;

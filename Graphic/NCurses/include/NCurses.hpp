@@ -5,6 +5,11 @@
 ** NCurses.hpp
 */
 
+#pragma once
+
+#include <ncurses.h>
+
+#include "KeyCodes.hpp"
 #include "IDisplayModule.hpp"
 
 class NCurses : public IDisplayModule
@@ -25,7 +30,7 @@ class NCurses : public IDisplayModule
 
         std::string getName() const;
     private:
-        int _input;
+        std::pair<int, int> _mousePos;
 };
 
 extern "C"
