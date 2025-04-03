@@ -82,7 +82,7 @@ void NCurses::display(std::map<std::string, std::unique_ptr<IObject>>& objects)
             i = 0;
             pos = elt->second.get()->getPosition();
             for (auto elt : sprite) {
-                mvprintw(pos.second * LINES / 1000 + i, pos.first * COLS / 1000, elt.c_str());
+                mvprintw(pos.second * LINES / 1000 + i, pos.first * COLS / 1000, "%s", elt.c_str());
                 i++;
             }
         }
