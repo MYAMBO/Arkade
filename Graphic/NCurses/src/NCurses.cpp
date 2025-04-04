@@ -7,7 +7,7 @@
 
 #include <list>
 #include <fstream>
-#include <ncurses.h>
+#include <iostream>
 
 #include "NCurses.hpp"
 
@@ -32,28 +32,36 @@ void NCurses::initObject(std::map<std::string, std::unique_ptr<IObject>>& object
     std::string path;
 
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
-        type = elt->second.get()->getType();
-        path = elt->second.get()->getTexturePath();
-        if (type == "sprite") {
+        type = elt->second->getType();
+        path = elt->second->getTexturePath();
+        if (type == SPRITE) {
             std::ifstream file ("assets/string/" + path + ".txt");
             std::string line;
             std::list<std::string> strList;
 
             while (std::getline(file, line))
                 strList.push_back(line);
-            elt->second.get()->setSprite(std::any(strList));
+            elt->second->setSprite(std::any(strList));
         }
     }
 }
 
 int NCurses::getInput()
 {
+    MEVENT event;
+
+    if (getmouse(&event) == OK) {
+        this->_mousePos.first = static_cast<int>((event.x * 1000.0) / COLS);
+        this->_mousePos.second = static_cast<int>((event.y * 1000.0) / LINES);
+        if (event.bstate == BUTTON1_PRESSED || event.bstate == BUTTON2_PRESSED)
+            return KEY_RCLICK;
+    }
     return getch();
 }
 
 std::pair<int, int> NCurses::getMousePos() const
 {
-    return std::pair(0, 0);
+    return this->_mousePos;
 }
 
 void NCurses::openWindow()
@@ -62,29 +70,67 @@ void NCurses::openWindow()
     keypad(stdscr, true);
     noecho();
     curs_set(0);
-    nodelay(stdscr, true);
+    mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
+    mouseinterval(0);
+    timeout(10);
+    std::cout << "\033[?1003h\n" << std::endl;
 }
 
 void NCurses::closeWindow()
 {
+    std::cout << "\033[?1003l\n" << std::endl;
     endwin();
 }
+
+std::string getSubString(std::string str, int x, bool isSpriteSheet)
+{
+    size_t pos;
+
+    if (!isSpriteSheet)
+        return str;
+    for (int i = 0; i < x; i++) {
+        pos = str.find("¤§");
+        if (pos == std::string::npos)
+            return str;
+        str = str.substr(pos + 4);
+    }
+    pos = str.find("¤§");
+    if (pos == std::string::npos)
+        return str;
+    str = str.substr(0, pos);
+    return str;
+}
+
 void NCurses::display(std::map<std::string, std::unique_ptr<IObject>>& objects)
 {
-    std::list<std::string> sprite;
     std::pair<int, int> pos;
     short i;
 
-    erase();
+    clear();
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
-        if (elt->second.get()->getType() == "sprite") {
-            sprite = std::any_cast<std::list<std::string>>(elt->second.get()->getSprite());
+        if (elt->second->getType() == SPRITE) {
+            auto sprite = std::any_cast<std::list<std::string>>(elt->second->getSprite());
+            bool isSpriteSheet = false;
+            int x = std::get<IObject::SpriteProperties>(elt->second->getProperties()).offset.first + 1;
+            (void)x;
+            int y = std::get<IObject::SpriteProperties>(elt->second->getProperties()).offset.second + 1;
             i = 0;
             pos = elt->second.get()->getPosition();
-            for (auto elt : sprite) {
-                mvprintw(pos.second * LINES / 1000 + i, pos.first * COLS / 1000, "%s", elt.c_str());
-                i++;
+            for (auto elt2 : sprite) {
+                if (elt2.find("§¤") != std::string::npos) {
+                    y--;
+                    isSpriteSheet = true;
+                    continue;
+                }
+                if ((isSpriteSheet && y == 0) || !isSpriteSheet) {
+                    mvprintw(pos.second * LINES / 1000 + i, pos.first * COLS / 1000, "%s", getSubString(elt2, x, isSpriteSheet).c_str());
+                    i++;
+                }
             }
+        } else if (elt->second->getType() == TEXT) {
+            std::string text = std::get<IObject::TextProperties>(elt->second->getProperties()).text;
+            pos = elt->second.get()->getPosition();
+            mvprintw(pos.second * LINES / 1000, pos.first * COLS / 1000 + text.size() / 2, "%s", text.c_str());
         }
     }
     refresh();

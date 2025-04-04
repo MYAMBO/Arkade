@@ -11,7 +11,7 @@
 
 #include "Core.hpp"
 
-Test(Core, getLibGraphic, .init=cr_redirect_stdout)
+Test(Core, getGrahicLib, .init=cr_redirect_stdout)
 {
     Core core;
 
@@ -19,4 +19,14 @@ Test(Core, getLibGraphic, .init=cr_redirect_stdout)
         std::cout << elt.first << "\n";
     std::cout << std::fflush(stdout);
     cr_assert_stdout_eq_str("NCURSES\nSFML\n");
+}
+
+Test(Core, getGameLib, .init=cr_redirect_stdout)
+{
+    Core core;
+
+    for (auto elt : core.getGameModuleList())
+        std::cout << elt.first << "\n";
+    std::cout << std::fflush(stdout);
+    cr_assert_stdout_eq_str("MINESWEEPER\nNIBBLER\n");
 }

@@ -5,9 +5,12 @@
 ## Makefile
 ##
 
-CORE_SRC 			= 		Core/src/main.cpp 						\
+CORE_SRC 			= 		Core/src/Lib.cpp 						\
 							Core/src/Core.cpp 						\
-							Core/src/Lib.cpp 						\
+							Core/src/main.cpp 						\
+							Core/src/Menu.cpp 						\
+							Core/src/Parsing.cpp 					\
+							Core/src/MenuObject.cpp 				\
 
 NIBBLER_SRC 		=		Game/Nibbler/src/Nibbler.cpp			\
 							Game/Nibbler/src/NibblerObject.cpp		\
@@ -42,8 +45,7 @@ SFML_NAME 			=		lib/arcade_sfml.so
 
 NCURSES_NAME 		=		lib/arcade_ncurses.so
 
-CORE_FLAGS 			= 		-I ./							\
-							-I Core/include 				\
+CORE_FLAGS 			= 		-I Core/include 				\
 							-I Core/include/interface 		\
 
 NIBBLER_FLAGS 		= 		-I Game/Nibbler/include

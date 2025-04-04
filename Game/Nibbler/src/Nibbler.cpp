@@ -11,32 +11,41 @@
 Nibbler::Nibbler()
     : _objects(*(new std::map<std::string, std::unique_ptr<IObject>>()))
 {
-    addObject("sprite", "snakehead");
-    addObject("sprite", "food");
-    _objects["snakehead"]->setPosition({0, 0});
-    _objects["food"]->setPosition({100, 100});
-    _objects["snakehead"]->setTexturePath("Nibbler/nibblerHeadDown");
-    _objects["food"]->setTexturePath("Nibbler/apple");
+    addObject(SPRITE, "2/snakehead");
+    _objects["2/snakehead"]->setTexturePath("Nibbler/nibblerHeadDown");
+    _objects["2/snakehead"]->setProperties(IObject::SpriteProperties{{100, 100}, {0, 0}, {1, 1}});
+    _objects["2/snakehead"]->setPosition({0, 0});
+    addObject(SPRITE, "1/food");
+    _objects["1/food"]->setTexturePath("Nibbler/apple");
+    _objects["1/food"]->setProperties(IObject::SpriteProperties{{100, 100}, {0, 0}, {1, 1}});
+    _objects["1/food"]->setPosition({100, 100});
 }
 
-bool Nibbler::update(std::pair<int, int> pos, int input)
+Nibbler::~Nibbler()
 {
-    pos = _objects["snakehead"]->getPosition();
+    delete &_objects;
+}
+
+bool Nibbler::update(std::pair<int, int> mousePos, int input)
+{
+    std::pair<int, int> pos = _objects["2/snakehead"]->getPosition();
+    
+    _objects["2/snakehead"]->setPosition(mousePos);
     if (input == 'z') {
-        _objects["snakehead"]->setTexturePath("Nibbler/nibblerHeadUp");
-        _objects["snakehead"]->setPosition({pos.first, pos.second - 10});
+        _objects["2/snakehead"]->setTexturePath("Nibbler/nibblerHeadUp");
+        _objects["2/snakehead"]->setPosition({pos.first, pos.second - 10});
     }
     if (input == 's') {
-        _objects["snakehead"]->setTexturePath("Nibbler/nibblerHeadDown");
-        _objects["snakehead"]->setPosition({pos.first, pos.second + 10});
+        _objects["2/snakehead"]->setTexturePath("Nibbler/nibblerHeadDown");
+        _objects["2/snakehead"]->setPosition({pos.first, pos.second + 10});
     }
     if (input == 'q') {
-        _objects["snakehead"]->setTexturePath("Nibbler/nibblerHeadLeft");
-        _objects["snakehead"]->setPosition({pos.first - 10, pos.second});
+        _objects["2/snakehead"]->setTexturePath("Nibbler/nibblerHeadLeft");
+        _objects["2/snakehead"]->setPosition({pos.first - 10, pos.second});
     }
     if (input == 'd') {
-        _objects["snakehead"]->setTexturePath("Nibbler/nibblerHeadRight");
-        _objects["snakehead"]->setPosition({pos.first + 10, pos.second});
+        _objects["2/snakehead"]->setTexturePath("Nibbler/nibblerHeadRight");
+        _objects["2/snakehead"]->setPosition({pos.first + 10, pos.second});
     }
     return true;
 }

@@ -9,19 +9,22 @@
 
 #include "IGameModule.hpp"
 
-class Minesweeper : public IGameModule
-{
+class Minesweeper : public IGameModule {
     public:
         Minesweeper();
         ~Minesweeper();
 
-        bool update(std::pair<int, int> mousePos, int input);
-
+        std::string getName() const;
+        std::size_t getScore() const;
         std::map<std::string, std::unique_ptr<IObject>>& getObjects();
 
-        std::string getName() const;
+        bool update(std::pair<int, int> mousePos, int input);
 
-        std::size_t getScore() const;
+        void deleteObject(std::string name);
+        void addObject(std::string type, std::string name);
+
+    private:
+        std::map<std::string, std::unique_ptr<IObject>> &_objects;
 };
 
 extern "C" {
