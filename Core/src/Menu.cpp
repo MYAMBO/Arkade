@@ -13,6 +13,7 @@ Menu::Menu(Core core, std::string pathlib)
     : _objects(*(new std::map<std::string, std::unique_ptr<IObject>>()))
 {
     _indexGames = 0;
+    _indexDisplays = 0;
     _isGameLaunched = false;
     addObject(SPRITE, "2/title");
     _objects["2/title"]->setTexturePath("arcade");
@@ -50,6 +51,10 @@ Menu::Menu(Core core, std::string pathlib)
     _objects["4/Displays"]->setTexturePath("arcade");
     _objects["4/Displays"]->setProperties(IObject::TextProperties{WHITE, 40, pathlib});
     _objects["4/Displays"]->setPosition({720, 670});
+    addObject(TEXT, "4/Score");
+    _objects["4/Score"]->setTexturePath("arcade");
+    _objects["4/Score"]->setProperties(IObject::TextProperties{WHITE, 40, "Score : 0"});
+    _objects["4/Score"]->setPosition({400, 800});
     _games = core.getGameModuleList();
     _displays = core.getDisplayModuleList();
 }
@@ -106,7 +111,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         _isGameLaunched = true;
         return true;
     }
-    if (myGetGlobalBound("2/arrowUp", mousePos) && input == KEY_RCLICK) {
+    if ((myGetGlobalBound("2/arrowUp", mousePos) && input == KEY_RCLICK) || input == K_UP) {
         _indexGames++;
         if (_indexGames >= static_cast<int>(_games.size()))
             _indexGames = 0;
@@ -120,7 +125,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         }
         return true;
     }
-    if (myGetGlobalBound("2/arrowDown", mousePos) && input == KEY_RCLICK) {
+    if ((myGetGlobalBound("2/arrowDown", mousePos) && input == KEY_RCLICK) || input == K_DOWN) {
         _indexGames--;
         if (_indexGames < 0)
             _indexGames = static_cast<int>(_games.size()) - 1;
@@ -134,7 +139,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         }
         return true;
     }
-    if (myGetGlobalBound("2/arrowLeft", mousePos) && input == KEY_RCLICK) {
+    if ((myGetGlobalBound("2/arrowLeft", mousePos) && input == KEY_RCLICK) || input == K_LEFT) {
         _indexDisplays--;
         if (_indexDisplays < 0)
             _indexDisplays = static_cast<int>(_displays.size()) - 1;
@@ -148,7 +153,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         }
         return true;
     }
-    if (myGetGlobalBound("2/arrowRight", mousePos) && input == KEY_RCLICK) {
+    if ((myGetGlobalBound("2/arrowRight", mousePos) && input == KEY_RCLICK) || input == K_RIGHT) {
         _indexDisplays++;
         if (_indexDisplays >= static_cast<int>(_displays.size()))
             _indexDisplays = 0;
@@ -180,4 +185,9 @@ void Menu::deleteObject(std::string name)
 bool Menu::getIsGameLaunched() const
 {
     return _isGameLaunched;
+}
+
+void Menu::setIsGameLaunched(bool isGameLaunched)
+{
+    _isGameLaunched = isGameLaunched;
 }
