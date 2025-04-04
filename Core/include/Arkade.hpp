@@ -23,8 +23,8 @@ class Arkade {
     
     private:
         Core _core;
-        std::shared_ptr<Menu> _menu;
         std::string _pathlib;
+        std::shared_ptr<Menu> _menu;
         std::shared_ptr<IGameModule> _selectedGame;
         std::shared_ptr<IDisplayModule> _selectedDisplay;
         std::map<std::string, std::shared_ptr<IGameModule>> _games;
