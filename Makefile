@@ -9,6 +9,7 @@ CORE_SRC 			= 		Core/src/Lib.cpp 						\
 							Core/src/Core.cpp 						\
 							Core/src/main.cpp 						\
 							Core/src/Menu.cpp 						\
+							Core/src/Arkade.cpp 					\
 							Core/src/Parsing.cpp 					\
 							Core/src/MenuObject.cpp 				\
 
