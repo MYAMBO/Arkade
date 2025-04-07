@@ -18,7 +18,7 @@ class Parsing {
         ~Parsing();
         
         std::string getLib() const;
-        int ParseLib(std::map<std::string, std::shared_ptr<IDisplayModule>> displayModuleList);
+        int ParseLib(std::map<std::string, std::shared_ptr<Arcade::IDisplayModule>> displayModuleList);
 
         void setPathlib(std::string pathlib);
     private:

@@ -12,7 +12,7 @@
 
 #include "Core.hpp"
 
-class Menu : public IGameModule {
+class Menu : public Arcade::IGameModule {
     public:
         Menu(Core core, std::string pathlib);
         ~Menu();
@@ -25,7 +25,7 @@ class Menu : public IGameModule {
 
         std::string getName() const;
         std::size_t getScore() const;
-        std::map<std::string, std::unique_ptr<IObject>>& getObjects();
+        std::map<std::string, std::unique_ptr<Arcade::IObject>>& getObjects();
 
         bool getIsGameLaunched() const;
         bool myGetGlobalBound(std::string name, std::pair<int, int> mousePos);
@@ -42,7 +42,7 @@ class Menu : public IGameModule {
         int _indexGames;
         int _indexDisplays;
         bool _isGameLaunched;
-        std::map<std::string, std::unique_ptr<IObject>>& _objects;
-        std::map<std::string, std::shared_ptr<IGameModule>> _games;
-        std::map<std::string, std::shared_ptr<IDisplayModule>> _displays;
+        std::map<std::string, std::unique_ptr<Arcade::IObject>>& _objects;
+        std::map<std::string, std::shared_ptr<Arcade::IGameModule>> _games;
+        std::map<std::string, std::shared_ptr<Arcade::IDisplayModule>> _displays;
     };

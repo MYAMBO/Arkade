@@ -20,7 +20,7 @@ std::string Parsing::getLib() const
     return _pathlib;
 }
 
-int Parsing::ParseLib(std::map<std::string, std::shared_ptr<IDisplayModule>> displayModuleList)
+int Parsing::ParseLib(std::map<std::string, std::shared_ptr<Arcade::IDisplayModule>> displayModuleList)
 {
     for (auto it = displayModuleList.begin(); it != displayModuleList.end(); it++) {
         if (it->first == _pathlib) {

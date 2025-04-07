@@ -18,10 +18,10 @@ class Core {
         Core();
         ~Core();
 
-        std::map<std::string, std::shared_ptr<IGameModule>> getGameModuleList();
-        std::map<std::string, std::shared_ptr<IDisplayModule>> getDisplayModuleList();
+        std::map<std::string, std::shared_ptr<Arcade::IGameModule>> getGameModuleList();
+        std::map<std::string, std::shared_ptr<Arcade::IDisplayModule>> getDisplayModuleList();
 
     private:
-        std::map<std::string, std::shared_ptr<IGameModule>> _gameList;
-        std::map<std::string, std::shared_ptr<IDisplayModule>> _graphicList;
+        std::map<std::string, std::shared_ptr<Arcade::IGameModule>> _gameList;
+        std::map<std::string, std::shared_ptr<Arcade::IDisplayModule>> _graphicList;
 };
