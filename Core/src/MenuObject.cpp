@@ -66,7 +66,7 @@ void MenuObject::setProperties(IObject::Properties properties)
     _properties = properties;
 }
 
-IObject::Properties MenuObject::getProperties()
+Arcade::IObject::Properties MenuObject::getProperties()
 {
     return _properties;
 }

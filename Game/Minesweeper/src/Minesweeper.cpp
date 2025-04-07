@@ -8,7 +8,7 @@
 #include "Minesweeper.hpp"
 
 Minesweeper::Minesweeper()
-    : _objects(*new std::map<std::string, std::unique_ptr<IObject>>())
+    : _objects(*new std::map<std::string, std::unique_ptr<Arcade::IObject>>())
 {
 }
 
@@ -26,7 +26,7 @@ std::size_t Minesweeper::getScore() const
     return 0;
 }
 
-std::map<std::string, std::unique_ptr<IObject>>& Minesweeper::getObjects()
+std::map<std::string, std::unique_ptr<Arcade::IObject>>& Minesweeper::getObjects()
 {
     return _objects;
 }

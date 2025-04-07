@@ -10,50 +10,50 @@
 #include "MenuObject.hpp"
 
 Menu::Menu(Core core, std::string pathlib)
-    : _objects(*(new std::map<std::string, std::unique_ptr<IObject>>()))
+    : _objects(*(new std::map<std::string, std::unique_ptr<Arcade::IObject>>()))
 {
     _indexGames = 0;
     _indexDisplays = 0;
     _isGameLaunched = false;
     addObject(SPRITE, "2/title");
     _objects["2/title"]->setTexturePath("arcade");
-    _objects["2/title"]->setProperties(IObject::SpriteProperties{{1237, 316}, {0, 0}, {1, 1}});
+    _objects["2/title"]->setProperties(Arcade::IObject::SpriteProperties{{1237, 316}, {0, 0}, {1, 1}});
     _objects["2/title"]->setPosition({160, 90});
     addObject(SPRITE, "1/background");
     _objects["1/background"]->setTexturePath("background");
-    _objects["1/background"]->setProperties(IObject::SpriteProperties{{3000, 2000}, {0, 0}, {0.64, 0.54}});
+    _objects["1/background"]->setProperties(Arcade::IObject::SpriteProperties{{3000, 2000}, {0, 0}, {0.64, 0.54}});
     _objects["1/background"]->setPosition({0, 0});
     addObject(SPRITE, "2/arrowUp");
     _objects["2/arrowUp"]->setTexturePath("arrow");
-    _objects["2/arrowUp"]->setProperties(IObject::SpriteProperties{{170, 170}, {1, 0}, {0.7, 0.7}});
+    _objects["2/arrowUp"]->setProperties(Arcade::IObject::SpriteProperties{{170, 170}, {1, 0}, {0.7, 0.7}});
     _objects["2/arrowUp"]->setPosition({170, 450});
     addObject(SPRITE, "2/arrowDown");
     _objects["2/arrowDown"]->setTexturePath("arrow");
-    _objects["2/arrowDown"]->setProperties(IObject::SpriteProperties{{170, 170}, {1, 1}, {0.7, 0.7}});
+    _objects["2/arrowDown"]->setProperties(Arcade::IObject::SpriteProperties{{170, 170}, {1, 1}, {0.7, 0.7}});
     _objects["2/arrowDown"]->setPosition({170, 800});
     addObject(SPRITE, "2/arrowLeft");
     _objects["2/arrowLeft"]->setTexturePath("arrow");
-    _objects["2/arrowLeft"]->setProperties(IObject::SpriteProperties{{170, 170}, {0, 1}, {0.7, 0.7}});
+    _objects["2/arrowLeft"]->setProperties(Arcade::IObject::SpriteProperties{{170, 170}, {0, 1}, {0.7, 0.7}});
     _objects["2/arrowLeft"]->setPosition({620, 630});
     addObject(SPRITE, "2/arrowRight");
     _objects["2/arrowRight"]->setTexturePath("arrow");
-    _objects["2/arrowRight"]->setProperties(IObject::SpriteProperties{{170, 170}, {2, 1}, {0.7, 0.7}});
+    _objects["2/arrowRight"]->setProperties(Arcade::IObject::SpriteProperties{{170, 170}, {2, 1}, {0.7, 0.7}});
     _objects["2/arrowRight"]->setPosition({870, 630});
     addObject(SPRITE, "2/play");
     _objects["2/play"]->setTexturePath("play");
-    _objects["2/play"]->setProperties(IObject::SpriteProperties{{173, 173}, {0, 0}, {1, 1}});
+    _objects["2/play"]->setProperties(Arcade::IObject::SpriteProperties{{173, 173}, {0, 0}, {1, 1}});
     _objects["2/play"]->setPosition({440, 440});
     addObject(TEXT, "4/Games");
     _objects["4/Games"]->setTexturePath("arcade");
-    _objects["4/Games"]->setProperties(IObject::TextProperties{WHITE, 40, core.getGameModuleList().begin()->second->getName()});
+    _objects["4/Games"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, core.getGameModuleList().begin()->second->getName()});
     _objects["4/Games"]->setPosition({145, 670});
     addObject(TEXT, "4/Displays");
     _objects["4/Displays"]->setTexturePath("arcade");
-    _objects["4/Displays"]->setProperties(IObject::TextProperties{WHITE, 40, pathlib});
+    _objects["4/Displays"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, pathlib});
     _objects["4/Displays"]->setPosition({720, 670});
     addObject(TEXT, "4/Score");
     _objects["4/Score"]->setTexturePath("arcade");
-    _objects["4/Score"]->setProperties(IObject::TextProperties{WHITE, 40, "Score : 0"});
+    _objects["4/Score"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, "Score : 0"});
     _objects["4/Score"]->setPosition({400, 800});
     _games = core.getGameModuleList();
     _displays = core.getDisplayModuleList();
@@ -70,7 +70,7 @@ void Menu::run(std::string pathlib, Core core)
     (void)core;
 }
 
-std::map<std::string, std::unique_ptr<IObject>>& Menu::getObjects()
+std::map<std::string, std::unique_ptr<Arcade::IObject>>& Menu::getObjects()
 {
     return _objects;
 }
@@ -89,8 +89,8 @@ bool Menu::myGetGlobalBound(std::string name, std::pair<int, int> mousePos)
 {
     auto object = _objects[name].get();
     auto pos = object->getPosition();
-    auto size = std::get<IObject::SpriteProperties>(object->getProperties()).size;
-    auto scale = std::get<IObject::SpriteProperties>(object->getProperties()).scale;
+    auto size = std::get<Arcade::IObject::SpriteProperties>(object->getProperties()).size;
+    auto scale = std::get<Arcade::IObject::SpriteProperties>(object->getProperties()).scale;
     if (scale.first != 0 && scale.second != 0)
         if ((mousePos.first >= pos.first && mousePos.first <= pos.first + size.first * scale.first) &&
             (mousePos.second >= pos.second && mousePos.second <= pos.second + size.second * scale.second)) {
@@ -119,7 +119,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         for (int i = 0; i < _indexGames; i++)
             it++;
         if (it != _games.end()) {
-            auto prop = std::get<IObject::TextProperties>(_objects["4/Games"]->getProperties());
+            auto prop = std::get<Arcade::IObject::TextProperties>(_objects["4/Games"]->getProperties());
             prop.text = it->second->getName();
             _objects["4/Games"]->setProperties(prop);
         }
@@ -133,7 +133,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         for (int i = 0; i < _indexGames; i++)
             it++;
         if (it != _games.end()) {
-            auto prop = std::get<IObject::TextProperties>(_objects["4/Games"]->getProperties());
+            auto prop = std::get<Arcade::IObject::TextProperties>(_objects["4/Games"]->getProperties());
             prop.text = it->second->getName();
             _objects["4/Games"]->setProperties(prop);
         }
@@ -147,7 +147,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         for (int i = 0; i < _indexDisplays; i++)
             it++;
         if (it != _displays.end()) {
-            auto prop = std::get<IObject::TextProperties>(_objects["4/Displays"]->getProperties());
+            auto prop = std::get<Arcade::IObject::TextProperties>(_objects["4/Displays"]->getProperties());
             prop.text = it->second->getName();
             _objects["4/Displays"]->setProperties(prop);
         }
@@ -161,7 +161,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         for (int i = 0; i < _indexDisplays; i++)
             it++;
         if (it != _displays.end()) {
-            auto prop = std::get<IObject::TextProperties>(_objects["4/Displays"]->getProperties());
+            auto prop = std::get<Arcade::IObject::TextProperties>(_objects["4/Displays"]->getProperties());
             prop.text = it->second->getName();
             _objects["4/Displays"]->setProperties(prop);
         }

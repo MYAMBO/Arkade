@@ -11,7 +11,7 @@
 
 #include "IDisplayModule.hpp"
 
-class SFMLModule : public IDisplayModule
+class SFMLModule : public Arcade::IDisplayModule
 {
     public:
         SFMLModule();
@@ -19,7 +19,7 @@ class SFMLModule : public IDisplayModule
 
         std::string getName() const;
 
-        void initObject(std::map<std::string, std::unique_ptr<IObject>>&);
+        void initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>&);
 
         int getInput();
         std::pair<int, int> getMousePos() const;
@@ -27,7 +27,7 @@ class SFMLModule : public IDisplayModule
         void openWindow();
         void closeWindow();
 
-        void display(std::map<std::string, std::unique_ptr<IObject>>&);
+        void display(std::map<std::string, std::unique_ptr<Arcade::IObject>>&);
     private:
         std::unique_ptr<sf::RenderWindow> _window;
         sf::Event _event;
@@ -35,7 +35,7 @@ class SFMLModule : public IDisplayModule
 
 extern "C"
 {
-    std::unique_ptr<IDisplayModule> createInstanceIDisplay()
+    std::unique_ptr<Arcade::IDisplayModule> createInstanceIDisplay()
     {
         return std::make_unique<SFMLModule>();
     }
