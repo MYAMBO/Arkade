@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2025
+** Arkade
+** File description:
+** testCore
+*/
+
 #include <iostream>
 #include <criterion/redirect.h>
 #include <criterion/criterion.h>
