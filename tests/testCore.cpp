@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2025
 ** Arkade
 ** File description:
-** testCore
+** testCore.cpp
 */
 
 #include <iostream>
