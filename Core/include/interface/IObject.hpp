@@ -40,7 +40,10 @@ public:
     struct SpriteProperties {
         std::pair<int, int> size;
         std::pair<int, int> offset;
+        std::pair<int, int> textSize;
+        std::pair<int, int> textOffset;
         std::pair<float, float> scale;
+        u_int32_t textColor;
         ~SpriteProperties() = default;
     };
 

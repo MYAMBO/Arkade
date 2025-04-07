@@ -13,11 +13,11 @@ Nibbler::Nibbler()
 {
     addObject(SPRITE, "2/snakehead");
     _objects["2/snakehead"]->setTexturePath("Nibbler/nibblerHeadDown");
-    _objects["2/snakehead"]->setProperties(IObject::SpriteProperties{{100, 100}, {0, 0}, {1, 1}});
+    _objects["2/snakehead"]->setProperties(IObject::SpriteProperties{{100, 100}, {0, 0}, {5, 5}, {0, 0}, {1, 1}, WHITE});
     _objects["2/snakehead"]->setPosition({0, 0});
     addObject(SPRITE, "1/food");
     _objects["1/food"]->setTexturePath("Nibbler/apple");
-    _objects["1/food"]->setProperties(IObject::SpriteProperties{{100, 100}, {0, 0}, {1, 1}});
+    _objects["1/food"]->setProperties(IObject::SpriteProperties{{100, 100}, {0, 0}, {5, 4}, {0, 0}, {1, 1}, WHITE});
     _objects["1/food"]->setPosition({100, 100});
 }
 

@@ -16,31 +16,31 @@ Menu::Menu(Core core, std::string pathlib)
     _isGameLaunched = false;
     addObject(SPRITE, "2/title");
     _objects["2/title"]->setTexturePath("arcade");
-    _objects["2/title"]->setProperties(IObject::SpriteProperties{{1237, 316}, {0, 0}, {1, 1}});
+    _objects["2/title"]->setProperties(IObject::SpriteProperties{{1237, 316}, {0, 0}, {109, 11}, {0, 0}, {1, 1}, WHITE});
     _objects["2/title"]->setPosition({160, 90});
     addObject(SPRITE, "1/background");
     _objects["1/background"]->setTexturePath("background");
-    _objects["1/background"]->setProperties(IObject::SpriteProperties{{3000, 2000}, {0, 0}, {0.64, 0.54}});
+    _objects["1/background"]->setProperties(IObject::SpriteProperties{{3000, 2000}, {0, 0}, {0, 0}, {0, 0}, {0.64, 0.54}, WHITE});
     _objects["1/background"]->setPosition({0, 0});
     addObject(SPRITE, "2/arrowUp");
     _objects["2/arrowUp"]->setTexturePath("arrow");
-    _objects["2/arrowUp"]->setProperties(IObject::SpriteProperties{{170, 170}, {1, 0}, {0.7, 0.7}});
+    _objects["2/arrowUp"]->setProperties(IObject::SpriteProperties{{170, 170}, {170, 0}, {5, 3}, {5, 0}, {0.7, 0.7}, WHITE});
     _objects["2/arrowUp"]->setPosition({170, 450});
     addObject(SPRITE, "2/arrowDown");
     _objects["2/arrowDown"]->setTexturePath("arrow");
-    _objects["2/arrowDown"]->setProperties(IObject::SpriteProperties{{170, 170}, {1, 1}, {0.7, 0.7}});
+    _objects["2/arrowDown"]->setProperties(IObject::SpriteProperties{{170, 170}, {170, 170}, {5, 3}, {5, 3}, {0.7, 0.7}, WHITE});
     _objects["2/arrowDown"]->setPosition({170, 800});
     addObject(SPRITE, "2/arrowLeft");
     _objects["2/arrowLeft"]->setTexturePath("arrow");
-    _objects["2/arrowLeft"]->setProperties(IObject::SpriteProperties{{170, 170}, {0, 1}, {0.7, 0.7}});
+    _objects["2/arrowLeft"]->setProperties(IObject::SpriteProperties{{170, 170}, {0, 170}, {5, 3}, {0, 3}, {0.7, 0.7}, WHITE});
     _objects["2/arrowLeft"]->setPosition({620, 630});
     addObject(SPRITE, "2/arrowRight");
     _objects["2/arrowRight"]->setTexturePath("arrow");
-    _objects["2/arrowRight"]->setProperties(IObject::SpriteProperties{{170, 170}, {2, 1}, {0.7, 0.7}});
+    _objects["2/arrowRight"]->setProperties(IObject::SpriteProperties{{170, 170}, {340, 170}, {5, 3}, {10, 3}, {0.7, 0.7}, WHITE});
     _objects["2/arrowRight"]->setPosition({870, 630});
     addObject(SPRITE, "2/play");
     _objects["2/play"]->setTexturePath("play");
-    _objects["2/play"]->setProperties(IObject::SpriteProperties{{173, 173}, {0, 0}, {1, 1}});
+    _objects["2/play"]->setProperties(IObject::SpriteProperties{{173, 173}, {0, 0}, {27, 5}, {0, 0}, {1, 1}, WHITE});
     _objects["2/play"]->setPosition({440, 440});
     addObject(TEXT, "4/Games");
     _objects["4/Games"]->setTexturePath("arcade");
@@ -86,12 +86,12 @@ bool Menu::myGetGlobalBound(std::string name, std::pair<int, int> mousePos)
     auto pos = object->getPosition();
     auto size = std::get<IObject::SpriteProperties>(object->getProperties()).size;
     auto scale = std::get<IObject::SpriteProperties>(object->getProperties()).scale;
-    if (scale.first != 0 && scale.second != 0)
+    if (scale.first != 0 && scale.second != 0) {
         if ((mousePos.first >= pos.first && mousePos.first <= pos.first + size.first * scale.first) &&
             (mousePos.second >= pos.second && mousePos.second <= pos.second + size.second * scale.second)) {
             return true;
         }
-    if (scale.first == 0 || scale.second == 0) {
+    } else {
         if (mousePos.first >= pos.first && mousePos.first <= pos.first + size.first &&
             mousePos.second >= pos.second && mousePos.second <= pos.second + size.second) {
             return true;
