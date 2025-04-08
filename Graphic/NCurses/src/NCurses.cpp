@@ -26,7 +26,7 @@ std::string NCurses::getName() const
     return NCURSES;
 }
 
-void NCurses::initObject(std::map<std::string, std::unique_ptr<IObject>>& objects)
+void NCurses::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
 {
     std::string type;
     std::string path;
@@ -35,12 +35,18 @@ void NCurses::initObject(std::map<std::string, std::unique_ptr<IObject>>& object
         type = elt->second->getType();
         path = elt->second->getTexturePath();
         if (type == SPRITE) {
-            std::ifstream file ("assets/string/" + path + ".txt");
+            auto properties = std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties());
+            std::ifstream file ("assets/" + path + ".txt");
             std::string line;
             std::list<std::string> strList;
+            int i = 0;
 
-            while (std::getline(file, line))
-                strList.push_back(line);
+            while (std::getline(file, line)) {
+                i++;
+                if (i <= properties.textOffset.second || i > properties.textSize.second + properties.textOffset.second)
+                    continue;
+                strList.push_back(line.substr(properties.textOffset.first, properties.textSize.first));
+            }
             elt->second->setSprite(std::any(strList));
         }
     }
@@ -54,7 +60,7 @@ int NCurses::getInput()
         this->_mousePos.first = static_cast<int>((event.x * 1000.0) / COLS);
         this->_mousePos.second = static_cast<int>((event.y * 1000.0) / LINES);
         if (event.bstate == BUTTON1_PRESSED || event.bstate == BUTTON2_PRESSED)
-            return KEY_RCLICK;
+            return K_RCLICK;
     }
     return getch();
 }
@@ -82,26 +88,7 @@ void NCurses::closeWindow()
     endwin();
 }
 
-std::string getSubString(std::string str, int x, bool isSpriteSheet)
-{
-    size_t pos;
-
-    if (!isSpriteSheet)
-        return str;
-    for (int i = 0; i < x; i++) {
-        pos = str.find("¤§");
-        if (pos == std::string::npos)
-            return str;
-        str = str.substr(pos + 4);
-    }
-    pos = str.find("¤§");
-    if (pos == std::string::npos)
-        return str;
-    str = str.substr(0, pos);
-    return str;
-}
-
-void NCurses::display(std::map<std::string, std::unique_ptr<IObject>>& objects)
+void NCurses::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
 {
     std::pair<int, int> pos;
     short i;
@@ -110,28 +97,25 @@ void NCurses::display(std::map<std::string, std::unique_ptr<IObject>>& objects)
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
         if (elt->second->getType() == SPRITE) {
             auto sprite = std::any_cast<std::list<std::string>>(elt->second->getSprite());
-            bool isSpriteSheet = false;
-            int x = std::get<IObject::SpriteProperties>(elt->second->getProperties()).offset.first + 1;
-            (void)x;
-            int y = std::get<IObject::SpriteProperties>(elt->second->getProperties()).offset.second + 1;
             i = 0;
             pos = elt->second.get()->getPosition();
             for (auto elt2 : sprite) {
-                if (elt2.find("§¤") != std::string::npos) {
-                    y--;
-                    isSpriteSheet = true;
-                    continue;
-                }
-                if ((isSpriteSheet && y == 0) || !isSpriteSheet) {
-                    mvprintw(pos.second * LINES / 1000 + i, pos.first * COLS / 1000, "%s", getSubString(elt2, x, isSpriteSheet).c_str());
-                    i++;
-                }
+                mvprintw(pos.second * LINES / 1000 + i, pos.first * COLS / 1000, "%s", elt2.c_str());
+                i++;
             }
         } else if (elt->second->getType() == TEXT) {
-            std::string text = std::get<IObject::TextProperties>(elt->second->getProperties()).text;
+            std::string text = std::get<Arcade::IObject::TextProperties>(elt->second->getProperties()).text;
             pos = elt->second.get()->getPosition();
             mvprintw(pos.second * LINES / 1000, pos.first * COLS / 1000 + text.size() / 2, "%s", text.c_str());
         }
     }
     refresh();
+}
+
+extern "C"
+{
+    std::unique_ptr<Arcade::IDisplayModule> createInstanceIDisplay()
+    {
+        return std::make_unique<NCurses>();
+    }
 }

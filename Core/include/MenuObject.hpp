@@ -9,7 +9,7 @@
 
 #include "IObject.hpp"
 
-class MenuObject : public IObject
+class MenuObject : public Arcade::IObject
 {
     public:
         MenuObject(std::string type, std::string name);
@@ -39,5 +39,5 @@ class MenuObject : public IObject
         std::string _name;
         std::any _texture;
         std::string _text;
-        IObject::Properties _properties;
+        Arcade::IObject::Properties _properties;
 };

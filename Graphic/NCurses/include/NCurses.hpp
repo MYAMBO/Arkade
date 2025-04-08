@@ -12,13 +12,13 @@
 #include "KeyCodes.hpp"
 #include "IDisplayModule.hpp"
 
-class NCurses : public IDisplayModule
+class NCurses : public Arcade::IDisplayModule
 {
     public:
         NCurses();
         ~NCurses();
 
-        void initObject(std::map<std::string, std::unique_ptr<IObject>>&);
+        void initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>&);
 
         int getInput();
         std::pair<int, int> getMousePos() const;
@@ -26,17 +26,9 @@ class NCurses : public IDisplayModule
         void openWindow();
         void closeWindow();
 
-        void display(std::map<std::string, std::unique_ptr<IObject>>&);
+        void display(std::map<std::string, std::unique_ptr<Arcade::IObject>>&);
 
         std::string getName() const;
     private:
         std::pair<int, int> _mousePos;
 };
-
-extern "C"
-{
-    std::unique_ptr<IDisplayModule> createInstanceIDisplay()
-    {
-        return std::make_unique<NCurses>();
-    }
-}

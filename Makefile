@@ -9,6 +9,7 @@ CORE_SRC 			= 		Core/src/Lib.cpp 						\
 							Core/src/Core.cpp 						\
 							Core/src/main.cpp 						\
 							Core/src/Menu.cpp 						\
+							Core/src/Arkade.cpp 					\
 							Core/src/Parsing.cpp 					\
 							Core/src/MenuObject.cpp 				\
 
@@ -27,7 +28,7 @@ TEST_SRC 			=		Core/src/Lib.cpp 						\
 							Core/src/Core.cpp 						\
 							tests/testCore.cpp 						\
 
-CORE_OBJ 			= 		$(CORE_SRC:%.cpp=obj/%.o) $(NIBBLER_OBJ)
+CORE_OBJ 			= 		$(CORE_SRC:%.cpp=obj/%.o)
 
 NIBBLER_OBJ 		=		$(NIBBLER_SRC:%.cpp=obj/%.o)
 
@@ -81,7 +82,7 @@ GREEN           =     \033[1;32m
 BLUE            =     \033[1;34m
 NC              =     \033[0m
 
-all:	core games graphicals
+all:	core graphicals games
 
 debug: CPPFLAGS += -g
 debug: all

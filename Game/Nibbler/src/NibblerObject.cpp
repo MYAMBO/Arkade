@@ -66,7 +66,7 @@ void NibblerObject::setProperties(IObject::Properties properties)
     _properties = properties;
 }
 
-IObject::Properties NibblerObject::getProperties()
+Arcade::IObject::Properties NibblerObject::getProperties()
 {
     return _properties;
 }
