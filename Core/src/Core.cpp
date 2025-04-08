@@ -16,8 +16,9 @@ Core::Core()
 
     for (auto file : std::filesystem::directory_iterator(LIB_PATH)) {
         if (!file.is_directory()) {
+            printf("path : %s\n", file.path().c_str());
             Lib lib (file);
-
+            
             createInstanceIDisplay = lib.getIdisplayCreatorFunc();
             createInstanceIGame = lib.getIGameCreatorFunc();
             if (createInstanceIDisplay) {

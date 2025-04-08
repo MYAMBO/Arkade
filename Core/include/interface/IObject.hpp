@@ -35,15 +35,16 @@ namespace Arcade {
             u_int32_t color;
             size_t characterSize;
             std::string text;
-            ~TextProperties() = default;
         };
 
-        struct SpriteProperties {
-            std::pair<int, int> size;
-            std::pair<int, int> offset;
-            std::pair<float, float> scale;
-            ~SpriteProperties() = default;
-        };
+    struct SpriteProperties {
+        std::pair<int, int> size;
+        std::pair<int, int> offset;
+        std::pair<int, int> textSize;
+        std::pair<int, int> textOffset;
+        std::pair<float, float> scale;
+        u_int32_t textColor;
+    };
 
         using Properties = std::variant<TextProperties, SpriteProperties>;
 

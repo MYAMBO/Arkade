@@ -37,27 +37,25 @@ void SFMLModule::initObject(std::map<std::string, std::unique_ptr<Arcade::IObjec
         if (type == SPRITE) {
             auto texture = std::make_shared<sf::Texture>();
             auto sprite = std::make_shared<sf::Sprite>();
+            auto properties = std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties());
 
-            texture->loadFromFile("assets/png/" + path + ".png");
+            texture->loadFromFile("assets/" + path + ".png");
             sprite->setTexture(*texture.get());
-            sprite->setTextureRect(
-                {std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties()).offset.first * std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties()).size.first
-                , std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties()).offset.second * std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties()).size.second
-                , std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties()).size.first, std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties()).size.second});
-            sprite->setScale(std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties()).scale.first, std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties()).scale.second);
+            sprite->setTextureRect({properties.offset.first, properties.offset.second, properties.size.first, properties.size.second});
+            //sprite->setScale(properties.scale.first, properties.scale.second);
             elt->second->setTexture(std::any(texture));
             elt->second->setSprite(std::any(sprite));
-        }
-        if (type == TEXT) {
+        } else if (type == TEXT) {
             auto text = std::make_shared<sf::Text>();
             auto font = std::make_shared<sf::Font>();
+            auto properties = std::get<Arcade::IObject::TextProperties>(elt->second->getProperties());
 
             font->loadFromFile("assets/" + path + ".ttf");
             text->setFont(*font.get());
-            text->setString(std::get<Arcade::IObject::TextProperties>(elt->second->getProperties()).text);
-            text->setCharacterSize(std::get<Arcade::IObject::TextProperties>(elt->second->getProperties()).characterSize);
+            text->setString(properties.text);
+            text->setCharacterSize(properties.characterSize);
             text->setFillColor(sf::Color::White);
-            text->setOrigin(std::get<Arcade::IObject::TextProperties>(elt->second->getProperties()).characterSize / 2, 0);
+            text->setOrigin(properties.characterSize / 2, 0);
             elt->second->setTexture(std::any(font));
             elt->second->setSprite(std::any(text));
         }
@@ -118,4 +116,12 @@ void SFMLModule::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>
         }
     }
     this->_window->display();
+}
+
+extern "C"
+{
+    std::unique_ptr<Arcade::IDisplayModule> createInstanceIDisplay()
+    {
+        return std::make_unique<SFMLModule>();
+    }
 }

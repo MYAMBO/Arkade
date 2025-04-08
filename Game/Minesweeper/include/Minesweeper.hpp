@@ -26,9 +26,3 @@ class Minesweeper : public Arcade::IGameModule {
     private:
         std::map<std::string, std::unique_ptr<Arcade::IObject>> &_objects;
 };
-
-extern "C" {
-    std::unique_ptr<Arcade::IGameModule> createInstanceIGame() {
-        return std::make_unique<Minesweeper>();
-    }
-}

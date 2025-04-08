@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include <list>
-
 #include "Lib.hpp"
 
 #define LIB_PATH ("lib")

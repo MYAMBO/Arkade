@@ -32,11 +32,3 @@ class NCurses : public Arcade::IDisplayModule
     private:
         std::pair<int, int> _mousePos;
 };
-
-extern "C"
-{
-    std::unique_ptr<Arcade::IDisplayModule> createInstanceIDisplay()
-    {
-        return std::make_unique<NCurses>();
-    }
-}

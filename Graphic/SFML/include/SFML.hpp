@@ -32,11 +32,3 @@ class SFMLModule : public Arcade::IDisplayModule
         std::unique_ptr<sf::RenderWindow> _window;
         sf::Event _event;
 };
-
-extern "C"
-{
-    std::unique_ptr<Arcade::IDisplayModule> createInstanceIDisplay()
-    {
-        return std::make_unique<SFMLModule>();
-    }
-}

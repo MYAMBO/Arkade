@@ -16,51 +16,51 @@ Menu::Menu(Core core, std::string pathlib)
     _indexDisplays = 0;
     _isGameLaunched = false;
     addObject(SPRITE, "2/title");
-    _objects["2/title"]->setTexturePath("arcade");
-    _objects["2/title"]->setProperties(Arcade::IObject::SpriteProperties{{1237, 316}, {0, 0}, {1, 1}});
+    _objects["2/title"]->setTexturePath("Menu/arcade");
+    _objects["2/title"]->setProperties(Arcade::IObject::SpriteProperties{{1237, 316}, {0, 0}, {109, 11}, {0, 0}, {1, 1}, WHITE});
     _objects["2/title"]->setPosition({160, 90});
     addObject(SPRITE, "1/background");
-    _objects["1/background"]->setTexturePath("background");
-    _objects["1/background"]->setProperties(Arcade::IObject::SpriteProperties{{3000, 2000}, {0, 0}, {0.64, 0.54}});
+    _objects["1/background"]->setTexturePath("Menu/background");
+    _objects["1/background"]->setProperties(Arcade::IObject::SpriteProperties{{3000, 2000}, {0, 0}, {0, 0}, {0, 0}, {0.64, 0.54}, WHITE});
     _objects["1/background"]->setPosition({0, 0});
     addObject(SPRITE, "2/arrowUp");
-    _objects["2/arrowUp"]->setTexturePath("arrow");
-    _objects["2/arrowUp"]->setProperties(Arcade::IObject::SpriteProperties{{170, 170}, {1, 0}, {0.7, 0.7}});
+    _objects["2/arrowUp"]->setTexturePath("Menu/arrow");
+    _objects["2/arrowUp"]->setProperties(Arcade::IObject::SpriteProperties{{170, 170}, {170, 0}, {5, 3}, {5, 0}, {0.7, 0.7}, WHITE});
     _objects["2/arrowUp"]->setPosition({170, 450});
     addObject(SPRITE, "2/arrowDown");
-    _objects["2/arrowDown"]->setTexturePath("arrow");
-    _objects["2/arrowDown"]->setProperties(Arcade::IObject::SpriteProperties{{170, 170}, {1, 1}, {0.7, 0.7}});
+    _objects["2/arrowDown"]->setTexturePath("Menu/arrow");
+    _objects["2/arrowDown"]->setProperties(Arcade::IObject::SpriteProperties{{170, 170}, {170, 170}, {5, 3}, {5, 3}, {0.7, 0.7}, WHITE});
     _objects["2/arrowDown"]->setPosition({170, 800});
     addObject(SPRITE, "2/arrowLeft");
-    _objects["2/arrowLeft"]->setTexturePath("arrow");
-    _objects["2/arrowLeft"]->setProperties(Arcade::IObject::SpriteProperties{{170, 170}, {0, 1}, {0.7, 0.7}});
+    _objects["2/arrowLeft"]->setTexturePath("Menu/arrow");
+    _objects["2/arrowLeft"]->setProperties(Arcade::IObject::SpriteProperties{{170, 170}, {0, 170}, {5, 3}, {0, 3}, {0.7, 0.7}, WHITE});
     _objects["2/arrowLeft"]->setPosition({620, 630});
     addObject(SPRITE, "2/arrowRight");
-    _objects["2/arrowRight"]->setTexturePath("arrow");
-    _objects["2/arrowRight"]->setProperties(Arcade::IObject::SpriteProperties{{170, 170}, {2, 1}, {0.7, 0.7}});
+    _objects["2/arrowRight"]->setTexturePath("Menu/arrow");
+    _objects["2/arrowRight"]->setProperties(Arcade::IObject::SpriteProperties{{170, 170}, {340, 170}, {5, 3}, {10, 3}, {0.7, 0.7}, WHITE});
     _objects["2/arrowRight"]->setPosition({870, 630});
     addObject(SPRITE, "2/play");
-    _objects["2/play"]->setTexturePath("play");
-    _objects["2/play"]->setProperties(Arcade::IObject::SpriteProperties{{173, 173}, {0, 0}, {1, 1}});
+    _objects["2/play"]->setTexturePath("Menu/play");
+    _objects["2/play"]->setProperties(Arcade::IObject::SpriteProperties{{173, 173}, {0, 0}, {27, 5}, {0, 0}, {1, 1}, WHITE});
     _objects["2/play"]->setPosition({440, 440});
     addObject(TEXT, "4/Games");
-    _objects["4/Games"]->setTexturePath("arcade");
+    _objects["4/Games"]->setTexturePath("Menu/font");
     _objects["4/Games"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, core.getGameModuleList().begin()->second->getName()});
     _objects["4/Games"]->setPosition({145, 670});
     addObject(TEXT, "4/Displays");
-    _objects["4/Displays"]->setTexturePath("arcade");
+    _objects["4/Displays"]->setTexturePath("Menu/font");
     _objects["4/Displays"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, pathlib});
     _objects["4/Displays"]->setPosition({720, 670});
     addObject(TEXT, "4/Score");
-    _objects["4/Score"]->setTexturePath("arcade");
+    _objects["4/Score"]->setTexturePath("Menu/font");
     _objects["4/Score"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, "Score : 0"});
     _objects["4/Score"]->setPosition({400, 800});
     addObject(TEXT, "2/Player");
-    _objects["2/Player"]->setTexturePath("arcade");
+    _objects["2/Player"]->setTexturePath("Menu/font");
     _objects["2/Player"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, "Player : "});
     _objects["2/Player"]->setPosition({350, 850});
     addObject(TEXT, "2/Name");
-    _objects["2/Name"]->setTexturePath("arcade");
+    _objects["2/Name"]->setTexturePath("Menu/font");
     _objects["2/Name"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, ""});
     _objects["2/Name"]->setPosition({550, 850});
     _games = core.getGameModuleList();
@@ -98,18 +98,18 @@ bool Menu::myGetGlobalBound(std::string name, std::pair<int, int> mousePos)
     auto object = _objects[name].get();
     auto pos = object->getPosition();
     auto size = std::get<Arcade::IObject::SpriteProperties>(object->getProperties()).size;
-    auto scale = std::get<Arcade::IObject::SpriteProperties>(object->getProperties()).scale;
-    if (scale.first != 0 && scale.second != 0)
+    //auto scale = std::get<Arcade::IObject::SpriteProperties>(object->getProperties()).scale;
+    /*if (scale.first != 0 && scale.second != 0) {
         if ((mousePos.first >= pos.first && mousePos.first <= pos.first + size.first * scale.first) &&
             (mousePos.second >= pos.second && mousePos.second <= pos.second + size.second * scale.second)) {
             return true;
         }
-    if (scale.first == 0 || scale.second == 0) {
+    } else {*/
         if (mousePos.first >= pos.first && mousePos.first <= pos.first + size.first &&
             mousePos.second >= pos.second && mousePos.second <= pos.second + size.second) {
             return true;
         }
-    }
+    //}
     return false;
 }
 

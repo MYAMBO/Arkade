@@ -48,3 +48,11 @@ void Minesweeper::addObject(std::string type, std::string name)
     (void)type;
     (void)name;
 }
+
+extern "C"
+{
+    std::unique_ptr<Arcade::IGameModule> createInstanceIGame()
+    {
+        return std::make_unique<Minesweeper>();
+    }
+}
