@@ -67,7 +67,7 @@ void Arkade::nextDisplay()
 
 bool Arkade::exitGame(int input)
 {
-    if (input == KEY_ESC) {
+    if (input == K_ESC) {
         if (_selectedGame->getName() == "Menu") {
             return false;
         } else {
@@ -77,4 +77,16 @@ bool Arkade::exitGame(int input)
         }
     }
     return true;
+}
+
+void Arkade::askName()
+{
+    std::string name;
+
+    std::cout << "Please enter your name: ";
+    std::getline(std::cin, name);
+    if (name.size() == 0)
+        name = "Anonymous";
+    _menu->getObjects()["2/Name"]->setProperties(Arcade::IObject::TextProperties{0xFFFFFF, 40, name});
+    std::cout << "Welcome " << name << "!" << std::endl;
 }

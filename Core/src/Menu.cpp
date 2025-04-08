@@ -55,6 +55,14 @@ Menu::Menu(Core core, std::string pathlib)
     _objects["4/Score"]->setTexturePath("Menu/font");
     _objects["4/Score"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, "Score : 0"});
     _objects["4/Score"]->setPosition({400, 800});
+    addObject(TEXT, "2/Player");
+    _objects["2/Player"]->setTexturePath("arcade");
+    _objects["2/Player"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, "Player : "});
+    _objects["2/Player"]->setPosition({350, 850});
+    addObject(TEXT, "2/Name");
+    _objects["2/Name"]->setTexturePath("arcade");
+    _objects["2/Name"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, ""});
+    _objects["2/Name"]->setPosition({550, 850});
     _games = core.getGameModuleList();
     _displays = core.getDisplayModuleList();
 }
@@ -107,11 +115,11 @@ bool Menu::myGetGlobalBound(std::string name, std::pair<int, int> mousePos)
 
 bool Menu::update(std::pair<int, int> mousePos, int input)
 {
-    if (myGetGlobalBound("2/play", mousePos) && input == KEY_RCLICK) {
+    if (myGetGlobalBound("2/play", mousePos) && input == K_RCLICK) {
         _isGameLaunched = true;
         return true;
     }
-    if ((myGetGlobalBound("2/arrowUp", mousePos) && input == KEY_RCLICK) || input == K_UP) {
+    if ((myGetGlobalBound("2/arrowUp", mousePos) && input == K_RCLICK) || input == K_UP) {
         _indexGames++;
         if (_indexGames >= static_cast<int>(_games.size()))
             _indexGames = 0;
@@ -125,7 +133,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         }
         return true;
     }
-    if ((myGetGlobalBound("2/arrowDown", mousePos) && input == KEY_RCLICK) || input == K_DOWN) {
+    if ((myGetGlobalBound("2/arrowDown", mousePos) && input == K_RCLICK) || input == K_DOWN) {
         _indexGames--;
         if (_indexGames < 0)
             _indexGames = static_cast<int>(_games.size()) - 1;
@@ -139,7 +147,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         }
         return true;
     }
-    if ((myGetGlobalBound("2/arrowLeft", mousePos) && input == KEY_RCLICK) || input == K_LEFT) {
+    if ((myGetGlobalBound("2/arrowLeft", mousePos) && input == K_RCLICK) || input == K_LEFT) {
         _indexDisplays--;
         if (_indexDisplays < 0)
             _indexDisplays = static_cast<int>(_displays.size()) - 1;
@@ -153,7 +161,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
         }
         return true;
     }
-    if ((myGetGlobalBound("2/arrowRight", mousePos) && input == KEY_RCLICK) || input == K_RIGHT) {
+    if ((myGetGlobalBound("2/arrowRight", mousePos) && input == K_RCLICK) || input == K_RIGHT) {
         _indexDisplays++;
         if (_indexDisplays >= static_cast<int>(_displays.size()))
             _indexDisplays = 0;

@@ -60,7 +60,7 @@ int NCurses::getInput()
         this->_mousePos.first = static_cast<int>((event.x * 1000.0) / COLS);
         this->_mousePos.second = static_cast<int>((event.y * 1000.0) / LINES);
         if (event.bstate == BUTTON1_PRESSED || event.bstate == BUTTON2_PRESSED)
-            return KEY_RCLICK;
+            return K_RCLICK;
     }
     return getch();
 }
