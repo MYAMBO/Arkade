@@ -55,6 +55,14 @@ Menu::Menu(Core core, std::string pathlib)
     _objects["4/Score"]->setTexturePath("arcade");
     _objects["4/Score"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, "Score : 0"});
     _objects["4/Score"]->setPosition({400, 800});
+    addObject(TEXT, "2/Player");
+    _objects["2/Player"]->setTexturePath("arcade");
+    _objects["2/Player"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, "Player : "});
+    _objects["2/Player"]->setPosition({350, 850});
+    addObject(TEXT, "2/Name");
+    _objects["2/Name"]->setTexturePath("arcade");
+    _objects["2/Name"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, ""});
+    _objects["2/Name"]->setPosition({550, 850});
     _games = core.getGameModuleList();
     _displays = core.getDisplayModuleList();
 }

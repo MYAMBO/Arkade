@@ -17,6 +17,7 @@ class Arkade {
         ~Arkade();
 
         void run();
+        void askName();
         void nextGame();
         void nextDisplay();
         bool exitGame(int input);
