@@ -57,7 +57,7 @@ SFML_FLAGS 			= 		-I Graphic/SFML/include
 
 NCURSES_FLAGS 		= 		-I Graphic/NCurses/include
 
-CPPFLAGS 			= 		-Werror -Wall -Wextra -Iinclude -g
+CPPFLAGS 			= 		-Werror -Wall -Wextra -Iinclude
 
 LIB_FLAGS 			=		-shared
 
