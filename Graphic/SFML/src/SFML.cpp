@@ -70,7 +70,7 @@ int SFMLModule::getInput()
         if (this->_event.type == sf::Event::KeyPressed)
             return this->_event.key.code + 'a';
         if (this->_event.type == sf::Event::MouseButtonPressed)
-            return KEY_RCLICK;
+            return K_RCLICK;
     }
     return -1;
 }

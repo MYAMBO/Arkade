@@ -67,7 +67,7 @@ void Arkade::nextDisplay()
 
 bool Arkade::exitGame(int input)
 {
-    if (input == KEY_ESC) {
+    if (input == K_ESC) {
         if (_selectedGame->getName() == "Menu") {
             return false;
         } else {
