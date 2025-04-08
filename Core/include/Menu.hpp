@@ -31,7 +31,6 @@ class Menu : public Arcade::IGameModule {
         bool myGetGlobalBound(std::string name, std::pair<int, int> mousePos);
 
         //Setters
-        void setName(std::string name);
         void setIsGameLaunched(bool isGameLaunched);
 
         // Methods
