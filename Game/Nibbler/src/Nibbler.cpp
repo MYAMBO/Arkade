@@ -9,15 +9,15 @@
 #include "NibblerObject.hpp"
 
 Nibbler::Nibbler()
-    : _objects(*(new std::map<std::string, std::unique_ptr<IObject>>()))
+    : _objects(*(new std::map<std::string, std::unique_ptr<Arcade::IObject>>()))
 {
     addObject(SPRITE, "2/snakehead");
     _objects["2/snakehead"]->setTexturePath("Nibbler/nibblerHeadDown");
-    _objects["2/snakehead"]->setProperties(IObject::SpriteProperties{{100, 100}, {0, 0}, {5, 5}, {0, 0}, {1, 1}, WHITE});
+    _objects["2/snakehead"]->setProperties(Arcade::IObject::SpriteProperties{{100, 100}, {0, 0}, {5, 5}, {0, 0}, {1, 1}, WHITE});
     _objects["2/snakehead"]->setPosition({0, 0});
     addObject(SPRITE, "1/food");
     _objects["1/food"]->setTexturePath("Nibbler/apple");
-    _objects["1/food"]->setProperties(IObject::SpriteProperties{{100, 100}, {0, 0}, {5, 4}, {0, 0}, {1, 1}, WHITE});
+    _objects["1/food"]->setProperties(Arcade::IObject::SpriteProperties{{100, 100}, {0, 0}, {5, 4}, {0, 0}, {1, 1}, WHITE});
     _objects["1/food"]->setPosition({100, 100});
 }
 
@@ -62,7 +62,7 @@ void Nibbler::deleteObject(std::string name)
     _objects.erase(name);
 }
 
-std::map<std::string, std::unique_ptr<IObject>>& Nibbler::getObjects()
+std::map<std::string, std::unique_ptr<Arcade::IObject>>& Nibbler::getObjects()
 {
     return _objects;
 }
@@ -75,4 +75,12 @@ std::string Nibbler::getName() const
 std::size_t Nibbler::getScore() const
 {
     return 0;
+}
+
+extern "C"
+{
+    std::unique_ptr<Arcade::IGameModule> createInstanceIGame()
+    {
+        return std::make_unique<Nibbler>();
+    }
 }

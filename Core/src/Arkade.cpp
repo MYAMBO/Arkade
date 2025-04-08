@@ -25,7 +25,7 @@ void Arkade::run()
 
     _games = _core.getGameModuleList();
     _displays = _core.getDisplayModuleList();
-    _selectedGame = std::dynamic_pointer_cast<IGameModule>(_menu);
+    _selectedGame = std::dynamic_pointer_cast<Arcade::IGameModule>(_menu);
     _selectedDisplay = _displays[_pathlib];
     _selectedDisplay->initObject(_selectedGame->getObjects());
     _selectedDisplay->openWindow();
@@ -48,16 +48,16 @@ void Arkade::run()
 void Arkade::nextGame()
 {
     if (_menu->getIsGameLaunched() == true) {
-        _selectedGame = _games[std::get<IObject::TextProperties>(_menu->getObjects()["4/Games"]->getProperties()).text];
+        _selectedGame = _games[std::get<Arcade::IObject::TextProperties>(_menu->getObjects()["4/Games"]->getProperties()).text];
         _selectedDisplay->initObject(_selectedGame->getObjects());
     }
 }
 
 void Arkade::nextDisplay()
 {
-    if (std::get<IObject::TextProperties>(_selectedGame->getObjects()["4/Displays"]->getProperties()).text != _pathlib) {
+    if (std::get<Arcade::IObject::TextProperties>(_selectedGame->getObjects()["4/Displays"]->getProperties()).text != _pathlib) {
         _selectedDisplay->closeWindow();
-        _pathlib = std::get<IObject::TextProperties>(_selectedGame->getObjects()["4/Displays"]->getProperties()).text;
+        _pathlib = std::get<Arcade::IObject::TextProperties>(_selectedGame->getObjects()["4/Displays"]->getProperties()).text;
         _selectedDisplay = _displays[_pathlib];
         _selectedDisplay->initObject(_selectedGame->getObjects());
         _selectedDisplay->openWindow();
@@ -72,7 +72,7 @@ bool Arkade::exitGame(int input)
             return false;
         } else {
             _menu->setIsGameLaunched(false);
-            _selectedGame = std::shared_ptr<IGameModule>(_menu);
+            _selectedGame = std::shared_ptr<Arcade::IGameModule>(_menu);
             _selectedDisplay->initObject(_selectedGame->getObjects());
         }
     }

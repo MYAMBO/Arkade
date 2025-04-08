@@ -9,7 +9,7 @@
 
 #include "IObject.hpp"
 
-class NibblerObject : public IObject
+class NibblerObject : public Arcade::IObject
 {
     public:
         NibblerObject(std::string type, std::string name);
@@ -39,5 +39,5 @@ class NibblerObject : public IObject
         std::string _name;
         std::any _texture;
         std::string _text;
-        IObject::Properties _properties;
+        Arcade::IObject::Properties _properties;
 };

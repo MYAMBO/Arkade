@@ -26,7 +26,7 @@ std::string NCurses::getName() const
     return NCURSES;
 }
 
-void NCurses::initObject(std::map<std::string, std::unique_ptr<IObject>>& objects)
+void NCurses::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
 {
     std::string type;
     std::string path;
@@ -35,8 +35,8 @@ void NCurses::initObject(std::map<std::string, std::unique_ptr<IObject>>& object
         type = elt->second->getType();
         path = elt->second->getTexturePath();
         if (type == SPRITE) {
-            auto properties = std::get<IObject::SpriteProperties>(elt->second->getProperties());
-            std::ifstream file ("assets/string/" + path + ".txt");
+            auto properties = std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties());
+            std::ifstream file ("assets/" + path + ".txt");
             std::string line;
             std::list<std::string> strList;
             int i = 0;
@@ -88,7 +88,7 @@ void NCurses::closeWindow()
     endwin();
 }
 
-void NCurses::display(std::map<std::string, std::unique_ptr<IObject>>& objects)
+void NCurses::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
 {
     std::pair<int, int> pos;
     short i;
@@ -104,10 +104,18 @@ void NCurses::display(std::map<std::string, std::unique_ptr<IObject>>& objects)
                 i++;
             }
         } else if (elt->second->getType() == TEXT) {
-            std::string text = std::get<IObject::TextProperties>(elt->second->getProperties()).text;
+            std::string text = std::get<Arcade::IObject::TextProperties>(elt->second->getProperties()).text;
             pos = elt->second.get()->getPosition();
             mvprintw(pos.second * LINES / 1000, pos.first * COLS / 1000 + text.size() / 2, "%s", text.c_str());
         }
     }
     refresh();
+}
+
+extern "C"
+{
+    std::unique_ptr<Arcade::IDisplayModule> createInstanceIDisplay()
+    {
+        return std::make_unique<NCurses>();
+    }
 }
