@@ -32,6 +32,7 @@ int main(int argc, char **argv)
 
     Arkade arkade(parsing.getLib(), core);
 
+    arkade.askName();
     arkade.run();
     return 0;
 }
