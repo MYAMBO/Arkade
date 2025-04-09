@@ -42,7 +42,7 @@ void SFMLModule::initObject(std::map<std::string, std::unique_ptr<Arcade::IObjec
             texture->loadFromFile("assets/" + path + ".png");
             sprite->setTexture(*texture.get());
             sprite->setTextureRect({properties.offset.first, properties.offset.second, properties.size.first, properties.size.second});
-            //sprite->setScale(properties.scale.first, properties.scale.second);
+            sprite->setScale(properties.scale.first, properties.scale.second);
             elt->second->setTexture(std::any(texture));
             elt->second->setSprite(std::any(sprite));
         } else if (type == TEXT) {
@@ -65,8 +65,21 @@ void SFMLModule::initObject(std::map<std::string, std::unique_ptr<Arcade::IObjec
 int SFMLModule::getInput()
 {
     while (this->_window->pollEvent(this->_event)) {
-        if (this->_event.type == sf::Event::KeyPressed)
+        if (this->_event.type == sf::Event::KeyPressed) {
+            switch (this->_event.key.code) {
+                case sf::Keyboard::Up:
+                    return K_UP;
+                case sf::Keyboard::Down:
+                    return K_DOWN;
+                case sf::Keyboard::Left:
+                    return K_LEFT;
+                case sf::Keyboard::Right:
+                    return K_RIGHT;
+                default:
+                    break;
+            }
             return this->_event.key.code + 'a';
+        }
         if (this->_event.type == sf::Event::MouseButtonPressed)
             return K_RCLICK;
     }
