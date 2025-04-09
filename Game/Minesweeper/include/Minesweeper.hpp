@@ -7,12 +7,14 @@
 
 #pragma once
 
+#include <memory>
+#include <vector>
 #include "IGameModule.hpp"
 
 class Minesweeper : public Arcade::IGameModule {
     public:
         Minesweeper();
-        ~Minesweeper();
+        ~Minesweeper() noexcept override;
 
         std::string getName() const;
         std::size_t getScore() const;
@@ -23,6 +25,22 @@ class Minesweeper : public Arcade::IGameModule {
         void deleteObject(std::string name);
         void addObject(std::string type, std::string name);
 
+        void addGridObject(std::string type, std::string name);
+        void initGrid();
+        void generateMines();
+        int countAdjacentMines(int x, int y);
+
+
     private:
-        std::map<std::string, std::unique_ptr<Arcade::IObject>> &_objects;
+        std::map<std::string, std::unique_ptr<Arcade::IObject>> _objects;
+        std::vector<std::vector<std::unique_ptr<Arcade::IObject>>> _grid;
+        static constexpr int GRID_WIDTH = 10;
+        static constexpr int GRID_HEIGHT = 8;
+        static constexpr int TILE_SIZE = 32;
+        static constexpr int GRID_OFFSET_X = 200;
+        static constexpr int GRID_OFFSET_Y = 100;
+        int _mines = 10;
+        std::vector<std::vector<bool>> _minefield;
+        std::vector<std::vector<bool>> _revealed;
+        std::vector<std::vector<bool>> _flagged;
 };

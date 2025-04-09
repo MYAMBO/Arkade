@@ -1,19 +1,78 @@
 /*
-** EPITECH PROJECT, 2025
+** EPITECH PROJECT, 2024
 ** arkade
 ** File description:
 ** Minesweeper.cpp
 */
 
+#include "MineObject.hpp"
 #include "Minesweeper.hpp"
 
 Minesweeper::Minesweeper()
-    : _objects(*new std::map<std::string, std::unique_ptr<Arcade::IObject>>())
+    : _objects(*(new std::map<std::string, std::unique_ptr<Arcade::IObject>>()))
 {
+    _grid = std::vector<std::vector<std::unique_ptr<Arcade::IObject>>>(8, std::vector<std::unique_ptr<Arcade::IObject>>(10));
+    addObject(SPRITE, "2/mine");
+    _objects["2/mine"]->setTexturePath("Minesweeper/bomb");
+    _objects["2/mine"]->setProperties(Arcade::IObject::SpriteProperties{{1024, 1024}, {0, 0}, {3, 3}, {0, 0}, {0.1, 0.1}, WHITE});
+    _objects["2/mine"]->setPosition({210, 40});
+    addObject(SPRITE, "2/button");
+    _objects["2/button"]->setTexturePath("Minesweeper/button");
+    _objects["2/button"]->setProperties(Arcade::IObject::SpriteProperties{{512, 512}, {0, 0}, {3, 3}, {0, 0}, {0.1, 0.1}, WHITE});
+    _objects["2/button"]->setPosition({235, 40});
+    addObject(SPRITE, "2/flag");
+    _objects["2/flag"]->setTexturePath("Minesweeper/flag");
+    _objects["2/flag"]->setProperties(Arcade::IObject::SpriteProperties{{930, 899}, {0, 0}, {3, 3}, {0, 0}, {0.1, 0.1}, WHITE});
+    _objects["2/flag"]->setPosition({260, 40});
+    addObject(SPRITE, "1/background");
+    _objects["1/background"]->setTexturePath("Minesweeper/background");
+    _objects["1/background"]->setProperties(Arcade::IObject::SpriteProperties{{0, 0}, {0, 0}, {89, 31}, {0, 0}, {1, 1}, WHITE});
+    _objects["1/background"]->setPosition({200, 0});
 }
 
 Minesweeper::~Minesweeper()
 {
+    delete &_objects;
+}
+
+bool Minesweeper::update(std::pair<int, int> mousePos, int input)
+{
+    // Update the objects according to the inputs
+    (void)mousePos;
+    (void)input;
+    return true;
+}
+
+void Minesweeper::addObject(std::string type, std::string name)
+{
+    if (_objects.find(name) == _objects.end()) {
+        _objects[name] = std::make_unique<MineObject>(type, name);
+    }
+}
+
+void Minesweeper::addGridObject(std::string type, std::string name)
+{
+    if (_grid.size() < 10) {
+        _grid.resize(10);
+    }
+    if (_grid[0].size() < 10) {
+        for (size_t i = 0; i < 10; i++) {
+            _grid[i].resize(10);
+        }
+    }
+    if (_grid[0][0] == nullptr) {
+        _grid[0][0] = std::make_unique<MineObject>(type, name);
+    }
+}
+
+void Minesweeper::deleteObject(std::string name)
+{
+    _objects.erase(name);
+}
+
+std::map<std::string, std::unique_ptr<Arcade::IObject>>& Minesweeper::getObjects()
+{
+    return _objects;
 }
 
 std::string Minesweeper::getName() const
@@ -24,29 +83,6 @@ std::string Minesweeper::getName() const
 std::size_t Minesweeper::getScore() const
 {
     return 0;
-}
-
-std::map<std::string, std::unique_ptr<Arcade::IObject>>& Minesweeper::getObjects()
-{
-    return _objects;
-}
-
-bool Minesweeper::update(std::pair<int, int> mousePos, int input)
-{
-    (void)mousePos;
-    (void)input;
-    return false;
-}
-
-void Minesweeper::deleteObject(std::string name)
-{
-    _objects.erase(name);
-}
-
-void Minesweeper::addObject(std::string type, std::string name)
-{
-    (void)type;
-    (void)name;
 }
 
 extern "C"
