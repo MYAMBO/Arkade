@@ -27,8 +27,8 @@ void Arkade::run()
     _displays = _core.getDisplayModuleList();
     _selectedGame = std::dynamic_pointer_cast<Arcade::IGameModule>(_menu);
     _selectedDisplay = _displays[_pathlib];
-    _selectedDisplay->initObject(_selectedGame->getObjects());
     _selectedDisplay->openWindow();
+    _selectedDisplay->initObject(_selectedGame->getObjects());
     while (input != 'p') {
         input = _selectedDisplay->getInput();
         _selectedGame->update(_selectedDisplay->getMousePos(), input);

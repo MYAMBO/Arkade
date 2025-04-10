@@ -75,7 +75,7 @@ LIBSFML_FLAGS 		= 		-lsfml-graphics -lsfml-window -lsfml-system
 
 LIBNCURSES_FLAGS 	= 		-lncurses
 
-LIBSDL2_FLAGS 	= 		-lSDL2
+LIBSDL2_FLAGS 	= 		-lSDL2 -lSDL2_image -lSDL2_ttf
 
 RED             =     \033[1;31m
 GREEN           =     \033[1;32m
