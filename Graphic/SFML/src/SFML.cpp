@@ -50,7 +50,6 @@ void SFMLModule::initObject(std::map<std::string, std::unique_ptr<Arcade::IObjec
             auto font = std::make_shared<sf::Font>();
             auto properties = std::get<Arcade::IObject::TextProperties>(elt->second->getProperties());
 
-            printf("assets/%s.ttf\n", path.c_str());
             font->loadFromFile("assets/" + path + ".ttf");
             text->setFont(*font.get());
             text->setString(properties.text);
