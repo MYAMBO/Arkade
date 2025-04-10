@@ -75,6 +75,8 @@ int SFMLModule::getInput()
                     return K_LEFT;
                 case sf::Keyboard::Right:
                     return K_RIGHT;
+                case sf::Keyboard::Escape:
+                    return K_ESC;
                 default:
                     break;
             }
