@@ -59,8 +59,8 @@ void Arkade::nextDisplay()
         _selectedDisplay->closeWindow();
         _pathlib = std::get<Arcade::IObject::TextProperties>(_selectedGame->getObjects()["4/Displays"]->getProperties()).text;
         _selectedDisplay = _displays[_pathlib];
-        _selectedDisplay->initObject(_selectedGame->getObjects());
         _selectedDisplay->openWindow();
+        _selectedDisplay->initObject(_selectedGame->getObjects());
         _selectedDisplay->display(_selectedGame->getObjects());
     }
 }
