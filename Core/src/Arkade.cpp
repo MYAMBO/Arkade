@@ -27,8 +27,8 @@ void Arkade::run()
     _displays = _core.getDisplayModuleList();
     _selectedGame = std::dynamic_pointer_cast<Arcade::IGameModule>(_menu);
     _selectedDisplay = _displays[_pathlib];
-    _selectedDisplay->openWindow();
     _selectedDisplay->initObject(_selectedGame->getObjects());
+    _selectedDisplay->openWindow();
     while (input != 'p') {
         input = _selectedDisplay->getInput();
         _selectedGame->update(_selectedDisplay->getMousePos(), input);
@@ -59,8 +59,8 @@ void Arkade::nextDisplay()
         _selectedDisplay->closeWindow();
         _pathlib = std::get<Arcade::IObject::TextProperties>(_selectedGame->getObjects()["4/Displays"]->getProperties()).text;
         _selectedDisplay = _displays[_pathlib];
-        _selectedDisplay->initObject(_selectedGame->getObjects());
         _selectedDisplay->openWindow();
+        _selectedDisplay->initObject(_selectedGame->getObjects());
         _selectedDisplay->display(_selectedGame->getObjects());
     }
 }
