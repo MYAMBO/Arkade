@@ -11,7 +11,14 @@
 Minesweeper::Minesweeper()
     : _objects(*(new std::map<std::string, std::unique_ptr<Arcade::IObject>>()))
 {
-    _grid = std::vector<std::vector<std::unique_ptr<Arcade::IObject>>>(8, std::vector<std::unique_ptr<Arcade::IObject>>(10));
+    for (int i = 0; i < GRID_WIDTH; i++) {
+        for (int j = 0; j < GRID_HEIGHT; j++) {
+            addGridObject(SPRITE, "grid/" + std::to_string(i) + "_" + std::to_string(j));
+            _gridObjects["grid/" + std::to_string(i) + "_" + std::to_string(j)]->setTexturePath("Minesweeper/button");
+            _gridObjects["grid/" + std::to_string(i) + "_" + std::to_string(j)][0]->setProperties(Arcade::IObject::SpriteProperties{{TILE_SIZE, TILE_SIZE}, {0, 0}, {0, 0}, {0, 0}, {1, 1}, WHITE});
+            _gridObjects["grid/" + std::to_string(i) + "_" + std::to_string(j)]->setPosition({GRID_OFFSET_X + i * TILE_SIZE, GRID_OFFSET_Y + j * TILE_SIZE});
+        }
+    }
     addObject(SPRITE, "2/mine");
     _objects["2/mine"]->setTexturePath("Minesweeper/bomb");
     _objects["2/mine"]->setProperties(Arcade::IObject::SpriteProperties{{1024, 1024}, {0, 0}, {3, 3}, {0, 0}, {0.1, 0.1}, WHITE});
@@ -52,16 +59,8 @@ void Minesweeper::addObject(std::string type, std::string name)
 
 void Minesweeper::addGridObject(std::string type, std::string name)
 {
-    if (_grid.size() < 10) {
-        _grid.resize(10);
-    }
-    if (_grid[0].size() < 10) {
-        for (size_t i = 0; i < 10; i++) {
-            _grid[i].resize(10);
-        }
-    }
-    if (_grid[0][0] == nullptr) {
-        _grid[0][0] = std::make_unique<MineObject>(type, name);
+    if (_gridObjects.find(name) == _gridObjects.end()) {
+        _gridObjects[name].push_back(std::make_unique<MineObject>(type, name));
     }
 }
 

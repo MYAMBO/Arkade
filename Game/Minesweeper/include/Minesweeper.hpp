@@ -33,7 +33,8 @@ class Minesweeper : public Arcade::IGameModule {
 
     private:
         std::map<std::string, std::unique_ptr<Arcade::IObject>> _objects;
-        std::vector<std::vector<std::unique_ptr<Arcade::IObject>>> _grid;
+        std::map<std::string, std::vector<std::unique_ptr<Arcade::IObject>>> _gridObjects;
+        
         static constexpr int GRID_WIDTH = 10;
         static constexpr int GRID_HEIGHT = 8;
         static constexpr int TILE_SIZE = 32;
