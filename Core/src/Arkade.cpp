@@ -18,6 +18,7 @@ Arkade::Arkade(std::string pathlib, Core core)
 Arkade::~Arkade()
 {
 }
+
 void Arkade::run()
 {
     bool end;
@@ -73,8 +74,12 @@ bool Arkade::exitGame(int input, bool end)
 {
     if (end) {
         _menu->setIsGameLaunched(false);
+        auto score = _selectedGame->getScore();
         _selectedGame = std::shared_ptr<Arcade::IGameModule>(_menu);
         _selectedDisplay->initObject(_selectedGame->getObjects());
+        std::string scoreText = "Score: " + std::to_string(score);
+        std::cout << scoreText << std::endl;
+        _selectedGame->getObjects()["4/Score"]->setProperties(Arcade::IObject::TextProperties{0xFFFFFF, 40, scoreText});
         return true;
     }
     if (input == K_ESC) {
@@ -82,8 +87,12 @@ bool Arkade::exitGame(int input, bool end)
             return false;
         } else {
             _menu->setIsGameLaunched(false);
+            auto score = _selectedGame->getScore();
             _selectedGame = std::shared_ptr<Arcade::IGameModule>(_menu);
             _selectedDisplay->initObject(_selectedGame->getObjects());
+            std::string scoreText = "Score: " + std::to_string(score);
+            std::cout << scoreText << std::endl;
+            _selectedGame->getObjects()["4/Score"]->setProperties(Arcade::IObject::TextProperties{0xFFFFFF, 40, scoreText});
         }
     }
     return true;
