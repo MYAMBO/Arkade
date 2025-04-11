@@ -30,5 +30,6 @@ class SFMLModule : public Arcade::IDisplayModule
         void display(std::map<std::string, std::unique_ptr<Arcade::IObject>>&);
     private:
         std::unique_ptr<sf::RenderWindow> _window;
+        std::map<std::string, bool> _isLoad;
         sf::Event _event;
 };
