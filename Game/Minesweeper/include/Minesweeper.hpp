@@ -32,7 +32,7 @@ class Minesweeper : public Arcade::IGameModule {
         int countAdjacentMines(int x, int y);
         int discoverCell(std::pair<int, int> mousePos);
         void flagCell(std::pair<int, int> mousePos);
-
+        bool isVictory() const;
 
     private:
         std::map<std::string, std::unique_ptr<Arcade::IObject>> _objects;
@@ -48,4 +48,5 @@ class Minesweeper : public Arcade::IGameModule {
         std::vector<std::vector<bool>> _minefield;
         std::vector<std::vector<bool>> _revealed;
         std::vector<std::vector<bool>> _flagged;
+        int _score;
 };

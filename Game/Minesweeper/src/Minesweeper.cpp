@@ -9,6 +9,7 @@
 #include "KeyCodes.hpp"
 #include "MineObject.hpp"
 #include "Minesweeper.hpp"
+#include <iostream>
 
 Minesweeper::Minesweeper()
 {
@@ -30,6 +31,7 @@ void Minesweeper::initGame()
     _minefield.resize(GRID_WIDTH, std::vector<bool>(GRID_HEIGHT, false));
     _revealed.resize(GRID_WIDTH, std::vector<bool>(GRID_HEIGHT, false));
     _flagged.resize(GRID_WIDTH, std::vector<bool>(GRID_HEIGHT, false));
+    _score = 0;
     for (int i = 0; i < GRID_WIDTH; i++) {
         for (int j = 0; j < GRID_HEIGHT; j++) {
             addGridObject(SPRITE, "grid/" + std::to_string(i) + "_" + std::to_string(j));
@@ -70,6 +72,10 @@ void Minesweeper::initGame()
                 std::move(_gridObjects["grid/" + std::to_string(i) + "_" + std::to_string(j)][0]);
         }
     }
+    addObject(TEXT, "4/Score");
+    _objects["4/Score"]->setTexturePath("Minesweeper/font");
+    _objects["4/Score"]->setProperties(Arcade::IObject::TextProperties{0xFFFFFF, 40, "Score : 0"});
+    _objects["4/Score"]->setPosition({1600, 300});
 }
 
 void Minesweeper::generateMines()
@@ -115,32 +121,11 @@ int Minesweeper::discoverCell(std::pair<int, int> mousePos)
         if (_revealed[gridX][gridY] || _flagged[gridX][gridY])
             return 1;
         std::string objectName = "grid/" + std::to_string(gridX) + "_" + std::to_string(gridY);
-        auto pos = _objects[objectName]->getPosition();
-        auto size = std::get<Arcade::IObject::SpriteProperties>(_objects[objectName]->getProperties()).size;
-        auto scale = std::get<Arcade::IObject::SpriteProperties>(_objects[objectName]->getProperties()).scale;
         if (_minefield[gridX][gridY]) {
             _gameOver = true;
             return 0;
         } else {
-            _revealed[gridX][gridY] = true;
-            int adjacentMines = countAdjacentMines(gridX, gridY);
-            addObject(TEXT, "text_" + std::to_string(gridX) + "_" + std::to_string(gridY));
-            _objects["text_" + std::to_string(gridX) + "_" + std::to_string(gridY)]->setTexturePath("Minesweeper/font");
-            _objects["text_" + std::to_string(gridX) + "_" + std::to_string(gridY)]->setPosition({pos.first + (size.first * scale.first) / 4, pos.second + (size.second * scale.second) / 4});
-            _objects["text_" + std::to_string(gridX) + "_" + std::to_string(gridY)]->setProperties(
-                Arcade::IObject::TextProperties{0x000000, 40, std::to_string(adjacentMines)});
-            _objects[objectName]->setProperties(
-                Arcade::IObject::SpriteProperties{
-                    {512, 512},
-                    {0, 0},
-                    {0, 0},
-                    {0, 0},
-                    {0.2, 0.2},
-                    0x4c4c4c
-                }
-            );
-            if (adjacentMines == 0)
-                revealEmptyCells(gridX, gridY);
+            revealEmptyCells(gridX, gridY);
         }
     }
     return 2;
@@ -161,13 +146,17 @@ void Minesweeper::flagCell(std::pair<int, int> mousePos)
         } else {
             _flagged[gridX][gridY] = true;
             _objects[objectName]->setProperties(
-                Arcade::IObject::SpriteProperties{{512, 512}, {0, 0}, {0, 0}, {0, 0}, {0.2, 0.2}, 0xFF0000FF});
+                Arcade::IObject::SpriteProperties{{512, 512}, {0, 0}, {0, 0}, {0, 0}, {0.2, 0.2}, 0xFF0F00FF});
         }
     }
 }
 
 bool Minesweeper::update(std::pair<int, int> mousePos, int input)
 {
+    if (isVictory()) {
+        _gameOver = true;
+        return true;
+    }
     if (_gameOver) {
         initGame();
         _gameOver = false;
@@ -184,21 +173,39 @@ bool Minesweeper::update(std::pair<int, int> mousePos, int input)
         flagCell(mousePos);
     return false;
 }
-
 void Minesweeper::revealEmptyCells(int x, int y)
 {
+    _score++;
+    std::string scoreText = "Score : " + std::to_string(_score);
+    _objects["4/Score"]->setProperties(Arcade::IObject::TextProperties{0xFFFFFF, 40, scoreText});
+    _objects["4/Score"]->setPosition({1600, 300});
     if (x < 0 || x >= GRID_WIDTH || y < 0 || y >= GRID_HEIGHT)
         return;
     if (_revealed[x][y] || _flagged[x][y])
         return;
     _revealed[x][y] = true;
-    auto pos = _objects["grid/" + std::to_string(x) + "_" + std::to_string(y)]->getPosition();
+    std::string objectName = "grid/" + std::to_string(x) + "_" + std::to_string(y);
+    auto pos = _objects[objectName]->getPosition();
+    auto size = std::get<Arcade::IObject::SpriteProperties>(_objects[objectName]->getProperties()).size;
+    auto scale = std::get<Arcade::IObject::SpriteProperties>(_objects[objectName]->getProperties()).scale;
+    _objects[objectName]->setProperties(
+        Arcade::IObject::SpriteProperties{
+            {512, 512},
+            {0, 0},
+            {0, 0},
+            {0, 0},
+            {0.2, 0.2},
+            0x000000
+        }
+    );
     int adjacentMines = countAdjacentMines(x, y);
-    addObject(TEXT, "text_" + std::to_string(x) + "_" + std::to_string(y));
-    _objects["text_" + std::to_string(x) + "_" + std::to_string(y)]->setTexturePath("Minesweeper/font");
-    _objects["text_" + std::to_string(x) + "_" + std::to_string(y)]->setPosition({pos.first, pos.second});
-    _objects["text_" + std::to_string(x) + "_" + std::to_string(y)]->setProperties(
-        Arcade::IObject::TextProperties{0xFFFFFF, 40, std::to_string(adjacentMines)});
+    std::string textName = "text_" + std::to_string(x) + "_" + std::to_string(y);
+    addObject(TEXT, textName);
+    _objects[textName]->setTexturePath("Minesweeper/font");
+    _objects[textName]->setPosition({pos.first + (size.first * scale.first) / 5, pos.second + (size.second * scale.second) / 5});
+    _objects[textName]->setProperties(
+        Arcade::IObject::TextProperties{0x000000, 40, std::to_string(adjacentMines)}
+    );
     if (adjacentMines == 0) {
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
@@ -225,6 +232,18 @@ int Minesweeper::countAdjacentMines(int x, int y)
     return count;
 }
 
+bool Minesweeper::isVictory() const
+{
+    for (int i = 0; i < GRID_WIDTH; i++) {
+        for (int j = 0; j < GRID_HEIGHT; j++) {
+            if (!_revealed[i][j] && !_minefield[i][j]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 void Minesweeper::deleteObject(std::string name)
 {
     _objects.erase(name);
@@ -242,8 +261,9 @@ std::string Minesweeper::getName() const
 
 std::size_t Minesweeper::getScore() const
 {
-    return 0;
+    return _score;
 }
+
 
 extern "C"
 {
