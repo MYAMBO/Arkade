@@ -43,6 +43,7 @@ void SFMLModule::initObject(std::map<std::string, std::unique_ptr<Arcade::IObjec
             sprite->setTexture(*texture.get());
             sprite->setTextureRect({properties.offset.first, properties.offset.second, properties.size.first, properties.size.second});
             sprite->setScale(properties.scale.first, properties.scale.second);
+            sprite->setColor(sf::Color(properties.textColor));
             elt->second->setTexture(std::any(texture));
             elt->second->setSprite(std::any(sprite));
         } else if (type == TEXT) {
