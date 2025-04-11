@@ -40,8 +40,8 @@ class Minesweeper : public Arcade::IGameModule {
         
         static constexpr int GRID_WIDTH = 10;
         static constexpr int GRID_HEIGHT = 8;
-        static constexpr int TILE_SIZE = 51;
-        static constexpr int GRID_OFFSET_X = 200;
+        static constexpr int TILE_SIZE = 100;
+        static constexpr int GRID_OFFSET_X = 400;
         static constexpr int GRID_OFFSET_Y = 100;
         int _mines = 10;
         bool _gameOver = false;

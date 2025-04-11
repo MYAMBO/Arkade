@@ -29,7 +29,9 @@ class NCurses : public Arcade::IDisplayModule
         void display(std::map<std::string, std::unique_ptr<Arcade::IObject>>&);
 
         std::string getName() const;
+        short mapRGBToBasicColor(int r, int g, int b);
     private:
         std::pair<int, int> _mousePos;
         std::map<std::string, bool> _isLoad;
+        std::map<std::string, int> _colorIndices;
 };

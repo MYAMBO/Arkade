@@ -111,6 +111,7 @@ void SFMLModule::openWindow()
 
 void SFMLModule::closeWindow()
 {
+    this->_isLoad.clear();
     this->_window->close();
 }
 
@@ -127,6 +128,7 @@ void SFMLModule::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>
             auto sprite = std::any_cast<sf::Sprite>(elt->second->getSprite());
             pos = elt->second.get()->getPosition();
             sprite.setPosition(pos.first * windowSize.x / 1920, pos.second * windowSize.y / 1080);
+            sprite.setColor(sf::Color(std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties()).textColor));
             this->_window->draw(sprite);
         }
         if (type == TEXT) {
