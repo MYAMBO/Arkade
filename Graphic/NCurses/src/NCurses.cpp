@@ -26,6 +26,48 @@ std::string NCurses::getName() const
     return NCURSES;
 }
 
+void NCurses::init(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
+{
+    std::string type;
+    std::string path;
+    int colorIndex = 1;
+    
+    for (auto elt = objects.begin(); elt != objects.end(); elt++) {
+        type = elt->second->getType();
+        path = elt->second->getTexturePath();
+        if (_isLoad[elt->first] == true)
+            continue;
+        if (type == SPRITE) {
+            auto properties = std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties());
+            int r = (properties.textColor >> 24) & 0xFF;
+            int g = (properties.textColor >> 16) & 0xFF;
+            int b = (properties.textColor >> 8) & 0xFF;
+            _colorIndices[elt->first] = colorIndex;
+            if (has_colors() && can_change_color())
+                init_pair(colorIndex, mapRGBToBasicColor(r, g, b), COLOR_BLACK);
+            colorIndex++;
+            std::ifstream file("assets/" + path + ".txt");
+            std::string line;
+            std::list<std::string> strList;
+            int i = 0;
+            while (std::getline(file, line)) {
+                i++;
+                if (i <= properties.textOffset.second || i > properties.textSize.second + properties.textOffset.second)
+                    continue;
+                strList.push_back(line.substr(properties.textOffset.first, properties.textSize.first));
+            }
+            elt->second->setSprite(std::any(strList));
+            _isLoad[elt->first] = true;
+        }
+    }
+}
+
+void NCurses::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
+{
+    this->_isLoad.clear();
+    init(objects);
+}
+
 int NCurses::getInput()
 {
     MEVENT event;
@@ -59,45 +101,9 @@ void NCurses::openWindow()
 
 void NCurses::closeWindow()
 {
-    _isLoad.clear();
+    this->_isLoad.clear();
     std::cout << "\033[?1003l\n" << std::endl;
     endwin();
-}
-
-void NCurses::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
-{
-    std::string type;
-    std::string path;
-    int colorIndex = 1;
-    
-    for (auto elt = objects.begin(); elt != objects.end(); elt++) {
-        type = elt->second->getType();
-        path = elt->second->getTexturePath();
-        if (_isLoad.find(elt->first) != _isLoad.end() && _isLoad[elt->first] == true)
-            continue;
-        if (type == SPRITE) {
-            auto properties = std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties());
-            int r = (properties.textColor >> 24) & 0xFF;
-            int g = (properties.textColor >> 16) & 0xFF;
-            int b = (properties.textColor >> 8) & 0xFF;
-            _colorIndices[elt->first] = colorIndex;
-            if (has_colors() && can_change_color())
-                init_pair(colorIndex, mapRGBToBasicColor(r, g, b), COLOR_BLACK);
-            colorIndex++;
-            std::ifstream file("assets/" + path + ".txt");
-            std::string line;
-            std::list<std::string> strList;
-            int i = 0;
-            while (std::getline(file, line)) {
-                i++;
-                if (i <= properties.textOffset.second || i > properties.textSize.second + properties.textOffset.second)
-                    continue;
-                strList.push_back(line.substr(properties.textOffset.first, properties.textSize.first));
-            }
-            elt->second->setSprite(std::any(strList));
-            _isLoad[elt->first] = true;
-        }
-    }
 }
 
 short NCurses::mapRGBToBasicColor(int r, int g, int b)
@@ -125,6 +131,7 @@ void NCurses::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>& o
 {
     std::pair<int, int> pos;
 
+    init(objects);
     clear();
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
         if (elt->second->getType() == SPRITE) {

@@ -27,7 +27,7 @@ std::string SFMLModule::getName() const
     return SFML;
 }
 
-void SFMLModule::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
+void SFMLModule::init(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
 {
     std::string type;
     std::string path;
@@ -68,8 +68,16 @@ void SFMLModule::initObject(std::map<std::string, std::unique_ptr<Arcade::IObjec
     }
 }
 
+void SFMLModule::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
+{
+    this->_isLoad.clear();
+    init(objects);
+}
+
 int SFMLModule::getInput()
 {
+    if (this->_window == nullptr)
+        return 0;
     while (this->_window->pollEvent(this->_event)) {
         if (this->_event.type == sf::Event::KeyPressed) {
             switch (this->_event.key.code) {
@@ -121,6 +129,7 @@ void SFMLModule::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>
     std::pair<int, int> pos;
     sf::Vector2u windowSize = this->_window.get()->getSize();
 
+    init(objects);
     this->_window->clear();
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
         type = elt->second->getType();
