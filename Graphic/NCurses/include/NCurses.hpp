@@ -31,4 +31,5 @@ class NCurses : public Arcade::IDisplayModule
         std::string getName() const;
     private:
         std::pair<int, int> _mousePos;
+        std::map<std::string, bool> _isLoad;
 };

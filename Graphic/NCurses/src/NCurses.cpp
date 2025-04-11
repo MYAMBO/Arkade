@@ -34,6 +34,8 @@ void NCurses::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
         type = elt->second->getType();
         path = elt->second->getTexturePath();
+        if (this->_isLoad[elt->first] == true)
+            continue;
         if (type == SPRITE) {
             auto properties = std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties());
             std::ifstream file ("assets/" + path + ".txt");
@@ -48,6 +50,7 @@ void NCurses::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>
                 strList.push_back(line.substr(properties.textOffset.first, properties.textSize.first));
             }
             elt->second->setSprite(std::any(strList));
+            this->_isLoad[elt->first] = true;
         }
     }
 }
@@ -57,8 +60,8 @@ int NCurses::getInput()
     MEVENT event;
 
     if (getmouse(&event) == OK) {
-        this->_mousePos.first = static_cast<int>((event.x * 1000.0) / COLS);
-        this->_mousePos.second = static_cast<int>((event.y * 1000.0) / LINES);
+        this->_mousePos.first = static_cast<int>((event.x * 1920.0) / COLS);
+        this->_mousePos.second = static_cast<int>((event.y * 1080.0) / LINES);
         if (event.bstate == BUTTON1_PRESSED || event.bstate == BUTTON2_PRESSED)
             return K_RCLICK;
     }
@@ -100,13 +103,13 @@ void NCurses::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>& o
             i = 0;
             pos = elt->second.get()->getPosition();
             for (auto elt2 : sprite) {
-                mvprintw(pos.second * LINES / 1000 + i, pos.first * COLS / 1000, "%s", elt2.c_str());
+                mvprintw(pos.second * LINES / 1080 + i, pos.first * COLS / 1920, "%s", elt2.c_str());
                 i++;
             }
         } else if (elt->second->getType() == TEXT) {
             std::string text = std::get<Arcade::IObject::TextProperties>(elt->second->getProperties()).text;
             pos = elt->second.get()->getPosition();
-            mvprintw(pos.second * LINES / 1000, pos.first * COLS / 1000 + text.size() / 2, "%s", text.c_str());
+            mvprintw(pos.second * LINES / 1080, pos.first * COLS / 1920 + text.size() / 2, "%s", text.c_str());
         }
     }
     refresh();
