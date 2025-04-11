@@ -47,7 +47,7 @@ bool Nibbler::update(std::pair<int, int> mousePos, int input)
         _objects["2/snakehead"]->setTexturePath("Nibbler/nibblerHeadRight");
         _objects["2/snakehead"]->setPosition({pos.first + 10, pos.second});
     }
-    return true;
+    return false;
 }
 
 void Nibbler::addObject(std::string type, std::string name)
