@@ -37,7 +37,6 @@ void Arkade::run()
             exitGame(input, end);
             end = false;
         }
-        _selectedDisplay->initObject(_selectedGame->getObjects());
         _selectedDisplay->display(_selectedGame->getObjects());
         if (_selectedGame->getName() == "Menu") {
             nextDisplay();

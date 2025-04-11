@@ -26,7 +26,7 @@ std::string NCurses::getName() const
     return NCURSES;
 }
 
-void NCurses::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
+void NCurses::init(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
 {
     std::string type;
     std::string path;
@@ -53,6 +53,12 @@ void NCurses::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>
             this->_isLoad[elt->first] = true;
         }
     }
+}
+
+void NCurses::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
+{
+    this->_isLoad.clear();
+    init(objects);
 }
 
 int NCurses::getInput()
@@ -87,6 +93,7 @@ void NCurses::openWindow()
 
 void NCurses::closeWindow()
 {
+    this->_isLoad.clear();
     std::cout << "\033[?1003l\n" << std::endl;
     endwin();
 }
@@ -96,6 +103,7 @@ void NCurses::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>& o
     std::pair<int, int> pos;
     short i;
 
+    init(objects);
     clear();
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
         if (elt->second->getType() == SPRITE) {
