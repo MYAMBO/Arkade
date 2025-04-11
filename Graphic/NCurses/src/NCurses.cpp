@@ -25,27 +25,31 @@ std::string NCurses::getName() const
 {
     return NCURSES;
 }
-
 void NCurses::init(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
 {
     std::string type;
     std::string path;
-    int colorIndex = 1;
     
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
         type = elt->second->getType();
         path = elt->second->getTexturePath();
-        if (_isLoad[elt->first] == true)
-            continue;
+        if (_isLoad.find(elt->first) != _isLoad.end())
+            if (_isLoad[elt->first] == true)
+                continue;
         if (type == SPRITE) {
             auto properties = std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties());
             int r = (properties.textColor >> 24) & 0xFF;
             int g = (properties.textColor >> 16) & 0xFF;
             int b = (properties.textColor >> 8) & 0xFF;
-            _colorIndices[elt->first] = colorIndex;
-            if (has_colors() && can_change_color())
+            int colorIndex;
+            if (_colorIndices.find(elt->first) != _colorIndices.end()) {
+                colorIndex = _colorIndices[elt->first];
+            } else {
+                colorIndex = _colorIndices.size() + 1;
+                _colorIndices[elt->first] = colorIndex;
+            }
+            if (has_colors())
                 init_pair(colorIndex, mapRGBToBasicColor(r, g, b), COLOR_BLACK);
-            colorIndex++;
             std::ifstream file("assets/" + path + ".txt");
             std::string line;
             std::list<std::string> strList;
@@ -140,9 +144,13 @@ void NCurses::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>& o
             int g = (properties.textColor >> 16) & 0xFF;
             int b = (properties.textColor >> 8) & 0xFF;
             int colorIndex;
-            if (_colorIndices.find(elt->first) != _colorIndices.end())
+            if (_colorIndices.find(elt->first) != _colorIndices.end()) {
                 colorIndex = _colorIndices[elt->first];
-            if (has_colors() && can_change_color())
+            } else {
+                colorIndex = _colorIndices.size() + 1;
+                _colorIndices[elt->first] = colorIndex;
+            }
+            if (has_colors())
                 init_pair(colorIndex, mapRGBToBasicColor(r, g, b), COLOR_BLACK);
             auto sprite = std::any_cast<std::list<std::string>>(elt->second->getSprite());
             int i = 0;
@@ -167,6 +175,7 @@ void NCurses::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>& o
             mvprintw(pos.second * LINES / 1080, pos.first * COLS / 1920, "%s", text.c_str());
         }
     }
+    
     refresh();
 }
 

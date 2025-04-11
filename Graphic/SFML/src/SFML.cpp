@@ -35,8 +35,8 @@ void SFMLModule::init(std::map<std::string, std::unique_ptr<Arcade::IObject>>& o
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
         type = elt->second->getType();
         path = elt->second->getTexturePath();
-        if (this->_isLoad[elt->first] == true)
-            continue;
+        //if (this->_isLoad[elt->first] == true)
+        //    continue;
         if (type == SPRITE) {
             auto texture = std::make_shared<sf::Texture>();
             sf::Sprite sprite;
