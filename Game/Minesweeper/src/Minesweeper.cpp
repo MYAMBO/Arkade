@@ -153,13 +153,13 @@ void Minesweeper::flagCell(std::pair<int, int> mousePos)
 
 bool Minesweeper::update(std::pair<int, int> mousePos, int input)
 {
-    if (isVictory()) {
-        _gameOver = true;
-        return true;
-    }
     if (_gameOver) {
         initGame();
         _gameOver = false;
+    }
+    if (isVictory()) {
+        _gameOver = true;
+        return true;
     }
     if (input == K_RCLICK) {
         auto returnvalue = discoverCell(mousePos);

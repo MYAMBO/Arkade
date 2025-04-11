@@ -33,9 +33,8 @@ void NCurses::init(std::map<std::string, std::unique_ptr<Arcade::IObject>>& obje
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
         type = elt->second->getType();
         path = elt->second->getTexturePath();
-        if (_isLoad.find(elt->first) != _isLoad.end())
-            if (_isLoad[elt->first] == true)
-                continue;
+        if (_isLoad[elt->first] == true)
+            continue;
         if (type == SPRITE) {
             auto properties = std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties());
             int r = (properties.textColor >> 24) & 0xFF;
@@ -69,7 +68,7 @@ void NCurses::init(std::map<std::string, std::unique_ptr<Arcade::IObject>>& obje
 void NCurses::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
 {
     this->_isLoad.clear();
-    init(objects);
+    (void) objects;
 }
 
 int NCurses::getInput()
