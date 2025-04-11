@@ -117,7 +117,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
 {
     if (myGetGlobalBound("2/play", mousePos) && input == K_RCLICK) {
         _isGameLaunched = true;
-        return true;
+        return false;
     }
     if ((myGetGlobalBound("2/arrowUp", mousePos) && input == K_RCLICK) || input == K_UP) {
         _indexGames++;
@@ -131,7 +131,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
             prop.text = it->second->getName();
             _objects["4/Games"]->setProperties(prop);
         }
-        return true;
+        return false;
     }
     if ((myGetGlobalBound("2/arrowDown", mousePos) && input == K_RCLICK) || input == K_DOWN) {
         _indexGames--;
@@ -145,7 +145,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
             prop.text = it->second->getName();
             _objects["4/Games"]->setProperties(prop);
         }
-        return true;
+        return false;
     }
     if ((myGetGlobalBound("2/arrowLeft", mousePos) && input == K_RCLICK) || input == K_LEFT) {
         _indexDisplays--;
@@ -159,7 +159,7 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
             prop.text = it->second->getName();
             _objects["4/Displays"]->setProperties(prop);
         }
-        return true;
+        return false;
     }
     if ((myGetGlobalBound("2/arrowRight", mousePos) && input == K_RCLICK) || input == K_RIGHT) {
         _indexDisplays++;
@@ -173,9 +173,9 @@ bool Menu::update(std::pair<int, int> mousePos, int input)
             prop.text = it->second->getName();
             _objects["4/Displays"]->setProperties(prop);
         }
-        return true;
+        return false;
     }
-    return true;
+    return false;
 }
 
 void Menu::addObject(std::string type, std::string name)

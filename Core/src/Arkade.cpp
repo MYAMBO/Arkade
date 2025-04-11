@@ -18,9 +18,9 @@ Arkade::Arkade(std::string pathlib, Core core)
 Arkade::~Arkade()
 {
 }
-
 void Arkade::run()
 {
+    bool end;
     int input = -1;
 
     _games = _core.getGameModuleList();
@@ -31,13 +31,18 @@ void Arkade::run()
     _selectedDisplay->openWindow();
     while (input != 'p') {
         input = _selectedDisplay->getInput();
-        _selectedGame->update(_selectedDisplay->getMousePos(), input);
+        end = _selectedGame->update(_selectedDisplay->getMousePos(), input);
+        if (end) {
+            exitGame(input, end);
+            end = false;
+        }
+        _selectedDisplay->initObject(_selectedGame->getObjects());
         _selectedDisplay->display(_selectedGame->getObjects());
         if (_selectedGame->getName() == "Menu") {
             nextDisplay();
             nextGame();
         }
-        if (exitGame(input) == false) {
+        if (exitGame(input, end) == false) {
             _selectedDisplay->closeWindow();
             return;
         }
@@ -65,8 +70,14 @@ void Arkade::nextDisplay()
     }
 }
 
-bool Arkade::exitGame(int input)
+bool Arkade::exitGame(int input, bool end)
 {
+    if (end) {
+        _menu->setIsGameLaunched(false);
+        _selectedGame = std::shared_ptr<Arcade::IGameModule>(_menu);
+        _selectedDisplay->initObject(_selectedGame->getObjects());
+        return true;
+    }
     if (input == K_ESC) {
         if (_selectedGame->getName() == "Menu") {
             return false;
