@@ -21,23 +21,28 @@ Arkade::~Arkade()
 
 void Arkade::run()
 {
+    bool end;
     int input = -1;
 
     _games = _core.getGameModuleList();
     _displays = _core.getDisplayModuleList();
     _selectedGame = std::dynamic_pointer_cast<Arcade::IGameModule>(_menu);
     _selectedDisplay = _displays[_pathlib];
-    _selectedDisplay->initObject(_selectedGame->getObjects());
     _selectedDisplay->openWindow();
+    _selectedDisplay->initObject(_selectedGame->getObjects());
     while (input != 'p') {
         input = _selectedDisplay->getInput();
-        _selectedGame->update(_selectedDisplay->getMousePos(), input);
+        end = _selectedGame->update(_selectedDisplay->getMousePos(), input);
+        if (end) {
+            exitGame(input, end);
+            end = false;
+        }
         _selectedDisplay->display(_selectedGame->getObjects());
         if (_selectedGame->getName() == "Menu") {
             nextDisplay();
             nextGame();
         }
-        if (exitGame(input) == false) {
+        if (exitGame(input, end) == false) {
             _selectedDisplay->closeWindow();
             return;
         }
@@ -65,15 +70,29 @@ void Arkade::nextDisplay()
     }
 }
 
-bool Arkade::exitGame(int input)
+bool Arkade::exitGame(int input, bool end)
 {
+    if (end) {
+        _menu->setIsGameLaunched(false);
+        auto score = _selectedGame->getScore();
+        std::string scoreText = "Score: " + std::to_string(score);
+        _selectedGame = std::shared_ptr<Arcade::IGameModule>(_menu);
+        _selectedGame->getObjects()["4/Score"]->setProperties(Arcade::IObject::TextProperties{0xFFFFFF, 40, scoreText});
+        _selectedDisplay->initObject(_selectedGame->getObjects());
+        std::cout << scoreText << std::endl;
+        return true;
+    }
     if (input == K_ESC) {
         if (_selectedGame->getName() == "Menu") {
             return false;
         } else {
             _menu->setIsGameLaunched(false);
+            auto score = _selectedGame->getScore();
             _selectedGame = std::shared_ptr<Arcade::IGameModule>(_menu);
             _selectedDisplay->initObject(_selectedGame->getObjects());
+            std::string scoreText = "Score: " + std::to_string(score);
+            std::cout << scoreText << std::endl;
+            _selectedGame->getObjects()["4/Score"]->setProperties(Arcade::IObject::TextProperties{0xFFFFFF, 40, scoreText});
         }
     }
     return true;

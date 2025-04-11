@@ -20,7 +20,7 @@ class Arkade {
         void askName();
         void nextGame();
         void nextDisplay();
-        bool exitGame(int input);
+        bool exitGame(int input, bool end);
     
     private:
         Core _core;

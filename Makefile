@@ -17,6 +17,7 @@ NIBBLER_SRC 		=		Game/Nibbler/src/Nibbler.cpp			\
 							Game/Nibbler/src/NibblerObject.cpp		\
 
 MINESWEEPER_SRC 	=		Game/Minesweeper/src/Minesweeper.cpp 	\
+							Game/Minesweeper/src/MineObject.cpp		\
 
 SFML_SRC 			=		Graphic/SFML/src/SFML.cpp 				\
 
