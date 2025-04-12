@@ -24,6 +24,9 @@ SDL2Module::SDL2Module()
 
 SDL2Module::~SDL2Module()
 {
+    TTF_Quit();
+    IMG_Quit();
+    SDL_Quit();
 }
 
 std::string SDL2Module::getName() const
