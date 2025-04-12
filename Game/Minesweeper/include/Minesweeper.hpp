@@ -33,6 +33,7 @@ class Minesweeper : public Arcade::IGameModule {
         int discoverCell(std::pair<int, int> mousePos);
         void flagCell(std::pair<int, int> mousePos);
         bool isVictory() const;
+        void restartGame();
 
     private:
         std::map<std::string, std::unique_ptr<Arcade::IObject>> _objects;

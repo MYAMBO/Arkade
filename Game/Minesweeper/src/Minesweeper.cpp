@@ -151,8 +151,35 @@ void Minesweeper::flagCell(std::pair<int, int> mousePos)
     }
 }
 
+void Minesweeper::restartGame()
+{
+    _gameOver = false;
+    _score = 0;
+    std::string scoreText = "Score : " + std::to_string(_score);
+    _objects["4/Score"]->setProperties(Arcade::IObject::TextProperties{0xFFFFFF, 40, scoreText});
+    _objects["4/Score"]->setPosition({1600, 300});
+    generateMines();
+    for (int i = 0; i < GRID_WIDTH; i++) {
+        for (int j = 0; j < GRID_HEIGHT; j++) {
+            _revealed[i][j] = false;
+            _flagged[i][j] = false;
+            std::string objectName = "grid/" + std::to_string(i) + "_" + std::to_string(j);
+            _objects[objectName]->setProperties(
+                Arcade::IObject::SpriteProperties{{512, 512}, {0, 0}, {0, 0}, {0, 0}, {0.2, 0.2}, 0xDDDDDDFF});
+        }
+    }
+    for (auto it = _objects.begin(); it != _objects.end(); ++it) {
+        std::string objectName = it->first;
+        if (objectName.find("text_") == 0) {
+            deleteObject(objectName);
+        }
+    }
+}
+
 bool Minesweeper::update(std::pair<int, int> mousePos, int input)
 {
+    if (input == 'r')
+        restartGame();
     if (_gameOver) {
         initGame();
         _gameOver = false;
@@ -173,6 +200,7 @@ bool Minesweeper::update(std::pair<int, int> mousePos, int input)
         flagCell(mousePos);
     return false;
 }
+
 void Minesweeper::revealEmptyCells(int x, int y)
 {
     _score++;
@@ -263,7 +291,6 @@ std::size_t Minesweeper::getScore() const
 {
     return _score;
 }
-
 
 extern "C"
 {
