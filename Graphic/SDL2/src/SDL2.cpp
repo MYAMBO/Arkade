@@ -112,19 +112,11 @@ std::pair<int, int> SDL2Module::getMousePos() const
 
     SDL_GetWindowSize(_window.get(), &width, &height);
     SDL_GetMouseState(&x, &y);
-    // std::cout << x << ", " << y << std::endl;
-    return (std::pair<int, int>){1000 * x / width, 1000 * y / height};
+    return (std::pair<int, int>){1920 * x / width, 1080 * y / height};
 }
 
 void SDL2Module::openWindow()
 {
-    std::cout << "SDL2Module::openWindow()" << std::endl;
-
-    // SDL_Init(SDL_INIT_EVERYTHING);
-    IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
-    TTF_Init();
-    //SDL_VideoInit("x11");
-
     this->_window.reset(SDL_CreateWindow("SDL Window",
                                          SDL_WINDOWPOS_CENTERED,
                                          SDL_WINDOWPOS_CENTERED,
@@ -132,8 +124,6 @@ void SDL2Module::openWindow()
                                          SDL_WINDOW_SHOWN));
 
     this->_renderer.reset(SDL_CreateRenderer(this->_window.get(), -1, SDL_RENDERER_ACCELERATED));
-
-    // SDL_GL_MakeCurrent(_window.get(), SDL_GL_GetCurrentContext());
 }
 
 void SDL2Module::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
@@ -171,8 +161,8 @@ void SDL2Module::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>
 }
 
 extern "C" {
-std::unique_ptr<Arcade::IDisplayModule> createInstanceIDisplay()
-{
-    return std::make_unique<SDL2Module>();
-}
+    std::unique_ptr<Arcade::IDisplayModule> createInstanceIDisplay()
+    {
+        return std::make_unique<SDL2Module>();
+    }
 }
