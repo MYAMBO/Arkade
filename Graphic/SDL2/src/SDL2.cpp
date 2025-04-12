@@ -161,21 +161,26 @@ void SDL2Module::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>
         if (type == SPRITE)
         {
             auto properties = std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties());
-            // std::cout << "YANIS LE BG" << std::endl;
-            auto texture = std::any_cast<std::shared_ptr<SDL_Texture>>(elt->second->getTexture());
-            if (texture)
+            SDL_Surface* surface = nullptr;
+            surface = std::any_cast<SDL_Surface*>(elt->second->getTexture());
+            if (surface)
             {
-                // std::cout << "HEEHEHEHE" << std::endl;
                 std::pair<int, int> pos = elt->second.get()->getPosition();
                 SDL_Rect srcRect = {
                     properties.offset.first, properties.offset.second, properties.size.first, properties.size.second
                 };
                 SDL_Rect dstRect = {
-                    pos.first * 1920 / 1000, pos.second * 1080 / 1000,
+                    pos.first * width / 1920, pos.second * height / 1080,
                     static_cast<int>(properties.size.first * properties.scale.first),
                     static_cast<int>(properties.size.second * properties.scale.second)
                 };
-                SDL_RenderCopy(this->_renderer.get(), texture.get(), &srcRect, &dstRect);
+                SDL_Texture* texture = SDL_CreateTextureFromSurface(this->_renderer.get(), surface);
+                int r = (properties.textColor >> 24) & 0xFF;
+                int g = (properties.textColor >> 16) & 0xFF;
+                int b = (properties.textColor >> 8) & 0xFF;
+                SDL_SetTextureColorMod(texture, r, g, b);
+                SDL_RenderCopy(this->_renderer.get(), texture, &srcRect, &dstRect);
+                SDL_DestroyTexture(texture);
             }
         }
     }
