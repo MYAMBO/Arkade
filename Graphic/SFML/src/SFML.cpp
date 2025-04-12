@@ -5,9 +5,7 @@
 ** SFMLModule.cpp
 */
 
-#include <iostream>
 #include <SFML/Graphics.hpp>
-
 #include "SFML.hpp"
 #include "KeyCodes.hpp"
 
