@@ -62,6 +62,14 @@ void Arkade::nextDisplay()
 {
     if (std::get<Arcade::IObject::TextProperties>(_selectedGame->getObjects()["4/Displays"]->getProperties()).text != _pathlib) {
         _selectedDisplay->closeWindow();
+        for (auto elt = _selectedGame->getObjects().begin(); elt != _selectedGame->getObjects().end(); elt++)
+        {
+            if (elt->second != nullptr)
+            {
+                elt->second->getTexture().reset();
+                elt->second->getSprite().reset();
+            }
+        }
         _pathlib = std::get<Arcade::IObject::TextProperties>(_selectedGame->getObjects()["4/Displays"]->getProperties()).text;
         _selectedDisplay = _displays[_pathlib];
         _selectedDisplay->initObject(_selectedGame->getObjects());
