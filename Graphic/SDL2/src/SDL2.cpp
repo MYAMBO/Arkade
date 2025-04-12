@@ -183,6 +183,16 @@ void SDL2Module::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>
                 SDL_DestroyTexture(texture);
             }
         }
+        if (type == TEXT)
+        {
+            auto texture = std::any_cast<SDL_Texture*>(elt->second->getTexture());
+
+            std::pair<int, int> pos = elt->second.get()->getPosition();
+            SDL_Rect textRect = {pos.first * width / 1920, static_cast<int>(pos.second * height / 1080 * 0.95), 0, 0};
+            SDL_QueryTexture(texture, NULL, NULL, &textRect.w, &textRect.h);
+            SDL_RenderCopy(this->_renderer.get(), texture, NULL, &textRect);
+            SDL_DestroyTexture(texture);
+        }
     }
     SDL_RenderPresent(this->_renderer.get());
     // SDL_UpdateWindowSurface(this->_window.get());
