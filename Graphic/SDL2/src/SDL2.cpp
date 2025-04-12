@@ -51,11 +51,31 @@ void SDL2Module::init(std::map<std::string, std::unique_ptr<Arcade::IObject>>& o
             {
                 std::cerr << "Failed to load texture: " << IMG_GetError() << std::endl;
             }
-            // auto properties = std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties());
-            elt->second->setTexture(texture);
             elt->second->setTexture(surface);
             this->_isLoad[elt->first] = true;
         }
+        if (type == TEXT)
+        {
+            auto properties = std::get<Arcade::IObject::TextProperties>(elt->second->getProperties());
+            path = "assets/" + elt->second->getTexturePath() + ".ttf";
+            TTF_Font* font = TTF_OpenFont(path.c_str(), properties.characterSize);
+            if (!font)
+            {
+                std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
+                continue;
+            }
+
+            SDL_Color color = {255, 255, 255, 255};
+            SDL_Surface* surface = TTF_RenderText_Blended(font, properties.text.c_str(), color);
+
+            SDL_Texture* texture = SDL_CreateTextureFromSurface(this->_renderer.get(), surface);
+            if (surface == nullptr)
+                std::cerr << "Failed to render text: " << TTF_GetError() << std::endl;
+            else
+                elt->second->setTexture(texture);
+
+            TTF_CloseFont(font);
+            this->_isLoad[elt->first] = true;
         }
     }
 }
