@@ -10,20 +10,20 @@
 #include <criterion/criterion.h>
 #include "Core.hpp"
 
-Test(Core, getDisplayModuleList, .init=cr_redirect_stdout)
+Test(Core, getDisplayModuleList, .init=cr_redirect_stderr)
 {
     Core core;
     for (auto elt : core.getDisplayModuleList())
-        std::cout << elt.first << "\n";
-    std::cout << std::flush;
-    cr_assert_stdout_eq_str("NCURSES\nSFML\n");
+        std::cerr << elt.first << "\n";
+    std::cerr << std::flush;
+    cr_assert_stderr_eq_str("NCURSES\nSFML\n");
 }
 
-Test(Core, getGameModuleList, .init=cr_redirect_stdout)
+Test(Core, getGameModuleList, .init=cr_redirect_stderr)
 {
     Core core;
     for (auto elt : core.getGameModuleList())
-        std::cout << elt.first << "\n";
-    std::cout << std::flush;
-    cr_assert_stdout_eq_str("MINESWEEPER\nNIBBLER\n");
+        std::cerr << elt.first << "\n";
+    std::cerr << std::flush;
+    cr_assert_stderr_eq_str("MINESWEEPER\nSNAKE\n");
 }
