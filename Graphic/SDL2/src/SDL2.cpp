@@ -15,8 +15,11 @@
 #include <KeyCodes.hpp>
 #include <ostream>
 
-SDL2Module::SDL2Module() : _window(nullptr, SDL_DestroyWindow), _renderer(nullptr, SDL_DestroyRenderer)
+SDL2Module::SDL2Module()
 {
+    SDL_Init(SDL_INIT_VIDEO);
+    IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
+    TTF_Init();
 }
 
 SDL2Module::~SDL2Module()
