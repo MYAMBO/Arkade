@@ -11,7 +11,6 @@
 #define SDL2_HPP
 
 #include <SDL2/SDL.h>
-
 #include "IDisplayModule.hpp"
 
 class SDL2Module : public Arcade::IDisplayModule
@@ -22,6 +21,7 @@ public:
 
     std::string getName() const;
 
+    void init(std::map<std::string, std::unique_ptr<Arcade::IObject>>&);
     void initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>&);
 
     int getInput();
