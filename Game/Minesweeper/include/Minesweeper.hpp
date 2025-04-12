@@ -19,20 +19,21 @@ class Minesweeper : public Arcade::IGameModule {
         std::string getName() const;
         std::size_t getScore() const;
         std::map<std::string, std::unique_ptr<Arcade::IObject>>& getObjects();
-
-        bool update(std::pair<int, int> mousePos, int input);
-
-        void deleteObject(std::string name);
-        void addObject(std::string type, std::string name);
-
-        void initGame();
-        void addGridObject(std::string type, std::string name);
-        void revealEmptyCells(int x, int y);
-        void generateMines();
+        
         int countAdjacentMines(int x, int y);
         int discoverCell(std::pair<int, int> mousePos);
-        void flagCell(std::pair<int, int> mousePos);
+
         bool isVictory() const;
+        bool update(std::pair<int, int> mousePos, int input);
+        
+        void initGame();
+        void restartGame();
+        void generateMines();
+        void deleteObject(std::string name);
+        void revealEmptyCells(int x, int y);
+        void flagCell(std::pair<int, int> mousePos);
+        void addObject(std::string type, std::string name);
+        void addGridObject(std::string type, std::string name);
 
     private:
         std::map<std::string, std::unique_ptr<Arcade::IObject>> _objects;
