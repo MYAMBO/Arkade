@@ -59,6 +59,13 @@ void SDL2Module::initObject(std::map<std::string, std::unique_ptr<Arcade::IObjec
     }
 }
 
+
+void SDL2Module::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
+{
+    this->_isLoad.clear();
+    (void)objects;
+}
+
 int SDL2Module::getInput()
 {
     SDL_Event e;
