@@ -98,15 +98,11 @@ int SDL2Module::getInput()
 
 void SDL2Module::closeWindow()
 {
-    std::cout << "SDL2Module::closeWindow()" << std::endl;
-
-    IMG_Quit();
-    TTF_Quit();
-    // SDL_DestroyRenderer(this->_renderer.get());
-    _renderer.reset();
-    // SDL_DestroyWindow(this->_window.get());
-    _window.reset();
-    // SDL_Quit();
+    this->_isLoad.clear();
+    if (_renderer)
+        _renderer.reset();
+    if (_window)
+        _window.reset();
 }
 
 std::pair<int, int> SDL2Module::getMousePos() const
