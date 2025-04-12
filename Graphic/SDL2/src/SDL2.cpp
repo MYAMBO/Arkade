@@ -149,9 +149,11 @@ void SDL2Module::openWindow()
 
 void SDL2Module::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
 {
-    // std::cout << "SDL2Module::display()" << std::endl;
     std::string type;
+    int width, height;
 
+    SDL_GetRendererOutputSize(this->_renderer.get(), &width, &height);
+    init(objects);
     SDL_RenderClear(this->_renderer.get());
     for (auto elt = objects.begin(); elt != objects.end(); elt++)
     {
