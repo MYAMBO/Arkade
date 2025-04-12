@@ -195,7 +195,6 @@ void SDL2Module::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>
         }
     }
     SDL_RenderPresent(this->_renderer.get());
-    // SDL_UpdateWindowSurface(this->_window.get());
 }
 
 extern "C" {
