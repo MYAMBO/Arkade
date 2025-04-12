@@ -8,7 +8,6 @@
 */
 
 #include "SDL2.hpp"
-
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
@@ -34,27 +33,29 @@ std::string SDL2Module::getName() const
     return SDL;
 }
 
-void SDL2Module::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
+void SDL2Module::init(std::map<std::string, std::unique_ptr<Arcade::IObject>>& objects)
 {
-    // (void)objects;
     std::string type;
     std::string path;
 
     for (auto elt = objects.begin(); elt != objects.end(); elt++)
     {
         type = elt->second->getType();
-        path = "assets/" + elt->second->getTexturePath() + ".png";
         if (type == SPRITE)
         {
-            auto texture = std::shared_ptr<SDL_Texture>(
-                IMG_LoadTexture(this->_renderer.get(), path.c_str()),
-                SDL_DestroyTexture);
-            if (texture == nullptr)
+            if (this->_isLoad[elt->first] == true)
+                continue;
+            path = "assets/" + elt->second->getTexturePath() + ".png";
+            SDL_Surface* surface = IMG_Load(path.c_str());
+            if (surface == nullptr)
             {
                 std::cerr << "Failed to load texture: " << IMG_GetError() << std::endl;
             }
             // auto properties = std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties());
             elt->second->setTexture(texture);
+            elt->second->setTexture(surface);
+            this->_isLoad[elt->first] = true;
+        }
         }
     }
 }
