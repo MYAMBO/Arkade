@@ -6,24 +6,26 @@
 */
 
 #include <iostream>
-#include <criterion/redirect.h>
 #include <criterion/criterion.h>
+
 #include "Core.hpp"
 
-Test(Core, getDisplayModuleList, .init=cr_redirect_stderr)
+Test(Core, getDisplayModuleList)
 {
+    std::string lib;
     Core core;
     for (auto elt : core.getDisplayModuleList())
-        std::cerr << elt.first << "\n";
-    std::cerr << std::flush;
-    cr_assert_stderr_eq_str("NCURSES\nSFML\n");
+        lib.append(elt.first + "\n");
+    std::cout << lib << std::endl;
+    cr_assert_str_eq(lib.c_str(), "NCURSES\nSDL\nSFML\n");
 }
 
-Test(Core, getGameModuleList, .init=cr_redirect_stderr)
+Test(Core, getGameModuleList)
 {
+    std::string lib;
     Core core;
     for (auto elt : core.getGameModuleList())
-        std::cerr << elt.first << "\n";
-    std::cerr << std::flush;
-    cr_assert_stderr_eq_str("MINESWEEPER\nSNAKE\n");
+        lib.append(elt.first + "\n");
+    std::cout << lib << std::endl;
+    cr_assert_str_eq(lib.c_str(), "MINESWEEPER\nSNAKE\n");
 }
