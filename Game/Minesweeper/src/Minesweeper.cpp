@@ -257,7 +257,7 @@ bool Minesweeper::update(std::pair<int, int> mousePos, int input)
         _gameOver = true;
         return true;
     }
-    if (input == K_RCLICK) {
+    if (input == K_MOUSE) {
         auto returnvalue = discoverCell(mousePos);
         if (returnvalue == 0)
             return true;
