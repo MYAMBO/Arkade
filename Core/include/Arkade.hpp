@@ -21,11 +21,13 @@ class Arkade {
         void askName();
         void nextGame();
         void nextDisplay();
+        void inGameChangeDisplay();
         bool exitGame(int input, bool end);
     
     private:
         Core _core;
         std::string _pathlib;
+        int _currentDisplay = 0;
         std::shared_ptr<Menu> _menu;
         std::shared_ptr<Arcade::IGameModule> _selectedGame;
         std::shared_ptr<Arcade::IDisplayModule> _selectedDisplay;
