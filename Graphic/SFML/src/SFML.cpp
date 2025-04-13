@@ -186,19 +186,16 @@ int SFMLModule::getInput()
                 case sf::Keyboard::Numpad9:
                     return '9';
                 default:
-                    if (this->_event.key.code >= sf::Keyboard::A && this->_event.key.code <= sf::Keyboard::Z)
-                        return this->_event.key.code + 'a';
                     break;
             }
+            return this->_event.key.code + 'a';
         }
         if (this->_event.type == sf::Event::MouseButtonPressed) {
             switch (this->_event.mouseButton.button) {
                 case sf::Mouse::Left:
                     return K_MOUSE;
-                case sf::Mouse::Right:
-                    return K_RCLICK;
                 default:
-                    return K_MOUSE;
+                    return K_RCLICK;
             }
         }
         if (this->_event.type == sf::Event::MouseMoved) {
