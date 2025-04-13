@@ -68,6 +68,7 @@ void Arkade::run()
             exitGame(input, end);
             end = false;
         }
+        _selectedDisplay->initObject(_selectedGame->getObjects());
         _selectedDisplay->display(_selectedGame->getObjects());
         if (input == 'n' && _selectedGame->getName() != "Menu") {
             this->_currentDisplay++;
