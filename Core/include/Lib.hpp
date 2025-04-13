@@ -22,4 +22,8 @@ class Lib
         CreateInstanceIDisplay getIdisplayCreatorFunc();
     private:
         void *_handle;
+    class LibLoadingException : public std::exception
+    {
+        const char* what() const noexcept override;
+    };
 };
