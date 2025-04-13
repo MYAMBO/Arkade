@@ -115,7 +115,6 @@ bool Menu::myGetGlobalBound(std::string name, std::pair<int, int> mousePos)
 
 bool Menu::update(std::pair<int, int> mousePos, int input)
 {
-    printf("input : %d\n", input);
     if (myGetGlobalBound("2/play", mousePos) && input == K_MOUSE) {
         _isGameLaunched = true;
         return false;
