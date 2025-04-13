@@ -107,11 +107,104 @@ int SDL2Module::getInput()
                 return K_LEFT;
             case SDLK_RIGHT:
                 return K_RIGHT;
+            case SDLK_SPACE:
+                return ' ';
+            case SDLK_BACKSPACE:
+                return K_BACKSPACE;
+            case SDLK_TAB:
+                return '\t';
+            case SDLK_RETURN:
+                return '\n';
+            case SDLK_HOME:
+                return K_HOME;
+            case SDLK_END:
+                return K_END;
+            case SDLK_PAGEUP:
+                return K_PPAGE;
+            case SDLK_PAGEDOWN:
+                return K_NPAGE;
+            case SDLK_INSERT:
+                return K_IC;
+            case SDLK_DELETE:
+                return K_DC;
+            case SDLK_LSHIFT:
+            case SDLK_RSHIFT:
+                return CTRL('S');
+            case SDLK_LCTRL:
+            case SDLK_RCTRL:
+                return CTRL('C');
+            case SDLK_LALT:
+            case SDLK_RALT:
+                return CTRL('A');
+            case SDLK_LGUI:
+            case SDLK_RGUI:
+                return CTRL('Y');
+            case SDLK_F1:
+                return K_F1;
+            case SDLK_F2:
+                return K_F2;
+            case SDLK_F3:
+                return K_F3;
+            case SDLK_F4:
+                return K_F4;
+            case SDLK_F5:
+                return K_F5;
+            case SDLK_F6:
+                return K_F6;
+            case SDLK_F7:
+                return K_F7;
+            case SDLK_F8:
+                return K_F8;
+            case SDLK_F9:
+                return K_F9;
+            case SDLK_F10:
+                return K_F10;
+            case SDLK_F11:
+                return K_F11;
+            case SDLK_F12:
+                return K_F12;
+            case SDLK_0:
+                return '0';
+            case SDLK_1:
+                return '1';
+            case SDLK_2:
+                return '2';
+            case SDLK_3:
+                return '3';
+            case SDLK_4:
+                return '4';
+            case SDLK_5:
+                return '5';
+            case SDLK_6:
+                return '6';
+            case SDLK_7:
+                return '7';
+            case SDLK_8:
+                return '8';
+            case SDLK_9:
+                return '9';
+            case SDLK_x:
+                if (e.key.keysym.mod & KMOD_CTRL)
+                    return CTRL('X');
+                else
+                    return 'x';
             default:
-                return e.key.keysym.sym;
+                if (e.key.keysym.sym >= SDLK_a && e.key.keysym.sym <= SDLK_z)
+                {
+                    if (e.key.keysym.mod & KMOD_CTRL)
+                        return 1 + (e.key.keysym.sym - SDLK_a);
+                    else
+                        return e.key.keysym.sym;
+                }
+                break;
             }
+            break;
         case SDL_MOUSEBUTTONDOWN:
-            return K_RCLICK;
+            if (e.button.button == SDL_BUTTON_LEFT)
+                return K_MOUSE;
+            if (e.button.button == SDL_BUTTON_RIGHT)
+                return K_RCLICK;
+            break;
         }
     }
     return -1;
@@ -198,8 +291,8 @@ void SDL2Module::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>
 }
 
 extern "C" {
-    std::unique_ptr<Arcade::IDisplayModule> createInstanceIDisplay()
-    {
-        return std::make_unique<SDL2Module>();
-    }
+std::unique_ptr<Arcade::IDisplayModule> createInstanceIDisplay()
+{
+    return std::make_unique<SDL2Module>();
+}
 }
