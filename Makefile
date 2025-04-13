@@ -55,6 +55,7 @@ SDL2_NAME 		=		lib/arcade_sdl2.so
 
 CORE_FLAGS 			= 		-I Core/include 				\
 							-I Core/include/interface 		\
+							-lX11
 
 SNAKE_FLAGS 		= 		-I Game/Snake/include
 

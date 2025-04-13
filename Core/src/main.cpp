@@ -7,7 +7,6 @@
 
 #include <dlfcn.h>
 #include <iostream>
-
 #include "Core.hpp"
 #include "Menu.hpp"
 #include "Arkade.hpp"
@@ -17,6 +16,11 @@ int main(int argc, char **argv)
 {
     if (argc != 2) {
         std::cerr << "Error : ./arcade <Path to Lib>" << std::endl;
+        return 84;
+    }
+    if (!Core::isEnvironmentViable())
+    {
+        std::cerr << "Error : No graphical environment. Program stopped for security." << std::endl;
         return 84;
     }
     Core core;
