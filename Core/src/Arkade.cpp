@@ -23,6 +23,7 @@ void Arkade::run()
 {
     bool end;
     int input = -1;
+    int currentDisplay = 0;
 
     _games = _core.getGameModuleList();
     _displays = _core.getDisplayModuleList();
@@ -30,7 +31,9 @@ void Arkade::run()
     _selectedDisplay = _displays[_pathlib];
     _selectedDisplay->initObject(_selectedGame->getObjects());
     _selectedDisplay->openWindow();
-    while (input != 'p') {
+    for (auto elt : _displays)
+        this->_displaysVector.push_back(elt.second);
+    while (true) {
         input = _selectedDisplay->getInput();
         end = _selectedGame->update(_selectedDisplay->getMousePos(), input);
         if (end) {
@@ -38,6 +41,36 @@ void Arkade::run()
             end = false;
         }
         _selectedDisplay->display(_selectedGame->getObjects());
+        if (input == K_RIGHT && _selectedGame->getName() != "Menu") {
+            currentDisplay++;
+            _selectedDisplay->closeWindow();
+            for (auto elt = _selectedGame->getObjects().begin(); elt != _selectedGame->getObjects().end(); elt++)
+            {
+                if (elt->second != nullptr)
+                {
+                    elt->second->getTexture().reset();
+                    elt->second->getSprite().reset();
+                }
+            }
+            this->_selectedDisplay = this->_displaysVector[currentDisplay % this->_displaysVector.size()];
+            _selectedDisplay->initObject(_selectedGame->getObjects());
+            _selectedDisplay->openWindow();
+        }
+        if (input == K_LEFT && _selectedGame->getName() != "Menu") {
+            currentDisplay--;
+            _selectedDisplay->closeWindow();
+            for (auto elt = _selectedGame->getObjects().begin(); elt != _selectedGame->getObjects().end(); elt++)
+            {
+                if (elt->second != nullptr)
+                {
+                    elt->second->getTexture().reset();
+                    elt->second->getSprite().reset();
+                }
+            }
+            this->_selectedDisplay = this->_displaysVector[currentDisplay % this->_displaysVector.size()];
+            _selectedDisplay->initObject(_selectedGame->getObjects());
+            _selectedDisplay->openWindow();
+        }
         if (_selectedGame->getName() == "Menu") {
             nextDisplay();
             nextGame();
@@ -60,7 +93,8 @@ void Arkade::nextGame()
 
 void Arkade::nextDisplay()
 {
-    if (std::get<Arcade::IObject::TextProperties>(_selectedGame->getObjects()["4/Displays"]->getProperties()).text != _pathlib) {
+    auto text = std::get<Arcade::IObject::TextProperties>(_selectedGame->getObjects()["4/Displays"]->getProperties()).text;
+    if (text != _pathlib) {
         _selectedDisplay->closeWindow();
         for (auto elt = _selectedGame->getObjects().begin(); elt != _selectedGame->getObjects().end(); elt++)
         {
@@ -70,7 +104,7 @@ void Arkade::nextDisplay()
                 elt->second->getSprite().reset();
             }
         }
-        _pathlib = std::get<Arcade::IObject::TextProperties>(_selectedGame->getObjects()["4/Displays"]->getProperties()).text;
+        _pathlib = text;
         _selectedDisplay = _displays[_pathlib];
         _selectedDisplay->initObject(_selectedGame->getObjects());
         _selectedDisplay->openWindow();
