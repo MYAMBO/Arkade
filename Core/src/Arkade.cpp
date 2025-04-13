@@ -132,7 +132,6 @@ bool Arkade::exitGame(int input, bool end)
             _selectedGame = std::shared_ptr<Arcade::IGameModule>(_menu);
             _selectedDisplay->initObject(_selectedGame->getObjects());
             std::string scoreText = "Score: " + std::to_string(score);
-            std::cout << scoreText << std::endl;
             _selectedGame->getObjects()["4/Score"]->setProperties(Arcade::IObject::TextProperties{0xFFFFFF, 40, scoreText});
         }
     }
