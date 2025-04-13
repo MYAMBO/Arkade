@@ -29,6 +29,14 @@ void Arkade::run()
     _displays = _core.getDisplayModuleList();
     _selectedGame = std::dynamic_pointer_cast<Arcade::IGameModule>(_menu);
     _selectedDisplay = _displays[_pathlib];
+    for (auto elt = _selectedGame->getObjects().begin(); elt != _selectedGame->getObjects().end(); elt++)
+    {
+        if (elt->second != nullptr)
+        {
+            elt->second->getTexture().reset();
+            elt->second->getSprite().reset();
+        }
+    }
     _selectedDisplay->initObject(_selectedGame->getObjects());
     _selectedDisplay->openWindow();
     for (auto elt : _displays)
@@ -87,6 +95,14 @@ void Arkade::nextGame()
 {
     if (_menu->getIsGameLaunched() == true) {
         _selectedGame = _games[std::get<Arcade::IObject::TextProperties>(_menu->getObjects()["4/Games"]->getProperties()).text];
+        for (auto elt = _selectedGame->getObjects().begin(); elt != _selectedGame->getObjects().end(); elt++)
+        {
+            if (elt->second != nullptr)
+            {
+                elt->second->getTexture().reset();
+                elt->second->getSprite().reset();
+            }
+        }
         _selectedDisplay->initObject(_selectedGame->getObjects());
     }
 }
@@ -106,6 +122,14 @@ void Arkade::nextDisplay()
         }
         _pathlib = text;
         _selectedDisplay = _displays[_pathlib];
+        for (auto elt = _selectedGame->getObjects().begin(); elt != _selectedGame->getObjects().end(); elt++)
+        {
+            if (elt->second != nullptr)
+            {
+                elt->second->getTexture().reset();
+                elt->second->getSprite().reset();
+            }
+        }
         _selectedDisplay->initObject(_selectedGame->getObjects());
         _selectedDisplay->openWindow();
         _selectedDisplay->display(_selectedGame->getObjects());
@@ -120,6 +144,14 @@ bool Arkade::exitGame(int input, bool end)
         std::string scoreText = "Score: " + std::to_string(score);
         _selectedGame = std::shared_ptr<Arcade::IGameModule>(_menu);
         _selectedGame->getObjects()["4/Score"]->setProperties(Arcade::IObject::TextProperties{0xFFFFFF, 40, scoreText});
+        for (auto elt = _selectedGame->getObjects().begin(); elt != _selectedGame->getObjects().end(); elt++)
+        {
+            if (elt->second != nullptr)
+            {
+                elt->second->getTexture().reset();
+                elt->second->getSprite().reset();
+            }
+        }
         _selectedDisplay->initObject(_selectedGame->getObjects());
         return true;
     }
@@ -130,6 +162,14 @@ bool Arkade::exitGame(int input, bool end)
             _menu->setIsGameLaunched(false);
             auto score = _selectedGame->getScore();
             _selectedGame = std::shared_ptr<Arcade::IGameModule>(_menu);
+            for (auto elt = _selectedGame->getObjects().begin(); elt != _selectedGame->getObjects().end(); elt++)
+            {
+                if (elt->second != nullptr)
+                {
+                    elt->second->getTexture().reset();
+                    elt->second->getSprite().reset();
+                }
+            }
             _selectedDisplay->initObject(_selectedGame->getObjects());
             std::string scoreText = "Score: " + std::to_string(score);
             _selectedGame->getObjects()["4/Score"]->setProperties(Arcade::IObject::TextProperties{0xFFFFFF, 40, scoreText});

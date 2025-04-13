@@ -14,7 +14,10 @@ Lib::Lib(std::filesystem::__cxx11::directory_entry file)
 {
     this->_handle = dlopen(file.path().c_str(), RTLD_LAZY);
     if (!this->_handle)
-        std::cout << "fail to open :" << file.path() << "\n";
+    {
+        std::cerr << "fail to open :" << file.path() << "\n";
+        throw LibLoadingException();
+    }
 }
 
 Lib::~Lib()
@@ -38,4 +41,9 @@ CreateInstanceIDisplay Lib::getIdisplayCreatorFunc()
     if (!tmp)
         std::cout << dlerror() << "\n";
     return reinterpret_cast<CreateInstanceIDisplay>(dlsym(this->_handle, "createInstanceIDisplay"));
+}
+
+const char* Lib::LibLoadingException::what() const noexcept
+{
+    return dlerror();
 }
