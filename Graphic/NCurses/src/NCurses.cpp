@@ -74,6 +74,7 @@ void NCurses::initObject(std::map<std::string, std::unique_ptr<Arcade::IObject>>
 int NCurses::getInput()
 {
     MEVENT event;
+    int ch = getch();
 
     if (getmouse(&event) == OK) {
         this->_mousePos.first = static_cast<int>((event.x * 1920.0) / COLS);
@@ -81,7 +82,9 @@ int NCurses::getInput()
         if (event.bstate == BUTTON1_PRESSED || event.bstate == BUTTON2_PRESSED)
             return K_RCLICK;
     }
-    return getch();
+    if (ch >= 1 && ch <= 26)
+        return CTRL('A' + ch - 1);
+    return ch;
 }
 
 std::pair<int, int> NCurses::getMousePos() const

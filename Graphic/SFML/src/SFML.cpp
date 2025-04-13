@@ -188,7 +188,19 @@ int SFMLModule::getInput()
                 default:
                     break;
             }
-            return this->_event.key.code + 'a';
+            if (this->_event.key.code >= sf::Keyboard::A && this->_event.key.code <= sf::Keyboard::Z) {
+                if (this->_event.key.control) {
+                    return 1 + (this->_event.key.code - sf::Keyboard::A);
+                } else {
+                    return this->_event.key.code + 'a';
+                }
+            }
+            else if (this->_event.key.code >= sf::Keyboard::Num0 && this->_event.key.code <= sf::Keyboard::Num9) {
+                return '0' + (this->_event.key.code - sf::Keyboard::Num0);
+            }
+            else if (this->_event.key.code >= sf::Keyboard::Numpad0 && this->_event.key.code <= sf::Keyboard::Numpad9) {
+                return '0' + (this->_event.key.code - sf::Keyboard::Numpad0);
+            }
         }
         if (this->_event.type == sf::Event::MouseButtonPressed) {
             switch (this->_event.mouseButton.button) {
