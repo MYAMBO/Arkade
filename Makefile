@@ -13,8 +13,8 @@ CORE_SRC 			= 		Core/src/Lib.cpp 						\
 							Core/src/Parsing.cpp 					\
 							Core/src/MenuObject.cpp 				\
 
-NIBBLER_SRC 		=		Game/Nibbler/src/Nibbler.cpp			\
-							Game/Nibbler/src/NibblerObject.cpp		\
+SNAKE_SRC 			=		Game/Snake/src/Snake.cpp				\
+							Game/Snake/src/SnakeObject.cpp			\
 
 MINESWEEPER_SRC 	=		Game/Minesweeper/src/Minesweeper.cpp 	\
 							Game/Minesweeper/src/MineObject.cpp		\
@@ -31,7 +31,7 @@ TEST_SRC 			=		Core/src/Lib.cpp 						\
 
 CORE_OBJ 			= 		$(CORE_SRC:%.cpp=obj/%.o)
 
-NIBBLER_OBJ 		=		$(NIBBLER_SRC:%.cpp=obj/%.o)
+SNAKE_OBJ 			=		$(SNAKE_SRC:%.cpp=obj/%.o)
 
 MINESWEEPER_OBJ 	= 		$(MINESWEEPER_SRC:%.cpp=obj/%.o)
 
@@ -43,7 +43,7 @@ SDL2_OBJ 		=		$(SDL2_SRC:%.cpp=obj/%.o)
 
 CORE_NAME			=		arcade
 
-NIBBLER_NAME 		= 		lib/arcade_nibbler.so
+SNAKE_NAME 			= 		lib/arcade_SNAKE.so
 
 MINESWEEPER_NAME 	= 		lib/arcade_minesweeper.so
 
@@ -56,7 +56,7 @@ SDL2_NAME 		=		lib/arcade_sdl2.so
 CORE_FLAGS 			= 		-I Core/include 				\
 							-I Core/include/interface 		\
 
-NIBBLER_FLAGS 		= 		-I Game/Nibbler/include
+SNAKE_FLAGS 		= 		-I Game/Snake/include
 
 MINESWEEPER_FLAGS 	=		-I Game/Minesweeper/include
 
@@ -90,7 +90,7 @@ debug: all
 
 core: $(CORE_NAME)
 
-games: $(NIBBLER_NAME) $(MINESWEEPER_NAME)
+games: $(SNAKE_NAME) $(MINESWEEPER_NAME)
 
 graphicals: $(NCURSES_NAME) $(SFML_NAME) $(SDL2_NAME)
 
@@ -98,9 +98,9 @@ $(CORE_NAME): $(CORE_OBJ)
 	@echo -e "$(BLUE)Linking Core...$(NC)"
 	@g++ -o $(CORE_NAME) $(CORE_OBJ) $(CPPFLAGS) $(CORE_FLAGS)
 
-$(NIBBLER_NAME): $(NIBBLER_OBJ)
-	@echo -e "$(BLUE)Linking Nibbler...$(NC)"
-	@g++ $(LIB_FLAGS) -o $(NIBBLER_NAME) $(NIBBLER_OBJ) $(NIBBLER_FLAGS)
+$(SNAKE_NAME): $(SNAKE_OBJ)
+	@echo -e "$(BLUE)Linking SNAKE...$(NC)"
+	@g++ $(LIB_FLAGS) -o $(SNAKE_NAME) $(SNAKE_OBJ) $(SNAKE_FLAGS)
 
 $(MINESWEEPER_NAME): $(MINESWEEPER_OBJ)
 	@echo -e "$(BLUE)Linking Mineswipper...$(NC)"
@@ -126,7 +126,8 @@ obj/%.o: ./%.cpp
 	@echo -e "$(GREEN)Compiling $<...$(NC)"
 	@mkdir -p $(dir $@)
 	@g++ -fPIC -c -o $@ $< $(CPPFLAGS) $(CORE_FLAGS) $(NIBBLER_FLAGS) 		\
-					 $(MINESWEEPER_FLAGS) $(SFML_FLAGS) $(NCURSES_FLAGS) $(SDL2_FLAGS)
+					 $(MINESWEEPER_FLAGS) $(SNAKE_FLAGS) $(SFML_FLAGS) 		\
+					 $(NCURSES_FLAGS) $(SDL2_FLAGS)
 
 obj/test/%.o: ./%.cpp
 	@echo -e "$(GREEN)Compiling $<...$(NC)"
@@ -146,7 +147,7 @@ clean:
 
 fclean: clean
 	@rm -f $(CORE_NAME) 		\
-		   $(NIBBLER_NAME) 		\
+		   $(SNAKE_NAME) 		\
 		   $(MINESWEEPER_NAME)	\
 		   $(SFML_NAME) 		\
 		   $(NCURSES_NAME)		\

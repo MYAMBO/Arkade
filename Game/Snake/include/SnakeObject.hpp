@@ -2,18 +2,18 @@
 ** EPITECH PROJECT, 2025
 ** Arkade
 ** File description:
-** NibllerObject
+** SnakeObject
 */
 
 #pragma once
 
 #include "IObject.hpp"
 
-class NibblerObject : public Arcade::IObject
+class SnakeObject : public Arcade::IObject
 {
     public:
-        NibblerObject(std::string type, std::string name);
-        ~NibblerObject();
+        SnakeObject(std::string type, std::string name);
+        ~SnakeObject();
 
         void setPosition(std::pair<int, int>);
         std::pair<int, int> getPosition() const;
