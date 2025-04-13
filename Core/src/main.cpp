@@ -22,9 +22,19 @@ int main(int argc, char **argv)
     Core core;
     Parsing parsing;
     std::filesystem::__cxx11::directory_entry file(argv[1]);
-    Lib lib(file);
+    try
+    {
+        Lib lib(file);
+        auto tmpLib = lib.getIdisplayCreatorFunc();
+        if (tmpLib != nullptr)
+            parsing.setPathlib(tmpLib()->getName());
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+        return 84;
+    }
 
-    parsing.setPathlib(lib.getIdisplayCreatorFunc()()->getName());
     if (parsing.ParseLib(core.getDisplayModuleList()) == 84) {
         std::cerr << "Error : Lib not found" << std::endl;
         return 84;
