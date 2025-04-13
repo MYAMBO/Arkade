@@ -19,11 +19,27 @@ Arkade::~Arkade()
 {
 }
 
+void Arkade::inGameChangeDisplay()
+{
+    _selectedDisplay->closeWindow();
+    for (auto elt = _selectedGame->getObjects().begin(); elt != _selectedGame->getObjects().end(); elt++)
+    {
+        if (elt->second != nullptr)
+        {
+            elt->second->getTexture().reset();
+            elt->second->getSprite().reset();
+        }
+    }
+    this->_selectedDisplay = this->_displaysVector[this->_currentDisplay % this->_displaysVector.size()];
+    _selectedDisplay->initObject(_selectedGame->getObjects());
+    _selectedDisplay->openWindow();
+}
+
 void Arkade::run()
 {
     bool end;
+    int i = 0;
     int input = -1;
-    int currentDisplay = 0;
 
     _games = _core.getGameModuleList();
     _displays = _core.getDisplayModuleList();
@@ -31,8 +47,12 @@ void Arkade::run()
     _selectedDisplay = _displays[_pathlib];
     _selectedDisplay->initObject(_selectedGame->getObjects());
     _selectedDisplay->openWindow();
-    for (auto elt : _displays)
+    for (auto elt : _displays) {
         this->_displaysVector.push_back(elt.second);
+        if (this->_selectedDisplay == elt.second)
+            this->_currentDisplay = i;
+        i++;
+    }
     while (true) {
         input = _selectedDisplay->getInput();
         end = _selectedGame->update(_selectedDisplay->getMousePos(), input);
@@ -42,34 +62,12 @@ void Arkade::run()
         }
         _selectedDisplay->display(_selectedGame->getObjects());
         if (input == K_RIGHT && _selectedGame->getName() != "Menu") {
-            currentDisplay++;
-            _selectedDisplay->closeWindow();
-            for (auto elt = _selectedGame->getObjects().begin(); elt != _selectedGame->getObjects().end(); elt++)
-            {
-                if (elt->second != nullptr)
-                {
-                    elt->second->getTexture().reset();
-                    elt->second->getSprite().reset();
-                }
-            }
-            this->_selectedDisplay = this->_displaysVector[currentDisplay % this->_displaysVector.size()];
-            _selectedDisplay->initObject(_selectedGame->getObjects());
-            _selectedDisplay->openWindow();
+            this->_currentDisplay++;
+            inGameChangeDisplay();
         }
         if (input == K_LEFT && _selectedGame->getName() != "Menu") {
-            currentDisplay--;
-            _selectedDisplay->closeWindow();
-            for (auto elt = _selectedGame->getObjects().begin(); elt != _selectedGame->getObjects().end(); elt++)
-            {
-                if (elt->second != nullptr)
-                {
-                    elt->second->getTexture().reset();
-                    elt->second->getSprite().reset();
-                }
-            }
-            this->_selectedDisplay = this->_displaysVector[currentDisplay % this->_displaysVector.size()];
-            _selectedDisplay->initObject(_selectedGame->getObjects());
-            _selectedDisplay->openWindow();
+            this->_currentDisplay--;
+            inGameChangeDisplay();
         }
         if (_selectedGame->getName() == "Menu") {
             nextDisplay();
