@@ -89,13 +89,121 @@ int SFMLModule::getInput()
                     return K_RIGHT;
                 case sf::Keyboard::Escape:
                     return K_ESC;
+                case sf::Keyboard::Space:
+                    return ' ';
+                case sf::Keyboard::BackSpace:
+                    return K_BACKSPACE;
+                case sf::Keyboard::Tab:
+                    return '\t';
+                case sf::Keyboard::Enter:
+                    return '\n';
+                case sf::Keyboard::Home:
+                    return K_HOME;
+                case sf::Keyboard::End:
+                    return K_END;
+                case sf::Keyboard::PageUp:
+                    return K_PPAGE;
+                case sf::Keyboard::PageDown:
+                    return K_NPAGE;
+                case sf::Keyboard::Insert:
+                    return K_IC;
+                case sf::Keyboard::Delete:
+                    return K_DC;
+                case sf::Keyboard::LShift:
+                case sf::Keyboard::RShift:
+                    return CTRL('S');
+                case sf::Keyboard::LControl:
+                case sf::Keyboard::RControl:
+                    return CTRL('C');
+                case sf::Keyboard::LAlt:
+                case sf::Keyboard::RAlt:
+                    return CTRL('A');
+                case sf::Keyboard::LSystem:
+                case sf::Keyboard::RSystem:
+                    return CTRL('Y');
+                case sf::Keyboard::F1:
+                    return K_F1;
+                case sf::Keyboard::F2:
+                    return K_F2;
+                case sf::Keyboard::F3:
+                    return K_F3;
+                case sf::Keyboard::F4:
+                    return K_F4;
+                case sf::Keyboard::F5:
+                    return K_F5;
+                case sf::Keyboard::F6:
+                    return K_F6;
+                case sf::Keyboard::F7:
+                    return K_F7;
+                case sf::Keyboard::F8:
+                    return K_F8;
+                case sf::Keyboard::F9:
+                    return K_F9;
+                case sf::Keyboard::F10:
+                    return K_F10;
+                case sf::Keyboard::F11:
+                    return K_F11;
+                case sf::Keyboard::F12:
+                    return K_F12;
+                case sf::Keyboard::Num0:
+                    return '0';
+                case sf::Keyboard::Num1:
+                    return '1';
+                case sf::Keyboard::Num2:
+                    return '2';
+                case sf::Keyboard::Num3:
+                    return '3';
+                case sf::Keyboard::Num4:
+                    return '4';
+                case sf::Keyboard::Num5:
+                    return '5';
+                case sf::Keyboard::Num6:
+                    return '6';
+                case sf::Keyboard::Num7:
+                    return '7';
+                case sf::Keyboard::Num8:
+                    return '8';
+                case sf::Keyboard::Num9:
+                    return '9';
+                case sf::Keyboard::Numpad0:
+                    return '0';
+                case sf::Keyboard::Numpad1:
+                    return '1';
+                case sf::Keyboard::Numpad2:
+                    return '2';
+                case sf::Keyboard::Numpad3:
+                    return '3';
+                case sf::Keyboard::Numpad4:
+                    return '4';
+                case sf::Keyboard::Numpad5:
+                    return '5';
+                case sf::Keyboard::Numpad6:
+                    return '6';
+                case sf::Keyboard::Numpad7:
+                    return '7';
+                case sf::Keyboard::Numpad8:
+                    return '8';
+                case sf::Keyboard::Numpad9:
+                    return '9';
                 default:
+                    if (this->_event.key.code >= sf::Keyboard::A && this->_event.key.code <= sf::Keyboard::Z)
+                        return this->_event.key.code + 'a';
                     break;
             }
-            return this->_event.key.code + 'a';
         }
-        if (this->_event.type == sf::Event::MouseButtonPressed)
-            return K_RCLICK;
+        if (this->_event.type == sf::Event::MouseButtonPressed) {
+            switch (this->_event.mouseButton.button) {
+                case sf::Mouse::Left:
+                    return K_MOUSE;
+                case sf::Mouse::Right:
+                    return K_RCLICK;
+                default:
+                    return K_MOUSE;
+            }
+        }
+        if (this->_event.type == sf::Event::MouseMoved) {
+            return K_MOTION;
+        }
     }
     return 0;
 }
