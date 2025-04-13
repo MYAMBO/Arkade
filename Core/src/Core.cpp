@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <filesystem>
-
+#include <X11/Xlib.h>
 #include "Core.hpp"
 
 Core::Core()
@@ -53,4 +53,15 @@ std::map<std::string, std::shared_ptr<Arcade::IGameModule>> Core::getGameModuleL
 std::map<std::string, std::shared_ptr<Arcade::IDisplayModule>> Core::getDisplayModuleList()
 {
     return this->_graphicList;
+}
+
+bool Core::isEnvironmentViable()
+{
+    const char *displayVar = std::getenv("DISPLAY");
+    Display *display = XOpenDisplay(displayVar);
+
+    if (display == nullptr)
+        return false;
+    XCloseDisplay(display);
+    return true;
 }
