@@ -79,7 +79,9 @@ int NCurses::getInput()
     if (getmouse(&event) == OK) {
         this->_mousePos.first = static_cast<int>((event.x * 1920.0) / COLS);
         this->_mousePos.second = static_cast<int>((event.y * 1080.0) / LINES);
-        if (event.bstate == BUTTON1_PRESSED || event.bstate == BUTTON2_PRESSED)
+        if (event.bstate == BUTTON1_PRESSED)
+            return K_MOUSE;
+        if (event.bstate == BUTTON2_PRESSED)
             return K_RCLICK;
     }
     if (ch >= 1 && ch <= 26)
