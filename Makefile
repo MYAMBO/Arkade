@@ -126,7 +126,8 @@ obj/%.o: ./%.cpp
 	@echo -e "$(GREEN)Compiling $<...$(NC)"
 	@mkdir -p $(dir $@)
 	@g++ -fPIC -c -o $@ $< $(CPPFLAGS) $(CORE_FLAGS) $(NIBBLER_FLAGS) 		\
-					 $(MINESWEEPER_FLAGS) $(SFML_FLAGS) $(NCURSES_FLAGS) $(SDL2_FLAGS)
+					 $(MINESWEEPER_FLAGS) $(SNAKE_FLAGS) $(SFML_FLAGS) 		\
+					 $(NCURSES_FLAGS) $(SDL2_FLAGS)
 
 obj/test/%.o: ./%.cpp
 	@echo -e "$(GREEN)Compiling $<...$(NC)"
