@@ -23,7 +23,7 @@ SFML_SRC 			=		Graphic/SFML/src/SFML.cpp 				\
 
 NCURSES_SRC 		=		Graphic/NCurses/src/NCurses.cpp 		\
 
-SDL2_SRC 		=		Graphic/SDL2/src/SDL2.cpp 		\
+SDL2_SRC 			=		Graphic/SDL2/src/SDL2.cpp 				\
 
 TEST_SRC 			=		Core/src/Lib.cpp 						\
 							Core/src/Core.cpp 						\
@@ -39,11 +39,11 @@ SFML_OBJ 			=		$(SFML_SRC:%.cpp=obj/%.o)
 
 NCURSES_OBJ 		=		$(NCURSES_SRC:%.cpp=obj/%.o)
 
-SDL2_OBJ 		=		$(SDL2_SRC:%.cpp=obj/%.o)
+SDL2_OBJ 			=		$(SDL2_SRC:%.cpp=obj/%.o)
 
 CORE_NAME			=		arcade
 
-SNAKE_NAME 			= 		lib/arcade_SNAKE.so
+SNAKE_NAME 			= 		lib/arcade_snake.so
 
 MINESWEEPER_NAME 	= 		lib/arcade_minesweeper.so
 
@@ -51,7 +51,7 @@ SFML_NAME 			=		lib/arcade_sfml.so
 
 NCURSES_NAME 		=		lib/arcade_ncurses.so
 
-SDL2_NAME 		=		lib/arcade_sdl2.so
+SDL2_NAME 			=		lib/arcade_sdl2.so
 
 CORE_FLAGS 			= 		-I Core/include 				\
 							-I Core/include/interface 		\
@@ -65,7 +65,7 @@ SFML_FLAGS 			= 		-I Graphic/SFML/include
 
 NCURSES_FLAGS 		= 		-I Graphic/NCurses/include
 
-SDL2_FLAGS 		= 		-I Graphic/SDL2/include
+SDL2_FLAGS 			= 		-I Graphic/SDL2/include
 
 CPPFLAGS 			= 		-Werror -Wall -Wextra -Iinclude
 
@@ -77,12 +77,12 @@ LIBSFML_FLAGS 		= 		-lsfml-graphics -lsfml-window -lsfml-system
 
 LIBNCURSES_FLAGS 	= 		-lncurses
 
-LIBSDL2_FLAGS 	= 		-lSDL2 -lSDL2_image -lSDL2_ttf
+LIBSDL2_FLAGS 		= 		-lSDL2 -lSDL2_image -lSDL2_ttf
 
-RED             =     \033[1;31m
-GREEN           =     \033[1;32m
-BLUE            =     \033[1;34m
-NC              =     \033[0m
+RED             	=     \033[1;31m
+GREEN          		=     \033[1;32m
+BLUE          	  	=     \033[1;34m
+NC              	=     \033[0m
 
 all:	core graphicals games
 
