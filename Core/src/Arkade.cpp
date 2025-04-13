@@ -69,11 +69,11 @@ void Arkade::run()
             end = false;
         }
         _selectedDisplay->display(_selectedGame->getObjects());
-        if (input == K_RIGHT && _selectedGame->getName() != "Menu") {
+        if (input == 'n' && _selectedGame->getName() != "Menu") {
             this->_currentDisplay++;
             inGameChangeDisplay();
         }
-        if (input == K_LEFT && _selectedGame->getName() != "Menu") {
+        if (input == 'b' && _selectedGame->getName() != "Menu") {
             this->_currentDisplay--;
             inGameChangeDisplay();
         }
