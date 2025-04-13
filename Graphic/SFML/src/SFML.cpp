@@ -210,9 +210,6 @@ int SFMLModule::getInput()
                     return K_RCLICK;
             }
         }
-        if (this->_event.type == sf::Event::MouseMoved) {
-            return K_MOTION;
-        }
     }
     return 0;
 }
