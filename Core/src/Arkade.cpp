@@ -87,7 +87,6 @@ bool Arkade::exitGame(int input, bool end)
         _selectedGame = std::shared_ptr<Arcade::IGameModule>(_menu);
         _selectedGame->getObjects()["4/Score"]->setProperties(Arcade::IObject::TextProperties{0xFFFFFF, 40, scoreText});
         _selectedDisplay->initObject(_selectedGame->getObjects());
-        std::cout << scoreText << std::endl;
         return true;
     }
     if (input == K_ESC) {
