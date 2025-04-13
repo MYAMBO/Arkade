@@ -18,6 +18,7 @@ class Core {
 
         std::map<std::string, std::shared_ptr<Arcade::IGameModule>> getGameModuleList();
         std::map<std::string, std::shared_ptr<Arcade::IDisplayModule>> getDisplayModuleList();
+        static bool isEnvironmentViable();
 
     private:
         std::map<std::string, std::shared_ptr<Arcade::IGameModule>> _gameList;
