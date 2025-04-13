@@ -246,6 +246,20 @@ void SFMLModule::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>
     for (auto elt = objects.begin(); elt != objects.end(); elt++) {
         type = elt->second->getType();
         if (type == SPRITE) {
+            if (!elt->second->getSprite().has_value()) {
+                auto texture = std::make_shared<sf::Texture>();
+                sf::Sprite sprite;
+                auto properties = std::get<Arcade::IObject::SpriteProperties>(elt->second->getProperties());
+
+                texture->loadFromFile("assets/" + elt->second->getTexturePath() + ".png");
+                sprite.setTexture(*texture.get());
+                sprite.setTextureRect({properties.offset.first, properties.offset.second, properties.size.first, properties.size.second});
+                sprite.setScale(properties.scale.first, properties.scale.second);
+                sprite.setColor(sf::Color(properties.textColor));
+                elt->second->setTexture(texture);
+                elt->second->setSprite(sprite);
+                this->_isLoad[elt->first] = true;
+            }
             auto sprite = std::any_cast<sf::Sprite>(elt->second->getSprite());
             pos = elt->second.get()->getPosition();
             sprite.setPosition(pos.first * windowSize.x / 1920, pos.second * windowSize.y / 1080);
@@ -253,6 +267,21 @@ void SFMLModule::display(std::map<std::string, std::unique_ptr<Arcade::IObject>>
             this->_window->draw(sprite);
         }
         if (type == TEXT) {
+            if (!elt->second->getSprite().has_value()) {
+                sf::Text text;
+                auto font = std::make_shared<sf::Font>();
+                auto properties = std::get<Arcade::IObject::TextProperties>(elt->second->getProperties());
+
+                font->loadFromFile("assets/" + elt->second->getTexturePath() + ".ttf");
+                text.setFont(*font.get());
+                text.setString(properties.text);
+                text.setCharacterSize(properties.characterSize);
+                text.setFillColor(sf::Color::White);
+                text.setOrigin(properties.characterSize / 2, 0);
+                elt->second->setTexture(font);
+                elt->second->setSprite(text);
+                this->_isLoad[elt->first] = true;
+            }
             auto text = std::any_cast<sf::Text>(elt->second->getSprite());
             pos = elt->second.get()->getPosition();
             text.setString(std::get<Arcade::IObject::TextProperties>(elt->second->getProperties()).text);
