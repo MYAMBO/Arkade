@@ -7,7 +7,8 @@
 
 #pragma once
 
-// arcade includes
+#include <vector>
+
 #include "Menu.hpp"
 
 
@@ -29,5 +30,6 @@ class Arkade {
         std::shared_ptr<Arcade::IGameModule> _selectedGame;
         std::shared_ptr<Arcade::IDisplayModule> _selectedDisplay;
         std::map<std::string, std::shared_ptr<Arcade::IGameModule>> _games;
+        std::vector<std::shared_ptr<Arcade::IDisplayModule>> _displaysVector;
         std::map<std::string, std::shared_ptr<Arcade::IDisplayModule>> _displays;
 };
