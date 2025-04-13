@@ -10,6 +10,7 @@
 #include <memory>
 #include <vector>
 #include "IGameModule.hpp"
+#include <chrono>
 
 class Minesweeper : public Arcade::IGameModule {
     public:
@@ -28,6 +29,7 @@ class Minesweeper : public Arcade::IGameModule {
         
         void initGame();
         void restartGame();
+        void updateTimer();
         void generateMines(int x, int y);
         void deleteObject(std::string name);
         void revealEmptyCells(int x, int y);
@@ -44,7 +46,7 @@ class Minesweeper : public Arcade::IGameModule {
         static constexpr int TILE_SIZE = 100;
         static constexpr int GRID_OFFSET_X = 400;
         static constexpr int GRID_OFFSET_Y = 100;
-        int _mines = 15;
+        int _mines = 10;
         int _flags = 0;
         bool _gameOver = false;
         bool _firstClick = true;
@@ -52,4 +54,7 @@ class Minesweeper : public Arcade::IGameModule {
         std::vector<std::vector<bool>> _revealed;
         std::vector<std::vector<bool>> _flagged;
         int _score;
+        int _timeLimit = 180;
+        bool _timeExpired = false;
+        std::chrono::steady_clock::time_point _gameStartTime;
 };
