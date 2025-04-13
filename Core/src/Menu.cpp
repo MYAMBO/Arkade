@@ -39,13 +39,19 @@ Menu::Menu(Core core, std::string pathlib)
     _objects["2/arrowRight"]->setTexturePath("Menu/arrow");
     _objects["2/arrowRight"]->setProperties(Arcade::IObject::SpriteProperties{{170, 170}, {340, 170}, {5, 3}, {10, 3}, {0.7, 0.7}, WHITE});
     _objects["2/arrowRight"]->setPosition({1750, 630});
-    addObject(SPRITE, "2/play");
-    _objects["2/play"]->setTexturePath("Menu/play");
-    _objects["2/play"]->setProperties(Arcade::IObject::SpriteProperties{{173, 173}, {0, 0}, {27, 5}, {0, 0}, {1, 1}, WHITE});
-    _objects["2/play"]->setPosition({800, 520});
+    if (!core.getGameModuleList().empty())
+    {
+        addObject(SPRITE, "2/play");
+        _objects["2/play"]->setTexturePath("Menu/play");
+        _objects["2/play"]->setProperties(Arcade::IObject::SpriteProperties{{173, 173}, {0, 0}, {27, 5}, {0, 0}, {1, 1}, WHITE});
+        _objects["2/play"]->setPosition({800, 520});
+    }
     addObject(TEXT, "4/Games");
     _objects["4/Games"]->setTexturePath("Menu/font");
-    _objects["4/Games"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, core.getGameModuleList().begin()->second->getName()});
+    if (core.getGameModuleList().empty())
+        _objects["4/Games"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, "No games"});
+    else
+        _objects["4/Games"]->setProperties(Arcade::IObject::TextProperties{WHITE, 40, core.getGameModuleList().begin()->second->getName()});
     _objects["4/Games"]->setPosition({200, 670});
     addObject(TEXT, "4/Displays");
     _objects["4/Displays"]->setTexturePath("Menu/font");
@@ -95,6 +101,14 @@ std::size_t Menu::getScore() const
 
 bool Menu::myGetGlobalBound(std::string name, std::pair<int, int> mousePos)
 {
+    try
+    {
+        _objects.at(name);
+    }
+    catch (const std::exception &e)
+    {
+        return false;
+    }
     auto object = _objects[name].get();
     auto pos = object->getPosition();
     auto size = std::get<Arcade::IObject::SpriteProperties>(object->getProperties()).size;
