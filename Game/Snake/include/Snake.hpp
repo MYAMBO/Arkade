@@ -36,6 +36,7 @@ class Snake : public Arcade::IGameModule {
         std::chrono::steady_clock::time_point _currentTime;
         std::list<std::string> _snakeList;
         unsigned short _snakeSize;
+        std::size_t _scoretmp;
         std::size_t _score;
         int _pastDir;
         int _dir;

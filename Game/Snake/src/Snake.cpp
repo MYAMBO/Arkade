@@ -223,12 +223,14 @@ void Snake::Init()
     _objects["2/snake" + std::to_string(this->_snakeSize - 1)]->setPosition({16 * 5 * 5, 16 * 5 * 3});
     Eat();
     _objects["2/snake" + std::to_string(this->_snakeSize - 1)]->setPosition({16 * 5 * 5, 16 * 5 * 2});
-
+    this->_score = 0;
 }
 
 Snake::Snake()
     : _objects(*(new std::map<std::string, std::unique_ptr<Arcade::IObject>>()))
 {
+    this->_score = 0;
+    this->_scoretmp = 0;
     this->_snakeSize = 1;
     Init();
 }
@@ -240,6 +242,7 @@ Snake::~Snake()
 
 void Snake::Restart()
 {
+    this->_scoretmp = _score;
     _objects["2/snakehead"]->setPosition({16 * 5 * 5, 16 * 5 * 5});
     this->_dir = 1;
     for (auto elt : this->_snakeList)
@@ -361,7 +364,7 @@ std::string Snake::getName() const
 
 std::size_t Snake::getScore() const
 {
-    return this->_score;
+    return this->_scoretmp;
 }
 
 extern "C"
