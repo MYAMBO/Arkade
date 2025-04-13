@@ -20,9 +20,9 @@ Core::Core()
             std::cout << "path : " << file.path() << "\n";
             try
             {
-                Lib lib (file);
-                createInstanceIDisplay = lib.getIdisplayCreatorFunc();
-                createInstanceIGame = lib.getIGameCreatorFunc();
+                auto lib = new Lib(file);
+                createInstanceIDisplay = lib->getIdisplayCreatorFunc();
+                createInstanceIGame = lib->getIGameCreatorFunc();
                 if (createInstanceIDisplay) {
                     std::shared_ptr<Arcade::IDisplayModule> display = createInstanceIDisplay();
                     this->_graphicList.insert({display->getName(), display});

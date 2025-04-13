@@ -22,7 +22,7 @@ Lib::Lib(std::filesystem::__cxx11::directory_entry file)
 
 Lib::~Lib()
 {
-    
+    dlclose(this->_handle);
 }
 
 CreateInstanceIGame Lib::getIGameCreatorFunc()
