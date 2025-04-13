@@ -29,12 +29,14 @@ class Snake : public Arcade::IGameModule {
         void addObject(std::string type, std::string name);
 
         void Eat();
+        void PlaceFruit();
     private:
         std::map<std::string, std::unique_ptr<Arcade::IObject>>& _objects;
         std::chrono::steady_clock::time_point _previousTime;
         std::chrono::steady_clock::time_point _currentTime;
         std::list<std::string> _snakeList;
         unsigned short _snakeSize;
+        std::size_t _score;
         int _pastDir;
         int _dir;
 };
